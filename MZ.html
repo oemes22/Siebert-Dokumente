@@ -6,6 +6,23 @@
 <title>Leistungsnachweis</title>
 <style>
 /* --- 1. FARBEN & VARIABLEN --- */
+.ios-list-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 18px;
+    height: 100%;
+    background: #f0f0f0;
+    border: none;
+    border-left: 1px solid #ccc;
+    font-size: 12px;
+    padding: 0;
+    color: #555;
+    z-index: 10;
+}
+@media print { .ios-list-btn { display: none; } }
+
+
 :root { 
 --border-rohr: #1e88e5; --border-brand: #e53935; 
 --border-kappen: #616161; --border-zeit: #43a047;
@@ -536,7 +553,6 @@ function init() {
         const tbody = document.getElementById(conf.id);
         if (!tbody) return;
 
-        // Browser-Check für iPad/iPhone
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
                       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
@@ -544,66 +560,35 @@ function init() {
             const tr = document.createElement('tr');
             for (let c = 0; c < conf.cols; c++) {
                 const td = document.createElement('td');
-                let input;
+                td.style.position = "relative"; // Wichtig für Button-Position
 
-                // WECHSEL ZU SELECT AUF IPAD (NUR BEI SPALTEN MIT LISTE)
-                if (conf.lists && conf.lists[c] && isIOS) {
-                    input = document.createElement('select');
-                    input.className = "save-data ios-select";
-                    
-                    const emptyOpt = document.createElement('option');
-                    emptyOpt.value = ""; emptyOpt.text = "Wählen...";
-                    input.appendChild(emptyOpt);
-
-                    const dataList = document.getElementById(conf.lists[c]);
-                    if (dataList) {
-                        Array.from(dataList.options).forEach(opt => {
-                            const newOpt = document.createElement('option');
-                            newOpt.value = opt.value;
-                            newOpt.text = opt.value;
-                            input.appendChild(newOpt);
-                        });
-                    }
-                } else {
-                    // STANDARD TEXTFELD
-                    input = document.createElement('input');
-                    input.type = "text";
-                    if (conf.lists && conf.lists[c]) {
-                        input.setAttribute('list', conf.lists[c]);
-                        input.setAttribute('autocomplete', 'off');
-                    }
-                }
-
-                // Attribute & Daten binden
-                input.className += " save-data";
+                const input = document.createElement('input');
+                input.type = "text";
+                input.className = "save-data";
                 input.dataset.section = conf.id;
                 input.dataset.row = r;
                 input.dataset.col = c;
+                
                 if (conf.numCols.includes(c)) input.inputMode = "decimal";
                 if (conf.id === 'zeitBody' && c === 1) input.dataset.isDate = "true";
 
-                // Events (Wichtig für Berechnungen)
-                input.onfocus = function() {
-                    const isSum = ((this.dataset.section === 'rohrBody' && parseInt(this.dataset.col) >= 3) ||
-                                  (this.dataset.section === 'brandschutzBody' && parseInt(this.dataset.col) >= 2) ||
-                                  (this.dataset.section === 'armaturenBody' && parseInt(this.dataset.col) === 2) ||
-                                  (this.dataset.section === 'zeitBody' && parseInt(this.dataset.col) === 2));
+                // Standard-Datalist für PC
+                if (conf.lists && conf.lists[c]) {
+                    input.setAttribute('list', conf.lists[c]);
                     
-                    if (isSum) {
-                        this.value = (this.dataset.raw || "") + " ";
-                        setTimeout(() => { this.selectionStart = this.selectionEnd = this.value.length; }, 0);
-                        showZoom(this);
-                    } else {
-                        const isDate = (this.dataset.section === 'zeitBody' && parseInt(this.dataset.col) === 1);
-                        if (isDate || this.getAttribute('list')) setTimeout(() => this.select(), 0);
-                        hideZoom();
+                    // NUR FÜR IPAD: Einen kleinen Button zum Öffnen der Liste hinzufügen
+                    if (isIOS) {
+                        const btn = document.createElement('button');
+                        btn.innerHTML = "▾";
+                        btn.className = "ios-list-btn";
+                        btn.onclick = function(e) {
+                            e.preventDefault();
+                            showIOSMenu(input, conf.lists[c]);
+                        };
+                        td.appendChild(btn);
+                        input.style.paddingRight = "20px"; // Platz für Button
                     }
-                };
-
-                input.onclick = function() {
-                    const isSum = ((this.dataset.section === 'rohrBody' && parseInt(this.dataset.col) >= 3)); 
-                    if (isSum) this.selectionStart = this.selectionEnd = this.value.length;
-                };
+                }
 
                 input.oninput = function() { updateZoom(this); saveToLocalStorage(); };
                 input.onchange = function() { processSmartSum(this); saveToLocalStorage(); };
@@ -811,6 +796,21 @@ function hideZoom() {
 }
 
 window.onload = init;
+
+function showIOSMenu(targetInput, listId) {
+    const list = document.getElementById(listId);
+    if (!list) return;
+    
+    const options = Array.from(list.options).map(o => o.value);
+    const choice = prompt("Eintrag wählen:\n" + options.join("\n"), "");
+    
+    if (choice !== null && choice !== "") {
+        targetInput.value = choice;
+        processSmartSum(targetInput);
+        saveToLocalStorage();
+    }
+}
+
 </script>
 
 
