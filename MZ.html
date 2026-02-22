@@ -6,23 +6,6 @@
 <title>Leistungsnachweis</title>
 <style>
 /* --- 1. FARBEN & VARIABLEN --- */
-.ios-list-btn {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 18px;
-    height: 100%;
-    background: #f0f0f0;
-    border: none;
-    border-left: 1px solid #ccc;
-    font-size: 12px;
-    padding: 0;
-    color: #555;
-    z-index: 10;
-}
-@media print { .ios-list-btn { display: none; } }
-
-
 :root { 
 --border-rohr: #1e88e5; --border-brand: #e53935; 
 --border-kappen: #616161; --border-zeit: #43a047;
@@ -98,26 +81,6 @@ tbody tr:nth-child(even) {background-color: #f9f9f9;}
 
 /* Eingabefelder */
 input { width: 100%; border: none; outline: none; font-size: 8.5px; text-align: center; background: transparent; height: 100%; font-family: inherit; }
-/* --- Neues CSS für iOS Dropdowns (innerhalb des <style> Tags) --- */
-.ios-select {
-    width: 100%;
-    height: 100%;
-    border: none;
-    background: transparent;
-    font-size: 8.5px;
-    appearance: none; /* Entfernt den Standard-Pfeil für mehr Platz */
-    text-align: center;
-    -webkit-appearance: none;
-    font-family: inherit;
-    color: #000;
-}
-/* Optional: Wenn gedruckt wird, soll der Hintergrund weiß sein */
-@media print {
-    .ios-select {
-        background: #fff !important;
-    }
-}
-
 textarea { text-align: left; padding: 6px; resize: none; border: 1.2px solid #bdc3c7; box-sizing: border-box; font-size: 10.5px; width: 100%; font-family: inherit; border-radius: 3px; height: 42px; }
 input:focus { background: rgba(255, 255, 0, 0.25) !important; box-shadow: inset 0 0 0 1px #f1c40f; }
 tr:focus-within {
@@ -151,12 +114,7 @@ tr:focus-within td {
 body { background: none; padding: 0; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .page { margin: 0; box-shadow: none; padding: 10mm 10mm; height: 297mm; width: 210mm; border: none; }
 .controls, .zoom-display { display: none !important; }
-input { 
-    border: none !important; 
-    color: #000 !important; 
-    /* Entferne oder kommentiere -webkit-appearance hier testweise aus, 
-       falls die Liste gar nicht erst aufklappt */
-}
+input { border: none !important; color: #000 !important; -webkit-appearance: none; }
 textarea { border: 1.2px solid #bdc3c7 !important; color: #000 !important; }
 }
 </style>
@@ -551,50 +509,59 @@ const CONFIG = {
 function init() {
     Object.values(CONFIG).forEach(conf => {
         const tbody = document.getElementById(conf.id);
-        if (!tbody) return;
-
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
-                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
+        if(!tbody) return;
         for (let r = 0; r < conf.rows; r++) {
             const tr = document.createElement('tr');
             for (let c = 0; c < conf.cols; c++) {
                 const td = document.createElement('td');
-                td.style.position = "relative"; // Wichtig für Button-Position
-
                 const input = document.createElement('input');
-                input.type = "text";
+                input.type = "text"; 
                 input.className = "save-data";
-                input.dataset.section = conf.id;
-                input.dataset.row = r;
+                input.dataset.section = conf.id; 
+                input.dataset.row = r; 
                 input.dataset.col = c;
                 
                 if (conf.numCols.includes(c)) input.inputMode = "decimal";
                 if (conf.id === 'zeitBody' && c === 1) input.dataset.isDate = "true";
+                if (conf.lists && conf.lists[c]) input.setAttribute('list', conf.lists[c]);
 
-                // Standard-Datalist für PC
-                if (conf.lists && conf.lists[c]) {
-                    input.setAttribute('list', conf.lists[c]);
-                    
-                    // NUR FÜR IPAD: Einen kleinen Button zum Öffnen der Liste hinzufügen
-                    if (isIOS) {
-                        const btn = document.createElement('button');
-                        btn.innerHTML = "▾";
-                        btn.className = "ios-list-btn";
-                        btn.onclick = function(e) {
-                            e.preventDefault();
-                            showIOSMenu(input, conf.lists[c]);
-                        };
-                        td.appendChild(btn);
-                        input.style.paddingRight = "20px"; // Platz für Button
+                // Hilfsfunktion zur Prüfung, ob es eine Summen-Zelle ist
+                const checkSumCell = (el) => {
+                    const col = parseInt(el.dataset.col);
+                    const section = el.dataset.section;
+                    return ((section === 'rohrBody' && col >= 3) || 
+                            (section === 'brandschutzBody' && col >= 2) || 
+                            (section === 'armaturenBody' && col === 2) || 
+                            (section === 'zeitBody' && col === 2));
+                };
+
+                input.onfocus = function() {
+                    if (checkSumCell(this)) {
+                        this.value = (this.dataset.raw || "") + " ";
+                        // Kurzer Timeout für den Fokus-Sprung
+                        setTimeout(() => { this.selectionStart = this.selectionEnd = this.value.length; }, 0);
+                        showZoom(this);
+                    } else {
+                        const isDateCol = (this.dataset.section === 'zeitBody' && parseInt(this.dataset.col) === 1);
+                        if (isDateCol || this.getAttribute('list') || parseInt(this.dataset.col) === CONFIG[this.dataset.section.replace('Body','')].dnCol) {
+                            setTimeout(() => this.select(), 0);
+                        }
+                        hideZoom();
                     }
-                }
+                };
 
+                // NEU: Verhindert, dass der Klick den Cursor wieder versetzt
+                input.onclick = function() {
+                    if (checkSumCell(this)) {
+                        this.selectionStart = this.selectionEnd = this.value.length;
+                    }
+                };
+
+                input.onkeydown = handleNavigation;
                 input.oninput = function() { updateZoom(this); saveToLocalStorage(); };
-                input.onchange = function() { processSmartSum(this); saveToLocalStorage(); };
                 input.onblur = function() { hideZoom(); processSmartSum(this); };
 
-                td.appendChild(input);
+                td.appendChild(input); 
                 tr.appendChild(td);
             }
             tbody.appendChild(tr);
@@ -796,21 +763,6 @@ function hideZoom() {
 }
 
 window.onload = init;
-
-function showIOSMenu(targetInput, listId) {
-    const list = document.getElementById(listId);
-    if (!list) return;
-    
-    const options = Array.from(list.options).map(o => o.value);
-    const choice = prompt("Eintrag wählen:\n" + options.join("\n"), "");
-    
-    if (choice !== null && choice !== "") {
-        targetInput.value = choice;
-        processSmartSum(targetInput);
-        saveToLocalStorage();
-    }
-}
-
 </script>
 
 
