@@ -114,7 +114,12 @@ tr:focus-within td {
 body { background: none; padding: 0; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .page { margin: 0; box-shadow: none; padding: 10mm 10mm; height: 297mm; width: 210mm; border: none; }
 .controls, .zoom-display { display: none !important; }
-input { border: none !important; color: #000 !important; -webkit-appearance: none; }
+input { 
+    border: none !important; 
+    color: #000 !important; 
+    /* Entferne oder kommentiere -webkit-appearance hier testweise aus, 
+       falls die Liste gar nicht erst aufklappt */
+}
 textarea { border: 1.2px solid #bdc3c7 !important; color: #000 !important; }
 }
 </style>
@@ -524,11 +529,13 @@ function init() {
                 if (conf.numCols.includes(c)) input.inputMode = "decimal";
 if (conf.id === 'zeitBody' && c === 1) input.dataset.isDate = "true";
 
+/* Innerhalb der init() Schleife für Inputs (ca. Zeile 527) */
 if (conf.lists && conf.lists[c]) {
     input.setAttribute('list', conf.lists[c]);
-    // Hier den Fix aufrufen:
-    applyIOSFix(input); 
+    input.setAttribute('autocomplete', 'off'); // Verhindert iPad-Eingabehilfe-Überlagerung
+    applyIOSFix(input);
 }
+
 
                 // Hilfsfunktion zur Prüfung, ob es eine Summen-Zelle ist
                 const checkSumCell = (el) => {
@@ -574,29 +581,38 @@ if (conf.lists && conf.lists[c]) {
     });
     loadFromLocalStorage();
 }
-/* --- iOS/iPadOS Datalist Fix --- */
+/* --- Optimierter iOS/iPadOS Fix --- */
 function applyIOSFix(input) {
-    // Erkennt, ob es ein iOS-Gerät ist
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    
+
     if (isIOS) {
-        input.addEventListener('change', function() {
+        // 'input' reagiert sofort, wenn ein Vorschlag angetippt wird
+        input.addEventListener('input', function() {
             const val = this.value;
-            const list = document.getElementById(this.getAttribute('list'));
+            const listId = this.getAttribute('list');
+            if (!listId) return;
+            
+            const list = document.getElementById(listId);
             if (list) {
-                // Prüfen, ob der eingegebene Wert in der Liste existiert
                 const options = Array.from(list.options).map(o => o.value);
+                // Wenn der getippte/gewählte Wert in der Liste ist
                 if (options.includes(val)) {
-                    // Force-Update für iPadOS
-                    this.value = val;
-                    // Trigger den Rechen-Prozess manuell
-                    processSmartSum(this);
+                    this.value = val; 
+                    processSmartSum(this); // Löst Berechnung aus
+                    saveToLocalStorage();
                 }
             }
         });
+
+        // Zusätzlicher Check beim Verlassen des Feldes
+        input.addEventListener('blur', function() {
+            processSmartSum(this);
+            saveToLocalStorage();
+        });
     }
 }
+
 
 
 
