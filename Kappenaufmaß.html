@@ -56,9 +56,9 @@
 }
 
 .form-display-container svg { 
-  max-height: 95%; /* Bild bleibt immer kleiner als die Zelle */
-  max-width: 95%; 
-  object-fit: contain; 
+    width: 90%;
+    height: 90%;
+    display: block;
 }
 
         .col-nr { width: 22px; } .col-dn { width: 30px; } .col-dm { width: 38px; } .col-bl { width: 45px; } 
@@ -219,131 +219,31 @@ input[type=number] {
 <script>
     // HIER DEINE SVG INHALTE EINFÜGEN
     const SVG_LIBRARY = {
-        'R2': `<svg viewBox="0 0 12 12">
+    'R2': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g transform="translate(-59.244 -39.112)" fill="#fffbfb" stroke-linecap="round" stroke-width=".929"><path d="m69.709 44.577a5 5 0 0 1-4.977 4.9999 5 5 0 0 1-5.0228-4.954 5 5 0 0 1 4.9309-5.0455 5 5 0 0 1 5.0681 4.9076" stroke="#000" style="paint-order:normal""")/>><path d="m59.709 44.577h10" stroke="#ff0101" style="paint-order:stroke fill markers""")/>></g></svg>`,
+    
+    'R3': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g transform="translate(-59.244 -39.112)" fill="#fffbfb" stroke-linecap="round" stroke-width=".929"><path d="m69.709 44.577a5 5 0 0 1-4.977 4.9999 5 5 0 0 1-5.0228-4.954 5 5 0 0 1 4.9309-5.0455 5 5 0 0 1 5.0681 4.9076" stroke="#000" style="paint-order:fill markers stroke""")/>><path d="m59.709 44.577h10" stroke="#ff0101" style="paint-order:fill markers stroke""")/>><path d="m64.709 44.577v-5" stroke="#ff0101" style="paint-order:fill markers stroke""")/>></g></svg>`,
+    
+    'R4': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g transform="translate(-59.244 -39.093)" fill="#fffbfb" stroke-linecap="round"><path d="m69.709 44.577a5 5 0 0 1-4.977 4.9999 5 5 0 0 1-5.0228-4.954 5 5 0 0 1 4.9309-5.0455 5 5 0 0 1 5.0681 4.9076" stroke="#000" stroke-width=".929" style="paint-order:fill markers stroke""")/>><path d="m59.709 44.577h10" stroke="#ff0101" stroke-width=".929" style="paint-order:fill markers stroke""")/>><path d="m64.709 49.577v-10" stroke="#ff0101" stroke-width=".96768" style="paint-order:fill markers stroke""")/>></g></svg>`,
+    
+    'H2': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><path d="m6.2673 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" fill="#fff" stroke="#000" stroke-linejoin="round" stroke-width=".929" style="paint-order:fill markers stroke""")/>><path d="m5.7903 10.978v-10.35" fill="none" stroke="#e30000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2405""")/>></svg>`,
+    
+    'H2a': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><path d="m6.2705 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" fill="#fff" stroke="#000" stroke-linejoin="round" stroke-width=".929" style="paint-order:fill markers stroke""")/>><path d="m0.4645 5.805h10.658" fill="none" stroke="#e30000" stroke-linecap="round" stroke-linejoin="round" stroke-width=".929" style="paint-order:normal""")/>></svg>`,
+    
+    'H3': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g fill="#fff" stroke-linejoin="round"><path d="m6.2673 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" stroke="#000" stroke-width=".929" style="paint-order:fill markers stroke""")/>><path d="m5.7903 11.134v-10.656" stroke="#e30000" stroke-linecap="round" stroke-width=".94262""")/>><path d="m5.7901 5.8023 5.3292 0.00385" stroke="#e30000" stroke-linecap="round" stroke-width=".92869""")/>></g></svg>`,
+    
+    'H3a': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g fill="#fff" stroke-linejoin="round"><path d="m6.2673 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" stroke="#000" stroke-width=".929" style="paint-order:fill markers stroke""")/>><path d="m5.7903 11.134v-10.656" stroke="#e30000" stroke-linecap="round" stroke-width=".929""")/>><path d="m0.46448 5.8033 5.3258 0.00193" stroke="#e30000" stroke-linecap="round" stroke-width=".92895""")/>></g></svg>`,
+    
+    'H3b': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g fill="#fff" stroke-linejoin="round"><path d="m6.2673 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" stroke="#000" stroke-width=".929" style="paint-order:fill markers stroke""")/>><path d="m5.7903 5.8043v-5.3217" stroke="#e30000" stroke-linecap="round" stroke-width=".91054""")/>><path d="m0.46496 5.8038 10.654 9.668e-4" stroke="#e30000" stroke-linecap="round" stroke-width=".92992""")/>></g></svg>`,
+    
+    'H4': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g fill="#fff" stroke-linejoin="round"><path d="m6.2673 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" stroke="#000" stroke-width=".929" style="paint-order:fill markers stroke""")/>><path d="m5.7903 11.134v-10.656" stroke="#e30000" stroke-linecap="round" stroke-width=".929""")/>><path d="m0.46496 5.8038 10.654 9.668e-4" stroke="#e30000" stroke-linecap="round" stroke-width=".92992""")/>></g></svg>`,
+    
+    'K2': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g transform="translate(-59.244 -39.112)" fill="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width=".929"><rect x="59.709" y="39.577" width="10" height="10" stroke="#000""")/>><path d="m59.709 44.577h10" stroke="#e30000""")/>></g></svg>`,
+    
+    'K3': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g transform="translate(-59.244 -39.104)" fill="#fff" stroke-linecap="round" stroke-linejoin="round"><rect x="59.709" y="39.577" width="10" height="10" stroke="#000" stroke-width=".929""")/>><path d="m59.709 44.577h10" stroke="#e30000" stroke-width=".929""")/>><path d="m64.709 39.56v5.0321" stroke="#e30000" stroke-width=".91279""")/>></g></svg>`,
+    
+    'K4': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g transform="translate(-59.244 -39.112)" fill="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width=".929"><rect x="59.709" y="39.577" width="10" height="10" stroke="#000""")/>><path d="m59.709 44.577h10" stroke="#e30000""")/>><path d="m64.709 39.577v10" stroke="#e30000""")/>></g></svg>`
+};
 
-xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(-59.244 -39.112)" fill="#fffbfb" stroke-linecap="round" stroke-width=".929">
-  <path d="m69.709 44.577a5 5 0 0 1-4.977 4.9999 5 5 0 0 1-5.0228-4.954 5 5 0 0 1 4.9309-5.0455 5 5 0 0 1 5.0681 4.9076" stroke="#000" style="paint-order:normal"/>
-  <path d="m59.709 44.577h10" stroke="#ff0101" style="paint-order:stroke fill markers"/>
- </g>
-  
-  </svg>`,
-        'R3': `<svg viewBox="0 0 12 12">
-		
-		xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(-59.244 -39.112)" fill="#fffbfb" stroke-linecap="round" stroke-width=".929">
-  <path d="m69.709 44.577a5 5 0 0 1-4.977 4.9999 5 5 0 0 1-5.0228-4.954 5 5 0 0 1 4.9309-5.0455 5 5 0 0 1 5.0681 4.9076" stroke="#000" style="paint-order:fill markers stroke"/>
-  <path d="m59.709 44.577h10" stroke="#ff0101" style="paint-order:fill markers stroke"/>
-  <path d="m64.709 44.577v-5" stroke="#ff0101" style="paint-order:fill markers stroke"/>
- </g>
-</svg>
-		
-		<!-- SVG Code R3 --></svg>`,
-        'R4': `<svg viewBox="0 0 12 12">
-		
-		xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(-59.244 -39.093)" fill="#fffbfb" stroke-linecap="round">
-  <path d="m69.709 44.577a5 5 0 0 1-4.977 4.9999 5 5 0 0 1-5.0228-4.954 5 5 0 0 1 4.9309-5.0455 5 5 0 0 1 5.0681 4.9076" stroke="#000" stroke-width=".929" style="paint-order:fill markers stroke"/>
-  <path d="m59.709 44.577h10" stroke="#ff0101" stroke-width=".929" style="paint-order:fill markers stroke"/>
-  <path d="m64.709 49.577v-10" stroke="#ff0101" stroke-width=".96768" style="paint-order:fill markers stroke"/>
- </g>
-</svg>
-		
-		<!-- SVG Code R4 --></svg>`,
-        'H2': `<svg viewBox="0 0 12 12">
-		
-		xmlns="http://www.w3.org/2000/svg">
- <path d="m6.2673 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" fill="#fff" stroke="#000" stroke-linejoin="round" stroke-width=".929" style="paint-order:fill markers stroke"/>
- <path d="m5.7903 10.978v-10.35" fill="#fff" stroke="#e30000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2405"/>
-</svg>
-		
-		<!-- SVG Code H2 --></svg>`,
-        'H2a': `<svg viewBox="0 0 12 12">
-		
-		xmlns="http://www.w3.org/2000/svg">
- <path d="m6.2705 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" fill="#fff" stroke="#000" stroke-linejoin="round" stroke-width=".929" style="paint-order:fill markers stroke"/>
- <path d="m0.4645 5.805h10.658" fill="#fff" stroke="#e30000" stroke-linecap="round" stroke-linejoin="round" stroke-width=".929" style="paint-order:normal"/>
-</svg>
-		
-		<!-- SVG Code H2a --></svg>`,
-        'H3': `<svg viewBox="0 0 12 12">
-		
-		xmlns="http://www.w3.org/2000/svg">
- <g fill="#fff" stroke-linejoin="round">
-  <path d="m6.2673 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" stroke="#000" stroke-width=".929" style="paint-order:fill markers stroke"/>
-  <path d="m5.7903 11.134v-10.656" stroke="#e30000" stroke-linecap="round" stroke-width=".94262"/>
-  <path d="m5.7901 5.8023 5.3292 0.00385" stroke="#e30000" stroke-linecap="round" stroke-width=".92869"/>
- </g>
-</svg>
-		
-		<!-- SVG Code H3 --></svg>`,
-        'H3a': `<svg viewBox="0 0 12 12">
-		
-		xmlns="http://www.w3.org/2000/svg">
- <g fill="#fff" stroke-linejoin="round">
-  <path d="m6.2673 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" stroke="#000" stroke-width=".929" style="paint-order:fill markers stroke"/>
-  <path d="m5.7903 11.134v-10.656" stroke="#e30000" stroke-linecap="round" stroke-width=".929"/>
-  <path d="m0.46448 5.8033 5.3258 0.00193" stroke="#e30000" stroke-linecap="round" stroke-width=".92895"/>
- </g>
-</svg>
-		
-		<!-- SVG Code H3a --></svg>`,
-        'H3b': `<svg viewBox="0 0 12 12">
-		
-		xmlns="http://www.w3.org/2000/svg">
- <g fill="#fff" stroke-linejoin="round">
-  <path d="m6.2673 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" stroke="#000" stroke-width=".929" style="paint-order:fill markers stroke"/>
-  <path d="m5.7903 5.8043v-5.3217" stroke="#e30000" stroke-linecap="round" stroke-width=".91054"/>
-  <path d="m0.46496 5.8038 10.654 9.668e-4" stroke="#e30000" stroke-linecap="round" stroke-width=".92992"/>
- </g>
-</svg>
-		
-		<!-- SVG Code H3b --></svg>`,
-        'H4': `<svg viewBox="0 0 12 12">
-		
-		xmlns="http://www.w3.org/2000/svg">
- <g fill="#fff" stroke-linejoin="round">
-  <path d="m6.2673 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" stroke="#000" stroke-width=".929" style="paint-order:fill markers stroke"/>
-  <path d="m5.7903 11.134v-10.656" stroke="#e30000" stroke-linecap="round" stroke-width=".929"/>
-  <path d="m0.46496 5.8038 10.654 9.668e-4" stroke="#e30000" stroke-linecap="round" stroke-width=".92992"/>
- </g>
-</svg>
-		
-		<!-- SVG Code H4 --></svg>`,
-        'K2': `<svg viewBox="0 0 12 12">
-		
-		xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(-59.244 -39.112)" fill="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width=".929">
-  <rect x="59.709" y="39.577" width="10" height="10" stroke="#000"/>
-  <path d="m59.709 44.577h10" stroke="#e30000"/>
- </g>
-</svg>
-		
-		<!-- SVG Code K2 --></svg>`,
-        'K3': `<svg viewBox="0 0 12 12">
-		
-		xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(-59.244 -39.104)" fill="#fff" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="59.709" y="39.577" width="10" height="10" stroke="#000" stroke-width=".929"/>
-  <path d="m59.709 44.577h10" stroke="#e30000" stroke-width=".929"/>
-  <path d="m64.709 39.56v5.0321" stroke="#e30000" stroke-width=".91279"/>
- </g>
-</svg>
-
-		
-		<!-- SVG Code K3 --></svg>`,
-        'K4': `<svg viewBox="0 0 12 12">
-		
-		xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(-59.244 -39.112)" fill="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width=".929">
-  <rect x="59.709" y="39.577" width="10" height="10" stroke="#000"/>
-  <path d="m59.709 44.577h10" stroke="#e30000"/>
-  <path d="m64.709 39.577v10" stroke="#e30000"/>
- </g>
-</svg>
-		
-		<!-- SVG Code K4 --></svg>`
-    };
 
     const ROWS = 30;
     const COLS = ['nr', 'dn', 'dm', 'bl', 'da', 'fo', 'au', 'an', 'st'];

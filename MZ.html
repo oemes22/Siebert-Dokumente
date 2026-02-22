@@ -522,8 +522,13 @@ function init() {
                 input.dataset.col = c;
                 
                 if (conf.numCols.includes(c)) input.inputMode = "decimal";
-                if (conf.id === 'zeitBody' && c === 1) input.dataset.isDate = "true";
-                if (conf.lists && conf.lists[c]) input.setAttribute('list', conf.lists[c]);
+if (conf.id === 'zeitBody' && c === 1) input.dataset.isDate = "true";
+
+if (conf.lists && conf.lists[c]) {
+    input.setAttribute('list', conf.lists[c]);
+    // Hier den Fix aufrufen:
+    applyIOSFix(input); 
+}
 
                 // Hilfsfunktion zur Prüfung, ob es eine Summen-Zelle ist
                 const checkSumCell = (el) => {
@@ -569,6 +574,30 @@ function init() {
     });
     loadFromLocalStorage();
 }
+/* --- iOS/iPadOS Datalist Fix --- */
+function applyIOSFix(input) {
+    // Erkennt, ob es ein iOS-Gerät ist
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    
+    if (isIOS) {
+        input.addEventListener('change', function() {
+            const val = this.value;
+            const list = document.getElementById(this.getAttribute('list'));
+            if (list) {
+                // Prüfen, ob der eingegebene Wert in der Liste existiert
+                const options = Array.from(list.options).map(o => o.value);
+                if (options.includes(val)) {
+                    // Force-Update für iPadOS
+                    this.value = val;
+                    // Trigger den Rechen-Prozess manuell
+                    processSmartSum(this);
+                }
+            }
+        });
+    }
+}
+
 
 
 /* --- 8. RECHNEN-LOGIK --- */
