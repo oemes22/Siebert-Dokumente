@@ -81,6 +81,26 @@ tbody tr:nth-child(even) {background-color: #f9f9f9;}
 
 /* Eingabefelder */
 input { width: 100%; border: none; outline: none; font-size: 8.5px; text-align: center; background: transparent; height: 100%; font-family: inherit; }
+/* --- Neues CSS für iOS Dropdowns (innerhalb des <style> Tags) --- */
+.ios-select {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    font-size: 8.5px;
+    appearance: none; /* Entfernt den Standard-Pfeil für mehr Platz */
+    text-align: center;
+    -webkit-appearance: none;
+    font-family: inherit;
+    color: #000;
+}
+/* Optional: Wenn gedruckt wird, soll der Hintergrund weiß sein */
+@media print {
+    .ios-select {
+        background: #fff !important;
+    }
+}
+
 textarea { text-align: left; padding: 6px; resize: none; border: 1.2px solid #bdc3c7; box-sizing: border-box; font-size: 10.5px; width: 100%; font-family: inherit; border-radius: 3px; height: 42px; }
 input:focus { background: rgba(255, 255, 0, 0.25) !important; box-shadow: inset 0 0 0 1px #f1c40f; }
 tr:focus-within {
@@ -514,66 +534,82 @@ const CONFIG = {
 function init() {
     Object.values(CONFIG).forEach(conf => {
         const tbody = document.getElementById(conf.id);
-        if(!tbody) return;
+        if (!tbody) return;
+
+        // Browser-Check für iPad/iPhone
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
         for (let r = 0; r < conf.rows; r++) {
             const tr = document.createElement('tr');
             for (let c = 0; c < conf.cols; c++) {
                 const td = document.createElement('td');
-                const input = document.createElement('input');
-                input.type = "text"; 
-                input.className = "save-data";
-                input.dataset.section = conf.id; 
-                input.dataset.row = r; 
+                let input;
+
+                // WECHSEL ZU SELECT AUF IPAD (NUR BEI SPALTEN MIT LISTE)
+                if (conf.lists && conf.lists[c] && isIOS) {
+                    input = document.createElement('select');
+                    input.className = "save-data ios-select";
+                    
+                    const emptyOpt = document.createElement('option');
+                    emptyOpt.value = ""; emptyOpt.text = "Wählen...";
+                    input.appendChild(emptyOpt);
+
+                    const dataList = document.getElementById(conf.lists[c]);
+                    if (dataList) {
+                        Array.from(dataList.options).forEach(opt => {
+                            const newOpt = document.createElement('option');
+                            newOpt.value = opt.value;
+                            newOpt.text = opt.value;
+                            input.appendChild(newOpt);
+                        });
+                    }
+                } else {
+                    // STANDARD TEXTFELD
+                    input = document.createElement('input');
+                    input.type = "text";
+                    if (conf.lists && conf.lists[c]) {
+                        input.setAttribute('list', conf.lists[c]);
+                        input.setAttribute('autocomplete', 'off');
+                    }
+                }
+
+                // Attribute & Daten binden
+                input.className += " save-data";
+                input.dataset.section = conf.id;
+                input.dataset.row = r;
                 input.dataset.col = c;
-                
                 if (conf.numCols.includes(c)) input.inputMode = "decimal";
-if (conf.id === 'zeitBody' && c === 1) input.dataset.isDate = "true";
+                if (conf.id === 'zeitBody' && c === 1) input.dataset.isDate = "true";
 
-/* Innerhalb der init() Schleife für Inputs (ca. Zeile 527) */
-if (conf.lists && conf.lists[c]) {
-    input.setAttribute('list', conf.lists[c]);
-    input.setAttribute('autocomplete', 'off'); // Verhindert iPad-Eingabehilfe-Überlagerung
-    applyIOSFix(input);
-}
-
-
-                // Hilfsfunktion zur Prüfung, ob es eine Summen-Zelle ist
-                const checkSumCell = (el) => {
-                    const col = parseInt(el.dataset.col);
-                    const section = el.dataset.section;
-                    return ((section === 'rohrBody' && col >= 3) || 
-                            (section === 'brandschutzBody' && col >= 2) || 
-                            (section === 'armaturenBody' && col === 2) || 
-                            (section === 'zeitBody' && col === 2));
-                };
-
+                // Events (Wichtig für Berechnungen)
                 input.onfocus = function() {
-                    if (checkSumCell(this)) {
+                    const isSum = ((this.dataset.section === 'rohrBody' && parseInt(this.dataset.col) >= 3) ||
+                                  (this.dataset.section === 'brandschutzBody' && parseInt(this.dataset.col) >= 2) ||
+                                  (this.dataset.section === 'armaturenBody' && parseInt(this.dataset.col) === 2) ||
+                                  (this.dataset.section === 'zeitBody' && parseInt(this.dataset.col) === 2));
+                    
+                    if (isSum) {
                         this.value = (this.dataset.raw || "") + " ";
-                        // Kurzer Timeout für den Fokus-Sprung
                         setTimeout(() => { this.selectionStart = this.selectionEnd = this.value.length; }, 0);
                         showZoom(this);
                     } else {
-                        const isDateCol = (this.dataset.section === 'zeitBody' && parseInt(this.dataset.col) === 1);
-                        if (isDateCol || this.getAttribute('list') || parseInt(this.dataset.col) === CONFIG[this.dataset.section.replace('Body','')].dnCol) {
-                            setTimeout(() => this.select(), 0);
-                        }
+                        const isDate = (this.dataset.section === 'zeitBody' && parseInt(this.dataset.col) === 1);
+                        if (isDate || this.getAttribute('list')) setTimeout(() => this.select(), 0);
                         hideZoom();
                     }
                 };
 
-                // NEU: Verhindert, dass der Klick den Cursor wieder versetzt
                 input.onclick = function() {
-                    if (checkSumCell(this)) {
-                        this.selectionStart = this.selectionEnd = this.value.length;
-                    }
+                    const isSum = ((this.dataset.section === 'rohrBody' && parseInt(this.dataset.col) >= 3)); 
+                    if (isSum) this.selectionStart = this.selectionEnd = this.value.length;
                 };
 
-                input.onkeydown = handleNavigation;
                 input.oninput = function() { updateZoom(this); saveToLocalStorage(); };
+                input.onchange = function() { processSmartSum(this); saveToLocalStorage(); };
                 input.onblur = function() { hideZoom(); processSmartSum(this); };
 
-                td.appendChild(input); 
+                td.appendChild(input);
                 tr.appendChild(td);
             }
             tbody.appendChild(tr);
@@ -581,39 +617,6 @@ if (conf.lists && conf.lists[c]) {
     });
     loadFromLocalStorage();
 }
-/* --- Optimierter iOS/iPadOS Fix --- */
-function applyIOSFix(input) {
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
-    if (isIOS) {
-        // 'input' reagiert sofort, wenn ein Vorschlag angetippt wird
-        input.addEventListener('input', function() {
-            const val = this.value;
-            const listId = this.getAttribute('list');
-            if (!listId) return;
-            
-            const list = document.getElementById(listId);
-            if (list) {
-                const options = Array.from(list.options).map(o => o.value);
-                // Wenn der getippte/gewählte Wert in der Liste ist
-                if (options.includes(val)) {
-                    this.value = val; 
-                    processSmartSum(this); // Löst Berechnung aus
-                    saveToLocalStorage();
-                }
-            }
-        });
-
-        // Zusätzlicher Check beim Verlassen des Feldes
-        input.addEventListener('blur', function() {
-            processSmartSum(this);
-            saveToLocalStorage();
-        });
-    }
-}
-
-
 
 
 /* --- 8. RECHNEN-LOGIK --- */
