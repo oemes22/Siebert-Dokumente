@@ -12,22 +12,106 @@
     <link rel="apple-touch-icon" href="icon-192.png">
 	<!-- Ende Verknüpfung zum Web App Manifest -->
 	
-    <style>
-        body { font-family: sans-serif; line-height: 1.6; margin: 40px; }
-        ul { list-style-type: square; }
-        li { margin-bottom: 10px; }
-        a { text-decoration: none; color: #007BFF; }
-        a:hover { text-decoration: underline; }
-    </style>
+<style>
+  :root {
+    --primary-text: #000000; /* Maximaler Kontrast */
+    --btn-text: #0046b8;    /* Dunkleres, kräftiges Blau für die Links */
+    --bg-card: rgba(255, 255, 255, 0.9); /* Fast deckendes Weiß für Lesbarkeit */
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px;
+    color: var(--primary-text);
+    
+    /* Dein kräftiger Kugel-Farbverlauf */
+    background: radial-gradient(
+      circle at left top,
+      rgba(255, 0, 0, 0.5) 0%,
+      rgba(255, 255, 0, 1) 5%,  /* Korrigiert auf 1 (Maximum) */
+      rgba(0, 255, 0, 0.5) 10%,
+      rgba(0, 0, 255, 0.5) 40%,
+	  rgba(0, 0, 255, 1  ) 100%
+    );
+    background-attachment: fixed;
+    background-color: #ffffff;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    font-weight: 900; /* Extra fett */
+    margin-bottom: 5px;
+    /* Dunklerer Verlauf für die Schrift, damit sie auf Gelb/Rot knallt */
+    background: linear-gradient(135deg, #000000, #1a2a3a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 4px rgba(255,255,255,0.5)); /* Leichter Lichtsaum zur Trennung */
+  }
+
+  p {
+    font-weight: 700; /* Schrift dicker für besseren Kontrast */
+    margin-bottom: 50px;
+    font-size: 1.1rem;
+    color: #000;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    width: 90%;
+    max-width: 380px;
+  }
+
+  li {
+    margin-bottom: 18px;
+  }
+
+  a {
+    display: block;
+    background: var(--bg-card); /* Viel helleres Weiß */
+    backdrop-filter: blur(10px);
+    color: var(--btn-text);
+    padding: 22px;
+    border-radius: 18px;
+    text-decoration: none;
+    font-weight: 800; /* Sehr fett für Lesbarkeit */
+    text-align: center;
+    border: 2px solid #000000; /* Schwarzer Rahmen für harten Kontrast */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  a:hover {
+    transform: translateY(-3px) scale(1.02);
+    background: #ffffff;
+    color: #000; /* Text wird beim Hover schwarz */
+    border-color: #2f7dfa;
+  }
+
+  a:active {
+    transform: translateY(0);
+  }
+</style>
+
+
+
+
+
+
 </head>
 <body>
 
-    <h1>Was soll es sein</h1>
+    <h1>Siebert-Isolierungen</h1>
     <p>Bitte wählen eine Vorlage aus:</p>
 
     <ul>
         <li>
-            <a href="LNR.html">Leistungsnachweis MZ komplett</a>
+            <a href="LNR.html">Leistungsnachweis Rohre</a>
         </li>
         <li>
             <a href="Kappenaufmaß.html">Kappenaufmaß</a>
