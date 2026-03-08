@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lnr-app-v1.1';
+const CACHE_NAME = 'lnr-app-v1.0';
 // Assets OHNE "./" am Anfang sind oft stabiler auf GitHub Pages
 const ASSETS = [
     'index.html',
@@ -7,7 +7,7 @@ const ASSETS = [
     'Logo.svg',
     'manifest.json',
     'icon-192.png',
-   'icon-512.png'
+    'icon-512.png'
  ];
 
 
