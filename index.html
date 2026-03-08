@@ -720,13 +720,22 @@ function clearAllFields() {
             formulas.clear();
         }
 
-        // 3. Summen neu berechnen (setzt alles auf 0)
+        // 3. Summen neu berechnen
         updateTableSums();
 
-        // 4. Seite neu laden für Standardwerte (Datum/Ort)
+        // 4. URL SÄUBERN UND DANN NEU LADEN
+        // Wir entfernen alles nach dem "?" in der URL
+        const cleanUrl = window.location.origin + window.location.pathname;
+        
+        // Wir ersetzen die aktuelle URL mit der sauberen URL
+        window.history.replaceState({}, document.title, cleanUrl);
+
+        // Jetzt neu laden -> Da die URL nun "sauber" ist, 
+        // wird keine .lnr-Datei mehr getriggert.
         location.reload(); 
     }
 }
+
 
 // 1. HILFSFUNKTION: Generiert den Dateinamen aus Feldern + Datum
 function getGeneratedFileName() {
