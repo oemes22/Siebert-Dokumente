@@ -1,7 +1,7 @@
 {
-  "name": "Leistungsnachweis Rohre",
-  "short_name": "LNR",
-  "description": "Formular-App zur Erfassung von Leistungsnachweisen für Rohrdämmungen und ähnliche Bauleistungen.",
+  "name": "MD Tools",
+  "short_name": "MD",
+  "description": "Formular-App zur Erfassung von Bauleistungen.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -10,7 +10,7 @@
   "theme_color": "#5895a8",
   "file_handlers": [
     {
-      "action": "index.html",
+      "action": "LNR.html",
       "accept": {
         "application/octet-stream": [".lnr"]
       }
