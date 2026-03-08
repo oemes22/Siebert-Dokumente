@@ -702,39 +702,48 @@ function updateTableSums() {
 }
 
 
-// Neue Funktion zum Leeren des Blattes und des localStorage
+// Funktion zum Leeren des Blattes und des localStorage
 function clearAllFields() {
     if (confirm("Möchten Sie wirklich alle Eingaben löschen?")) {
-        // 1. Alle Input- und Textarea-Felder leeren
+        // 1. LocalStorage komplett bereinigen
+        localStorage.clear();
+
+        // 2. Alle relevanten Eingabefelder im Dokument finden
         const inputs = document.querySelectorAll('input, textarea');
-        inputs.forEach(input => {
-            if (!input.readOnly) {
-                input.value = "";
-                // LocalStorage für dieses Feld löschen
-                localStorage.removeItem(input.id || input.name);
+        
+        inputs.forEach(field => {
+            // Schreibgeschützte Felder (wie das berechnete Datum) überspringen
+            if (field.readOnly || field.type === "file") return;
+
+            // Feld leeren
+            field.value = "";
+
+            // Falls es ein Numpad-Feld ist, auch die interne Formel-Map löschen
+            if (field.classList.contains('numpad-input') && typeof formulas !== 'undefined') {
+                formulas.delete(field);
             }
         });
 
-        // 2. Formel-Map leeren
-        if (typeof formulas !== 'undefined') {
-            formulas.clear();
+        // 3. Summen in der Tabelle auf 0 setzen
+        if (typeof updateTableSums === 'function') {
+            updateTableSums();
         }
 
-        // 3. Summen neu berechnen
-        updateTableSums();
+        // 4. Das Standard-Datum wieder einsetzen (da wir oben alles gelöscht haben)
+        const dateField = document.getElementById('ort-datum');
+        if (dateField) {
+            const jetzt = new Date();
+            const tag = String(jetzt.getDate()).padStart(2, '0');
+            const monat = String(jetzt.getMonth() + 1).padStart(2, '0');
+            const jahr = jetzt.getFullYear();
+            dateField.value = `Regensburg / ${tag}.${monat}.${jahr}`;
+            localStorage.setItem('ort-datum', dateField.value);
+        }
 
-        // 4. URL SÄUBERN UND DANN NEU LADEN
-        // Wir entfernen alles nach dem "?" in der URL
-        const cleanUrl = window.location.origin + window.location.pathname;
-        
-        // Wir ersetzen die aktuelle URL mit der sauberen URL
-        window.history.replaceState({}, document.title, cleanUrl);
 
-        // Jetzt neu laden -> Da die URL nun "sauber" ist, 
-        // wird keine .lnr-Datei mehr getriggert.
-        location.reload(); 
     }
 }
+
 
 
 // 1. HILFSFUNKTION: Generiert den Dateinamen aus Feldern + Datum
@@ -830,7 +839,6 @@ function handleFileSelect(event) {
             }
         });
         updateTableSums();
-        alert("Daten erfolgreich geladen!");
         event.target.value = ""; 
     };
     reader.readAsText(file);
