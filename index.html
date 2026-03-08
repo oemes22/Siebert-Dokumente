@@ -595,22 +595,22 @@ function deleteChar() {
 function loadFormData() {
     const inputs = document.querySelectorAll('input, textarea');
     inputs.forEach(input => {
+        // WICHTIG: Das Datei-Feld ("file") darf niemals automatisch befüllt werden
+        if (input.type === "file") return;
+
         const savedValue = localStorage.getItem(input.id || input.name);
         if (savedValue !== null && !input.readOnly) {
             input.value = savedValue;
             
-            // Falls es ein Berechnungsfeld ist
             if (input.classList.contains('numpad-input')) {
-                // Wert in die Formel-Map für späteres Editieren
                 formulas.set(input, savedValue);
-                // Direkt berechnen, damit das Ergebnis statt der Formel erscheint
                 calculateAndFormat(input);
             }
         }
     });
-    // Summen am Ende der Tabelle aktualisieren
     updateTableSums();
 }
+
 
 
 // Beim Laden der Seite ausführen
@@ -669,7 +669,7 @@ function handleTab() {
 }
 
 function updateTableSums() {
-    const rows = document.querySelectorAll('tbody tr');
+    const rows = document.querySelectorAll('.table-section tbody tr');
     const columnIds = [
         { index: 3, id: 'sum-meter' }, { index: 4, id: 'sum-bogen' },
         { index: 5, id: 'sum-passl' }, { index: 6, id: 'sum-aussch' },
@@ -683,19 +683,24 @@ function updateTableSums() {
         rows.forEach(row => {
             const input = row.cells[col.index]?.querySelector('input');
             if (input && input.value) {
-                // Nur berechnete Werte summieren (keine Zeichen wie + oder *)
-                if (!/[+*x\-]/.test(input.value)) {
-                    let val = parseFloat(input.value.replace(/,/g, '.'));
-                    if (!isNaN(val)) total += val;
+                // Wir wandeln Komma in Punkt um und versuchen die Zahl zu lesen
+                // Falls noch eine Formel im Feld steht, wird sie hier ignoriert,
+                // bis silentCalculate() sie beim Laden in eine Zahl umgewandelt hat.
+                let val = parseFloat(input.value.replace(/,/g, '.'));
+                if (!isNaN(val)) {
+                    total += val;
                 }
             }
         });
+
         const footerCell = document.getElementById(col.id);
         if (footerCell) {
-            footerCell.innerText = total.toString().replace(/\./g, ',');
+            // Ergebnis runden (2 Nachkommastellen) und Punkt wieder zu Komma
+            footerCell.innerText = (Math.round(total * 100) / 100).toString().replace(/\./g, ',');
         }
     });
 }
+
 
 // Neue Funktion zum Leeren des Blattes und des localStorage
 function clearAllFields() {
@@ -743,22 +748,44 @@ async function saveAsLNR() {
 
     allInputs.forEach(input => {
         if (!input.id || input.id === "fileInput") return;
+        
+        // Formel aus Map holen oder normalen Wert nutzen
+        let val = (input.classList.contains('numpad-input') && formulas.has(input))
+            ? formulas.get(input)
+            : input.value;
 
-        // WICHTIG: Wenn es ein Berechnungsfeld ist, nimm die Formel aus der Map
-        let val = (input.classList.contains('numpad-input') && formulas.has(input)) 
-                  ? formulas.get(input) 
-                  : input.value;
-
-        // CSV-Sicher: Semikolon und Anführungszeichen behandeln
+        // CSV-Safe Formatierung
         let escaped = '"' + String(val).replace(/"/g, '""') + '"';
         csvRows.push(`${input.id};${escaped}`);
     });
 
-    const csvContent = csvRows.join("\n");
-    const blob = new Blob([csvContent], { type: 'text/plain;charset=utf-8' });
+    // Zeilenumbrüche mit \r\n für Windows/Excel-Kompatibilität
+    const csvContent = csvRows.join("\r\n");
     const fileName = getGeneratedFileName();
 
-    // Download-Dialog auslösen
+    // 1. Versuch: Moderner "Speichern unter"-Dialog (PC)
+    if ('showSaveFilePicker' in window) {
+        try {
+            const handle = await window.showSaveFilePicker({
+                suggestedName: fileName,
+                types: [{
+                    description: 'LNR Datei',
+                    accept: { 'application/octet-stream': ['.lnr'] }
+                }],
+            });
+            const writable = await handle.createWritable();
+            await writable.write(csvContent);
+            await writable.close();
+            return; 
+        } catch (err) {
+            console.log("Speichern abgebrochen oder Fehler:", err);
+            if (err.name === 'AbortError') return;
+        }
+    }
+
+    // 2. Fallback: Mobilgeräte & Safari
+    // 'application/octet-stream' verhindert oft das Anhängen von .txt
+    const blob = new Blob([csvContent], { type: 'application/octet-stream' });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = fileName;
@@ -766,44 +793,41 @@ async function saveAsLNR() {
     URL.revokeObjectURL(link.href);
 }
 
-// 3. LADEN: Verarbeitet die Datei und reaktiviert die Logik
+
+
+// 3. LADEN: Verarbeitet die Datei
 function handleFileSelect(event) {
     const file = event.target.files[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onload = function(e) {
-        // 1. Zuerst alle Felder füllen, OHNE die Summen-Funktion zu triggern
         const lines = e.target.result.split(/\r?\n/);
-        
+
         lines.forEach(line => {
             if (!line.includes(';')) return;
-            const [id, ...rest] = line.split(';');
-            let value = rest.join(';').replace(/^"|"$/g, '').replace(/""/g, '"');
+            const parts = line.split(';');
+            const id = parts[0];
+            let value = parts.slice(1).join(';').replace(/^"|"$/g, '').replace(/""/g, '"');
 
             const field = document.getElementById(id);
             if (field) {
                 field.value = value;
                 if (field.classList.contains('numpad-input')) {
                     formulas.set(field, value);
-                    // Wir berechnen hier NUR den Zelleninhalt, 
-                    // unterdrücken aber den Aufruf von updateTableSums()
-                    silentCalculate(field); 
+                    silentCalculate(field);
                 }
                 localStorage.setItem(id, value);
             }
         });
-        
-        // 2. Erst wenn ALLE Felder geladen sind, genau EINMAL die Summe bilden
         updateTableSums();
-        
         alert("Daten erfolgreich geladen!");
-        event.target.value = "";
+        event.target.value = ""; 
     };
     reader.readAsText(file);
 }
 
-// Neue Hilfsfunktion, um die Endlos-Summierung beim Laden zu verhindern
+// Hilfsfunktion für das Laden
 function silentCalculate(inputField) {
     let rawValue = inputField.value;
     if (rawValue) {
@@ -813,33 +837,30 @@ function silentCalculate(inputField) {
             if (!isNaN(result)) {
                 inputField.value = result.toString().replace(/\./g, ',');
             }
-        } catch (e) { console.log("Lade-Fehler in Zelle"); }
+        } catch (e) { console.log("Rechenfehler beim Laden"); }
     }
 }
 
-
-// 4. PWA DATEI-HANDLER (Öffnen per Klick im Explorer)
+// 4. PWA DATEI-HANDLER & Service Worker
 if ('launchQueue' in window) {
     window.launchQueue.setConsumer(async (launchParams) => {
         if (launchParams.files.length > 0) {
-            const fileHandle = launchParams.files[0];
-            const file = await fileHandle.getFile();
-            
-            // Dummy-Event Objekt für die bestehende Funktion nutzen
+            const file = await launchParams.files[0].getFile();
             const mockEvent = { target: { files: [file] } };
             handleFileSelect(mockEvent);
         }
     });
 }
 
-// Service Worker Registrierung immer ganz unten im Skript
+// Dieses Script immer als letztes im Scriptblock
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
-            .then(reg => console.log('Service Worker registriert!', reg))
-            .catch(err => console.log('Service Worker Fehler:', err));
+        .then(reg => console.log('Service Worker registriert!'))
+        .catch(err => console.log('Service Worker Fehler:', err));
     });
 }
+
 
 </script>
 
