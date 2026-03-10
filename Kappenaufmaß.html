@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kappenaufmaß (Inline SVG)</title>
+    <title>Kappenaufmaß</title>
     <style>
         :root { --border: #000; --filter-bg: #f8f9fa; --row-height: 25.5px; --accent: #007bff; }
         @page { size: A4 portrait; margin: 0; }
@@ -135,6 +135,7 @@ input[type=number] {
             <div class="header-right-stack">
                 <div><label>Aufmaß-Nr:</label><input type="text" id="h_n" oninput="sync()"></div>
                 <div><label>DATUM</label><input type="text" id="h_d" oninput="sync()"></div>
+				<div><label>Material:</label><input type="text" id="h_m" oninput="sync()"></div>
             </div>
         </div>
 
@@ -342,11 +343,15 @@ let cellVal = input ? input.value : (hidden ? hidden.value : cell.innerText.trim
         }
     }
 
-    function sync() {
-        const d = {
-            p: document.getElementById('h_p').value, n: document.getElementById('h_n').value, d: document.getElementById('h_d').value,
-            gn: document.getElementById('general_notes').value, rs: {}
-        };
+   function sync() {
+    const d = {
+        p: document.getElementById('h_p').value,
+        n: document.getElementById('h_n').value,
+        d: document.getElementById('h_d').value,
+        m: document.getElementById('h_m').value, // Neu: Material
+        gn: document.getElementById('general_notes').value,
+        rs: {}
+    };
         for(let i=1; i<=ROWS; i++){
             d.rs[i] = COLS.map(c => {
                 const el = document.getElementById(`r${i}_${c}`);
@@ -356,13 +361,15 @@ let cellVal = input ? input.value : (hidden ? hidden.value : cell.innerText.trim
         localStorage.setItem('aufmass_v19_inline', JSON.stringify(d));
     }
 
-    function load() {
-        const s = localStorage.getItem('aufmass_v19_inline'); if(!s) return;
-        const d = JSON.parse(s);
-        document.getElementById('h_p').value = d.p || "";
-        document.getElementById('h_n').value = d.n || "";
-        document.getElementById('h_d').value = d.d || "";
-        document.getElementById('general_notes').value = d.gn || "";
+function load() {
+    const s = localStorage.getItem('aufmass_v19_inline');
+    if(!s) return;
+    const d = JSON.parse(s);
+    document.getElementById('h_p').value = d.p || "";
+    document.getElementById('h_n').value = d.n || "";
+    document.getElementById('h_d').value = d.d || "";
+    document.getElementById('h_m').value = d.m || ""; // Neu: Material laden
+    document.getElementById('general_notes').value = d.gn || "";
         for(let i=1; i<=ROWS; i++) {
             if(d.rs && d.rs[i]) COLS.forEach((c, j) => {
                 const el = document.getElementById(`r${i}_${c}`);
@@ -377,12 +384,24 @@ let cellVal = input ? input.value : (hidden ? hidden.value : cell.innerText.trim
             });
         }
     }
+	
+	function getGeneratedFileName() {
+    const proj = document.getElementById('h_p').value.trim() || "Aufmass";
+    const jetzt = new Date();
+    const datum = String(jetzt.getDate()).padStart(2, '0') + "." + 
+                  String(jetzt.getMonth() + 1).padStart(2, '0') + "." + 
+                  jetzt.getFullYear();
+    
+    // Erzeugt z.B. "Neubau_10.03.2026.ka"
+    return `${proj}_${datum}.ka`.replace(/[/\\?%*:|"<>\s]/g, '_');
+}
+
 
 async function exportCSV() {
     const proj = document.getElementById('h_p').value;
     const notes = document.getElementById('general_notes').value.replace(/\n/g, '[BR]').replace(/;/g, ',');
     
-    let txt = `V19ST|${proj}|${document.getElementById('h_n').value}|${document.getElementById('h_d').value}|${notes}\n`;
+    let txt = `V19ST|${proj}|${document.getElementById('h_n').value}|${document.getElementById('h_d').value}|${document.getElementById('h_m').value}|${notes}\n`;
     
     for(let i=1; i<=ROWS; i++) {
         txt += COLS.map(c => {
@@ -392,29 +411,32 @@ async function exportCSV() {
         }).join(';') + "\n";
     }
 
+    const fileName = getGeneratedFileName();
+
     if ('showSaveFilePicker' in window) {
         try {
             const handle = await window.showSaveFilePicker({
-                suggestedName: `Aufmass_${proj || 'Export'}.txt`,
-                types: [{ // Korrigiert: Klammer hinzugefügt
-                    description: 'Textdatei',
-                    accept: {'text/plain': ['.txt']},
-                }], // Korrigiert: Klammer geschlossen
+                suggestedName: fileName,
+                types: [{
+                    description: 'Kappenaufmaß Datei',
+                    accept: { 'application/octet-stream': ['.ka'] },
+                }],
             });
             const writable = await handle.createWritable();
             await writable.write(txt);
             await writable.close();
         } catch (err) {
-            console.error("Speichern abgebrochen oder Fehler:", err);
+            console.error("Speichern abgebrochen:", err);
         }
     } else {
         const b = new Blob([txt], { type: 'text/plain' });
         const a = document.createElement('a');
-        a.download = `Aufmass_${proj || 'Export'}.txt`;
+        a.download = fileName;
         a.href = window.URL.createObjectURL(b);
         a.click();
     }
 }
+
 
     function importCSV(input) {
         if(!input.files.length) return;
@@ -423,10 +445,11 @@ async function exportCSV() {
             const lines = e.target.result.split('\n');
             if(lines[0].startsWith('V19ST')) {
                 const meta = lines[0].split('|');
-                document.getElementById('h_p').value = meta[1] || "";
-                document.getElementById('h_n').value = meta[2] || "";
-                document.getElementById('h_d').value = meta[3] || "";
-                document.getElementById('general_notes').value = (meta[4] || "").replace(/\[BR\]/g, '\n');
+document.getElementById('h_p').value = meta[1] || "";
+document.getElementById('h_n').value = meta[2] || "";
+document.getElementById('h_d').value = meta[3] || "";
+document.getElementById('h_m').value = meta[4] || ""; // Neu: Material importieren
+document.getElementById('general_notes').value = (meta[5] || "").replace(/\[BR\]/g, '\n'); 
             }
             for(let i = 1; i <= ROWS; i++) {
                 if(lines[i]) {

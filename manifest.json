@@ -14,6 +14,12 @@
       "accept": {
         "application/octet-stream": [".lnr"]
       }
+    },
+    {
+      "action": "Kappenaufmaß.html",
+      "accept": {
+        "application/octet-stream": [".ka"]
+      }
     }
   ],
   "icons": [
