@@ -881,7 +881,20 @@ function silentCalculate(inputField) {
     }
 }
 
-// 4. PWA DATEI-HANDLER & Service Worker
+// Zentrale Funktion für haptisches Feedback
+function triggerFeedback() {
+    if (navigator.vibrate) {
+        navigator.vibrate(15); // Kurzer 40ms Impuls (Android)
+    }
+}
+
+// Optional: Automatische Zuweisung an alle Buttons im Grid
+document.querySelectorAll('.numpad-grid button').forEach(button => {
+    button.addEventListener('touchstart', triggerFeedback, {passive: true});
+});
+
+
+// 4. PWA DATEI-HANDLER & Service Worker immer unten im Script
 if ('launchQueue' in window) {
     window.launchQueue.setConsumer(async (launchParams) => {
         if (launchParams.files.length > 0) {

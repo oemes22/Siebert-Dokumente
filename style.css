@@ -183,8 +183,10 @@ textarea {
 
 /* ---Knöpfe unten--- */
 .action-section {
-    text-align: center;
-    margin-top: 30px;
+  margin:30px;
+  display: flex;      /* Aktiviert das Flexbox-Layout */
+  gap: 15px;          /* Erzeugt einen Abstand zwischen den Buttons */
+  justify-content: center; /* Optional: Zentriert die Buttons horizontal */
 }
 
 .btn-clear {
@@ -283,6 +285,7 @@ button:active {
     background: #252525;
     color: white;
     border: 1px solid #333;
+	touch-action: manipulation;
 }
 
 .btn-plus {
@@ -292,6 +295,7 @@ button:active {
     border: 1px solid #00f2ff;
     color: white;
     text-shadow: 0 0 5px #00f2ff;
+	touch-action: manipulation;
 }
 
 button:focus { outline: none; }
