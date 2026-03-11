@@ -428,14 +428,34 @@
 <!-- Das Numpad  -->
 <div id="numpad" class="numpad-container" style="display:none;">
 <div id="numpad-display" style="background:#eee; padding:10px; margin-bottom:10px; font-weight:bold; min-height:1.2em; border-radius:4px;"></div>
-  <div class="numpad-grid">
-    <button onclick="addChar('7')">7</button><button onclick="addChar('8')">8</button><button onclick="addChar('9')">9</button><button onclick="addChar('/')">/</button>
-    <button onclick="addChar('4')">4</button><button onclick="addChar('5')">5</button><button onclick="addChar('6')">6</button><button onclick="addChar('*')">*</button>
-    <button onclick="addChar('1')">1</button><button onclick="addChar('2')">2</button><button onclick="addChar('3')">3</button><button onclick="addChar('-')">-</button>
-    <button onclick="addChar('0')">0</button><button onclick="addChar(',')">,</button><button onclick="handleTab()">Tab</button><button onclick="addChar('+')">+</button>
+<div class="numpad-grid">
+    
+    <button onclick="addChar('7')">7</button>
+    <button onclick="addChar('8')">8</button>
+    <button onclick="addChar('9')">9</button>
+    <button onclick="addChar('+')" class="btn-plus">+</button>
+
+ 
+    <button onclick="addChar('4')">4</button>
+    <button onclick="addChar('5')">5</button>
+    <button onclick="addChar('6')">6</button>
+    
+
+   
+    <button onclick="addChar('1')">1</button>
+    <button onclick="addChar('2')">2</button>
+    <button onclick="addChar('3')">3</button>
+    <button onclick="addChar('-')">-</button>
+    
+    <button onclick="addChar('0')">0</button>
+    <button onclick="addChar(',')">,</button>
+    <button onclick="handleTab()" class="btn-tab">Tab</button>
+    
+
     <button onclick="deleteChar()" class="btn-wide">⌫ Backspace</button>
     <button onclick="closeNumpad()" class="btn-close">Schließen</button>
-  </div>
+</div>
+
 </div>
 	
 <script language="JavaScript">
