@@ -45,7 +45,7 @@
             <table class="form-layout-table">
                 <tr>
                     <td class="label-cell"><label for="auftraggeber">Auftraggeber:</label></td>
-                    <td class="input-cell" colspan="3"><input type="text" id="auftraggeber"></td>
+                    <td class="input-cell" colspan="3"><input list="list_auftraggeber" type="text" id="auftraggeber"></td>
                 </tr>
                 <tr>
                     <td class="label-cell"><label for="leistungsort">Leistungsort:</label></td>
@@ -65,7 +65,7 @@
                 </tr>
                 <tr>
                     <td class="label-cell"><label for="monteur">Monteur:</label></td>
-                    <td class="input-cell"><input type="text" id="monteur"></td>
+                    <td class="input-cell"><input list="list_monteur" type="text" id="monteur"></td>
                     <td class="label-cell inline-label-cell"><label for="koordinator">Koordinator:</label></td>
                     <td class="input-cell" style="width: 25%;"><input type="text" id="koordinator"></td>
                 </tr>
@@ -81,8 +81,8 @@
             <table>
                 <colgroup>
                     <col style="width: 12%;">
-                    <col style="width: 28%;">
-                    <col style="width: 6%;">
+                    <col style="width: 26%;">
+                    <col style="width: 8%;">
                     <col style="width: 6%;">
                     <col style="width: 6%;">
                     <col style="width: 6%;">
@@ -115,7 +115,7 @@
                     <tr>
                         <td><input id="a1" class="input-haupttabelle" list="list_rohr_medium"></input></td>
 						<td><input id="a2" class="input-haupttabelle" list="list_rohr_material"></input></td> 
-						<td><input id="a3" class="input-haupttabelle" ></input></td>
+						<td><input id="a3" class="input-haupttabelle" list="list_d_dn"></input></td>
 						<td><input id="a4" class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="a5" class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="a6" class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
@@ -129,7 +129,7 @@
 					<tr>                    
                         <td><input id="b1"  class="input-haupttabelle" list="list_rohr_medium"></input></td>
 						<td><input id="b2"  class="input-haupttabelle" list="list_rohr_material"></input></td> 
-						<td><input id="b3"  class="input-haupttabelle" ></input></td>
+						<td><input id="b3"  class="input-haupttabelle" list="list_d_dn"></input></td>
 						<td><input id="b4"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="b5"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="b6"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
@@ -143,7 +143,7 @@
 					<tr>                    
                         <td><input id="c1"  class="input-haupttabelle" list="list_rohr_medium"></input></td>
 						<td><input id="c2"  class="input-haupttabelle" list="list_rohr_material"></input></td> 
-						<td><input id="c3"  class="input-haupttabelle" ></input></td>
+						<td><input id="c3"  class="input-haupttabelle" list="list_d_dn"></input></td>
 						<td><input id="c4"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="c5"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="c6"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
@@ -157,7 +157,7 @@
 					<tr>                    
                         <td><input id="d1"  class="input-haupttabelle" list="list_rohr_medium"></input></td>
 						<td><input id="d2"  class="input-haupttabelle" list="list_rohr_material"></input></td> 
-						<td><input id="d3"  class="input-haupttabelle" ></input></td>
+						<td><input id="d3"  class="input-haupttabelle" list="list_d_dn"></input></td>
 						<td><input id="d4"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="d5"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="d6"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
@@ -171,7 +171,7 @@
 					<tr>                    
                         <td><input id="e1"  class="input-haupttabelle" list="list_rohr_medium"></input></td>
 						<td><input id="e2"  class="input-haupttabelle" list="list_rohr_material"></input></td> 
-						<td><input id="e3"  class="input-haupttabelle" ></input></td>
+						<td><input id="e3"  class="input-haupttabelle" list="list_d_dn"></input></td>
 						<td><input id="e4"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="e5"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="e6"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
@@ -185,7 +185,7 @@
 					<tr>                    
                         <td><input id="f1"  class="input-haupttabelle" list="list_rohr_medium"></input></td>
 						<td><input id="f2"  class="input-haupttabelle" list="list_rohr_material"></input></td> 
-						<td><input id="f3"  class="input-haupttabelle" ></input></td>
+						<td><input id="f3"  class="input-haupttabelle" list="list_d_dn"></input></td>
 						<td><input id="f4"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="f5"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="f6"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
@@ -199,7 +199,7 @@
 					<tr>                    
                         <td><input id="g1"  class="input-haupttabelle" list="list_rohr_medium"></input></td>
 						<td><input id="g2"  class="input-haupttabelle" list="list_rohr_material"></input></td> 
-						<td><input id="g3"  class="input-haupttabelle" ></input></td>
+						<td><input id="g3"  class="input-haupttabelle" list="list_d_dn"></input></td>
 						<td><input id="g4"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="g5"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="g6"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
@@ -213,7 +213,7 @@
 					<tr>                    
                         <td><input id="h1"  class="input-haupttabelle" list="list_rohr_medium"></input></td>
 						<td><input id="h2"  class="input-haupttabelle" list="list_rohr_material"></input></td> 
-						<td><input id="h3"  class="input-haupttabelle" ></input></td>
+						<td><input id="h3"  class="input-haupttabelle" list="list_d_dn"></input></td>
 						<td><input id="h4"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="h5"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="h6"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
@@ -227,7 +227,7 @@
 					<tr>                    
                         <td><input id="i1"  class="input-haupttabelle" list="list_rohr_medium"></input></td>
 						<td><input id="i2"  class="input-haupttabelle" list="list_rohr_material"></input></td> 
-						<td><input id="i3"  class="input-haupttabelle" ></input></td>
+						<td><input id="i3"  class="input-haupttabelle" list="list_d_dn"></input></td>
 						<td><input id="i4"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="i5"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="i6"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
@@ -241,7 +241,7 @@
 					<tr>                    
                         <td><input id="j1"  class="input-haupttabelle" list="list_rohr_medium"></input></td>
 						<td><input id="j2"  class="input-haupttabelle" list="list_rohr_material"></input></td> 
-						<td><input id="j3"  class="input-haupttabelle" ></input></td>
+						<td><input id="j3"  class="input-haupttabelle" list="list_d_dn"></input></td>
 						<td><input id="j4"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="j5"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="j6"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
@@ -255,7 +255,7 @@
 					<tr>                    
                         <td><input id="k1"  class="input-haupttabelle" list="list_rohr_medium"></input></td>
 						<td><input id="k2"  class="input-haupttabelle" list="list_rohr_material"></input></td> 
-						<td><input id="k3"  class="input-haupttabelle" ></input></td>
+						<td><input id="k3"  class="input-haupttabelle" list="list_d_dn"></input></td>
 						<td><input id="k4"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="k5"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="k6"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
@@ -269,7 +269,7 @@
 					<tr>                    
                         <td><input id="l1"  class="input-haupttabelle" list="list_rohr_medium"></input></td>
 						<td><input id="l2"  class="input-haupttabelle" list="list_rohr_material"></input></td> 
-						<td><input id="l3"  class="input-haupttabelle" ></input></td>
+						<td><input id="l3"  class="input-haupttabelle" list="list_d_dn"></input></td>
 						<td><input id="l4"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="l5"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="l6"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
@@ -283,7 +283,7 @@
 					<tr>                    
                         <td><input id="m1"  class="input-haupttabelle" list="list_rohr_medium"></input></td>
 						<td><input id="m2"  class="input-haupttabelle" list="list_rohr_material"></input></td> 
-						<td><input id="m3"  class="input-haupttabelle" ></input></td>
+						<td><input id="m3"  class="input-haupttabelle" list="list_d_dn"></input></td>
 						<td><input id="m4"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="m5"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="m6"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
@@ -297,7 +297,7 @@
 					<tr>                    
                         <td><input id="n1"  class="input-haupttabelle" list="list_rohr_medium"></input></td>
 						<td><input id="n2"  class="input-haupttabelle" list="list_rohr_material"></input></td> 
-						<td><input id="n3"  class="input-haupttabelle" ></input></td>
+						<td><input id="n3"  class="input-haupttabelle" list="list_d_dn"></input></td>
 						<td><input id="n4"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="n5"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="n6"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
@@ -311,7 +311,7 @@
 					<tr>                    
                         <td><input id="o1"  class="input-haupttabelle" list="list_rohr_medium"></input></td>
 						<td><input id="o2"  class="input-haupttabelle" list="list_rohr_material"></input></td> 
-						<td><input id="o3"  class="input-haupttabelle" ></input></td>
+						<td><input id="o3"  class="input-haupttabelle" list="list_d_dn"></input></td>
 						<td><input id="o4"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="o5"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="o6"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
@@ -325,7 +325,7 @@
 					<tr>                    
                         <td><input id="p1"  class="input-haupttabelle" list="list_rohr_medium"></input></td>
 						<td><input id="p2"  class="input-haupttabelle" list="list_rohr_material"></input></td> 
-						<td><input id="p3"  class="input-haupttabelle" ></input></td>
+						<td><input id="p3"  class="input-haupttabelle" list="list_d_dn"></input></td>
 						<td><input id="p4"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="p5"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="p6"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
@@ -339,7 +339,7 @@
 					<tr>                    
                         <td><input id="q1"  class="input-haupttabelle" list="list_rohr_medium"></input></td>
 						<td><input id="q2"  class="input-haupttabelle" list="list_rohr_material"></input></td> 
-						<td><input id="q3"  class="input-haupttabelle" ></input></td>
+						<td><input id="q3"  class="input-haupttabelle" list="list_d_dn"></input></td>
 						<td><input id="q4"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="q5"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
 						<td><input id="q6"  class="input-haupttabelle decimal-input numpad-input" inputmode="none"></input></td>
@@ -395,23 +395,29 @@
         </section>
 		
 		<!-- Knöpfe unten -->
-<section class="action-section no-print" style="text-align: center; margin: 30px 0; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+<section class="action-section no-print">
     
     <!-- Speichern Button -->
-    <button onclick="saveAsLNR()" class="btn-save" style="background-color: #28a745 !important; color: white !important; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
-        💾 Als .LNR speichern
+    <button onclick="saveAsLNR()" class="btn-save">
+        💾 Speichern
     </button>
 
     <!-- Laden Button -->
-    <button onclick="document.getElementById('fileInput').click()" class="btn-load" style="background-color: #007bff !important; color: white !important; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
-        📂 Datei öffnen
+    <button onclick="document.getElementById('fileInput').click()" class="btn-load">
+        📂 Laden
     </button>
+	
+	<!-- Export Button -->
+	<button onclick="window.print()" class="btn-export">
+	🖨️ Export
+	</button>
+	
     <!-- Verstecktes Feld für die Dateiwahl -->
     <input type="file" id="fileInput" style="display:none" accept=".lnr" onchange="handleFileSelect(event)">
 
     <!-- Reset Button -->
     <button onclick="clearAllFields()" class="btn-clear">
-        🗑️ Formular leeren
+        🗑️ Neu
     </button>
 </section>
 
@@ -462,11 +468,6 @@ window.addEventListener('load', () => {
         }
     }, 200); 
 });
-
-
-
-
-  
 
 const formulas = new Map();
 let activeInput = null;
@@ -886,8 +887,23 @@ if ('launchQueue' in window) {
 </datalist>
 
 <datalist id="list_rohr_material">
-<option value="aluk. Schalen"><option value="aluk. Schalen + PVC- Mantel"><option value="synth. Kautschuk-Schlauch (SK)"><option value="synth. Kautschuk-Platte 19 mm"><option value="synth. Kautschuk-Platte (SK) 19 mm"><option value="Mineralwolle aluk. 30 mm">
+<option value="aluk. Schalen"><option value="aluk. Schalen + PVC- Mantel"><option value="aluk. Schalen + Blech- Mantel (Alu)"><option value="aluk. Schalen + Blech- Mantel (verz.)"><option value="synth. Kautschuk-Schlauch (SK)"><option value="synth. Kautschuk-Platte 19 mm"><option value="synth. Kautschuk-Platte (SK) 19 mm"><option value="Mineralwolle aluk. 30 mm"><option value="Weichschaumkappe - schräg"><option value="Weichschaumkappe - gerade"><option value="Weichschaumkappe - Kugelhahn"><option value="Weichschaumkappe - Multitherm"><option value="Weichschaumkappe - Wasserzähler"><option value="Conlit 150U bis 1,00 m"><option value="Conlit 150U bis 0,50 m"><option value="Conlit 150U bis 0,33 m"><option value="Conlit 150U bis 0,25 m"><option value="Brandschutzbandage"><option value="Brandschutz-Manschette"><option value="Armaflex-Protect 1,00 m"><option value="Armaflex-Protect 0,50 m">
 </datalist>
 
+<datalist id="list_d_dn">
+<option value="15/20"><option value="18/20"><option value="22/20"><option value="28/20"><option value="28/30"><option value="35/20"><option value="35/30"><option value="42/40"><option value="48/40"><option value="48/50"><option value="54/50"><option value="60/30"><option value="60/60"><option value="76/70"><option value="89/80"><option value="114/100"><option value="133/100">
+
+<option value="18/19"><option value="22/19"><option value="28/19"><option value="35/19"><option value="42/19"><option value="48/19"><option value="54/19"><option value="60/19"<option value="76/19"><option value="89/19">
+
+<option value="15/22,5"><option value="18/21"><option value="20/20"><option value="22/19"><option value="25/17,5"><option value="28/26"><option value="32/24"><option value="35/22,5"><option value="40/20"><option value="42/19"><option value="48/26"><option value="50/25"><option value="54/38"><option value="60/35"><option value="75/53"><option value="76/37"><option value="89/30,5"><option value="114/33">
+</datalist>
+
+<datalist id="list_auftraggeber">
+<option value="Lohner & Sohn GmbH & Co. KG"><option value="Schmid Sanitär/Heizung GmbH"><option value="Apleona HSG Südost GmbH"><option value="Caverion Deutschland GmbH"><option value="Heizung Sanitär Hoppen"><option value="Prommersberger Sanitär GmbH"><option value="Sanitär Heizung Lüftung Markus Boin">
+</datalist>
+
+<datalist id="list_monteur">
+<option value="Alex"><option value="Ronny"><option value="Mario"><option value="Denis"><option value="Niko">
+</datalist>
 
 </html>

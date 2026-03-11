@@ -77,8 +77,8 @@
         .img-grid svg { width: 100%; height: auto; max-height: 40px; }
 
         .controls { width: 100%; max-width: 210mm; display: flex; justify-content: center; gap: 10px; padding: 15px 0 30px 0; }
-        button { padding: 8px 16px; cursor: pointer; background: #fff; border: 1px solid #ccc; border-radius: 4px; font-weight: bold; }
-        .btn-save { background: #28a745; color: white; border: none; }
+        button { padding: 8px 16px; cursor: pointer; background: #fff; border: 2px solid #ccc; border-radius: 12px; font-weight: bold; width: 20%; font-size: 0.8rem }
+        .btn-neu {padding: 8px 16px; cursor: pointer; background: #fff; border: 2px solid #ff0000; border-radius: 12px; font-weight: bold; width: 20%; font-size: 0.8rem; }
 
         @media print { 
             body { background: none; } .viewport-wrapper { display: block; min-height: auto; }
@@ -172,11 +172,11 @@ input[type=number] {
     </div>
 
     <div class="controls">
-        <button class="btn-save" onclick="exportCSV()">Speichern (.txt)</button>
-        <button onclick="document.getElementById('fileInput').click()">Laden</button>
-        <button onclick="window.print()">Drucken</button>
-        <button onclick="clearTable()">Neu</button>
-        <input type="file" id="fileInput" accept=".txt" style="display:none" onchange="importCSV(this)">
+        <button onclick="exportCSV()">💾 Speichern</button>
+        <button onclick="document.getElementById('fileInput').click()">📂 Laden</button>
+        <button onclick="window.print()">🖨️ Export</button>
+        <button class="btn-neu" onclick="clearTable()">🗑️ Neu</button>
+        <input type="file" id="fileInput" accept=".ka" style="display:none" onchange="importCSV(this)">
     </div>
 </div>
 
