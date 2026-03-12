@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leistungsnachweis Nr.</title>
+    <title>Leistungsnachweis Rohre</title>
     <link rel="stylesheet" href="style.css">
 	
 	<!-- Anfang Verknüpfung zum Web App Manifest -->
@@ -892,6 +892,24 @@ function triggerFeedback() {
 document.querySelectorAll('.numpad-grid button').forEach(button => {
     button.addEventListener('touchstart', triggerFeedback, {passive: true});
 });
+
+// Script für den Drucknamen
+let originalTitle = document.title;
+
+// Wird direkt VOR dem Öffnen des Druckfensters ausgeführt
+window.addEventListener('beforeprint', () => {
+    const lnrInput = document.getElementById('lnr');
+    const lnrValue = lnrInput ? lnrInput.value : '';
+    
+    originalTitle = document.title; // Aktuellen Titel merken
+    document.title = "Leistungsnachweis Nr-" + lnrValue;
+});
+
+// Wird direkt NACH dem Schließen (Drucken oder Abbrechen) ausgeführt
+window.addEventListener('afterprint', () => {
+    document.title = originalTitle; // Titel wieder zurücksetzen
+});
+
 
 
 // 4. PWA DATEI-HANDLER & Service Worker immer unten im Script
