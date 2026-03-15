@@ -896,6 +896,29 @@ document.querySelectorAll('.numpad-grid button').forEach(button => {
 // Drucknamen erstellung und print
 function starteDruck() {
     const lnrInput = document.getElementById('lnr');
+    // Sicherstellen, dass der Wert existiert
+    const lnrValue = (lnrInput && lnrInput.value) ? lnrInput.value.trim() : "unbekannt";
+    
+    const originalTitle = document.title;
+    document.title = `Leistungsnachweis_Nr-${lnrValue}`;
+
+    // Ein kleiner "Hack" für Mobile: Erst im nächsten Frame drucken
+    requestAnimationFrame(() => {
+        // Zweiter Frame zur Sicherheit
+        requestAnimationFrame(() => {
+            window.print();
+            
+            // Titel erst zurücksetzen, nachdem das Druckfenster geschlossen wurde
+            // window.print blockiert auf den meisten Systemen die Ausführung
+            setTimeout(() => {
+                document.title = originalTitle;
+            }, 500);
+        });
+    });
+}
+
+function starteDruck() {
+    const lnrInput = document.getElementById('lnr');
     const lnrValue = lnrInput?.value?.trim() || "unbekannt";
     
     // 1. Titel VOR dem Druckaufruf ändern
