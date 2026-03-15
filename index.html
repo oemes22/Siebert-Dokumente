@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sibert-Isolierungen</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="icon-192.png">
 	
@@ -99,7 +99,7 @@
     </ul>
 	
     <div id="version-container">
-     <p>Version: <span id="app-version"></span></p> 
+     <p>Version: <span id="app-version">Laden...</span></p> 
     </div>
 
 <script>  
@@ -125,7 +125,7 @@ if ('serviceWorker' in navigator) {
             }, 500);
         })
         .catch(err => {
-            display.innerText = "";
+            display.innerText = "Fehler";
             console.error('SW-Fehler:', err);
         });
     });
