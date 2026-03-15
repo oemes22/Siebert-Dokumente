@@ -13,6 +13,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="icon-192.png">
 	<!-- Ende Verknüpfung zum Web App Manifest -->
+	<script src="https://cdnjs.cloudflare.com"></script>
 
 <!-- Theme Color für die Browser-Leiste -->
 <meta name="theme-color" content="#5895a8">
@@ -893,28 +894,19 @@ document.querySelectorAll('.numpad-grid button').forEach(button => {
     button.addEventListener('touchstart', triggerFeedback, {passive: true});
 });
 
-// Drucknamen erstellung und print
+// Drucknamen erstellung und print to pdf
 function starteDruck() {
-    const lnrInput = document.getElementById('lnr');
-    // Sicherstellen, dass der Wert existiert
-    const lnrValue = (lnrInput && lnrInput.value) ? lnrInput.value.trim() : "unbekannt";
-    
-    const originalTitle = document.title;
-    document.title = `Leistungsnachweis_Nr-${lnrValue}`;
+    const element = document.body; // Oder deine Formular-ID
+    const lnrValue = document.getElementById('lnr').value || "unbekannt";
 
-    // Ein kleiner "Hack" für Mobile: Erst im nächsten Frame drucken
-    requestAnimationFrame(() => {
-        // Zweiter Frame zur Sicherheit
-        requestAnimationFrame(() => {
-            window.print();
-            
-            // Titel erst zurücksetzen, nachdem das Druckfenster geschlossen wurde
-            // window.print blockiert auf den meisten Systemen die Ausführung
-            setTimeout(() => {
-                document.title = originalTitle;
-            }, 500);
-        });
-    });
+    const opt = {
+      margin: 10,
+      filename: `Leistungsnachweis_Nr-${lnrValue}.pdf`,
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    // Erzeugt das PDF lokal auf dem Handy
+    html2pdf().set(opt).from(element).save();
 }
 
 function starteDruck() {

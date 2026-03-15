@@ -1,26 +1,26 @@
-const CACHE_NAME = 'lnr-app-v1.9';
-// Assets OHNE "./" am Anfang sind oft stabiler auf GitHub Pages
+const CACHE_NAME = 'lnr-app-v2.0'; // Version erhöht, damit der Browser neu lädt
+
 const ASSETS = [
     'index.html',
-	'LNR.html',
+    'LNR.html',
     'style.css',
     'Logo.svg',
     'manifest.json',
     'icon-192.png',
-    'icon-512.png'
- ];
-
+    'icon-512.png',
+    // Die Bibliothek wird jetzt beim ersten Mal online geladen und für immer offline gespeichert:
+    'https://cdnjs.cloudflare.com'
+];
 
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
-                console.log('Caching assets...');
-                // Tipp: Nutze einzelne cache.add() für kritische Dateien, 
-                // damit ein fehlendes Logo nicht die ganze PWA blockiert.
+                console.log('Caching assets (inkl. PDF Library)...');
+                // Wir nutzen addAll für die Liste oben
                 return cache.addAll(ASSETS);
             })
-            .then(() => self.skipWaiting()) // Erzwingt sofortige Aktivierung
+            .then(() => self.skipWaiting())
     );
 });
 
@@ -31,16 +31,15 @@ self.addEventListener('activate', event => {
                 keys.filter(key => key !== CACHE_NAME)
                     .map(key => caches.delete(key))
             );
-        }).then(() => self.clients.claim()) // Übernimmt sofort die Kontrolle
+        }).then(() => self.clients.claim())
     );
 });
 
 self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request).then(cachedResponse => {
-            return cachedResponse || fetch(event.request).catch(() => {
-                // Optional: Hier könnte eine Offline-Fallback-Seite geladen werden
-            });
+            // Liefert die Datei aus dem Cache (offline) oder lädt sie nach (online)
+            return cachedResponse || fetch(event.request);
         })
     );
 });

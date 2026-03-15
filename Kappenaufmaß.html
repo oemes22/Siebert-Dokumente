@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdnjs.cloudflare.com"></script>
     <title>Kappenaufmaß</title>
     <style>
         :root { --border: #000; --filter-bg: #f8f9fa; --row-height: 25.5px; --accent: #007bff; }
@@ -528,28 +529,22 @@ function focusCell(r, c) {
     }
 }
 
-// Drucknamen erstellung und print
 function starteDruck() {
-    const h_pInput = document.getElementById('h_p');
-    // Sicherstellen, dass der Wert existiert
-    const h_pValue = (h_pInput && h_pInput.value) ? h_pInput.value.trim() : "unbekannt";
+    const lnrInput = document.getElementById('h_p');
+    const lnrValue = lnrInput?.value?.trim() || "unbekannt";
     
+    // 1. Titel VOR dem Druckaufruf ändern
     const originalTitle = document.title;
-    document.title = `Kappenaufmaß-${h_pValue}`;
+    document.title = `Kappenaufmaß-${lnrValue}`;
 
-    // Ein kleiner "Hack" für Mobile: Erst im nächsten Frame drucken
-    requestAnimationFrame(() => {
-        // Zweiter Frame zur Sicherheit
-        requestAnimationFrame(() => {
-            window.print();
-            
-            // Titel erst zurücksetzen, nachdem das Druckfenster geschlossen wurde
-            // window.print blockiert auf den meisten Systemen die Ausführung
-            setTimeout(() => {
-                document.title = originalTitle;
-            }, 500);
-        });
-    });
+    // 2. Drucken auslösen
+    window.print();
+
+    // 3. Titel nach einer kurzen Verzögerung zurücksetzen
+    // (Mobilgeräte brauchen oft einen Moment, um den Titel zu erfassen)
+    setTimeout(() => {
+        document.title = originalTitle;
+    }, 1000);
 }
 
 
