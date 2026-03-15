@@ -174,7 +174,7 @@ input[type=number] {
     <div class="controls">
         <button onclick="exportCSV()">💾 Speichern</button>
         <button onclick="document.getElementById('fileInput').click()">📂 Laden</button>
-        <button onclick="window.print()">🖨️ Export</button>
+        <button onclick="starteDruck()">🖨️ Export</button>
         <button class="btn-neu" onclick="clearTable()">🗑️ Neu</button>
         <input type="file" id="fileInput" accept=".ka" style="display:none" onchange="importCSV(this)">
     </div>
@@ -393,7 +393,7 @@ function load() {
                   jetzt.getFullYear();
     
     // Erzeugt z.B. "Neubau_10.03.2026.ka"
-    return `${proj}_${datum}.ka`.replace(/[/\\?%*:|"<>\s]/g, '_');
+    return `KA-${proj}_${datum}.ka`.replace(/[/\\?%*:|"<>\s]/g, '_');
 }
 
 
@@ -527,6 +527,26 @@ function focusCell(r, c) {
         if (typeof el.select === 'function') el.select();
     }
 }
+
+// Drucknamen erstellung und print
+function starteDruck() {
+    const h_pInput = document.getElementById('h_p');
+    const h_pValue = h_pInput?.value?.trim() || "unbekannt";
+    
+    // 1. Titel VOR dem Druckaufruf ändern
+    const originalTitle = document.title;
+    document.title = `Kappenaufmaß-${h_pValue}`;
+
+    // 2. Drucken auslösen
+    window.print();
+
+    // 3. Titel nach einer kurzen Verzögerung zurücksetzen
+    // (Mobilgeräte brauchen oft einen Moment, um den Titel zu erfassen)
+    setTimeout(() => {
+        document.title = originalTitle;
+    }, 1000);
+}
+
 
 // 4. PWA DATEI-HANDLER & Service Worker immer unten im Script
 if ('launchQueue' in window) {

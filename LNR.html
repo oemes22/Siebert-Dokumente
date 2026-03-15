@@ -408,7 +408,7 @@
     </button>
 	
 	<!-- Export Button -->
-	<button onclick="window.print()" class="btn-export">
+	<button onclick="starteDruck()" class="btn-export">
 	🖨️ Export
 	</button>
 	
@@ -779,7 +779,7 @@ function getGeneratedFileName() {
                   jetzt.getFullYear();
     
     // Erzeugt z.B. "Hausbau_Regensburg_06-03-2026.lnr"
-    return `${bau}_${ort}_${datum}.lnr`.replace(/[/\\?%*:|"<>\s]/g, '_');
+    return `LNR-${bau}_${ort}_${datum}.lnr`.replace(/[/\\?%*:|"<>\s]/g, '_');
 }
 
 // 2. SPEICHERN: Erstellt die CSV mit Semikolon und Zeilenumbrüchen
@@ -892,6 +892,27 @@ function triggerFeedback() {
 document.querySelectorAll('.numpad-grid button').forEach(button => {
     button.addEventListener('touchstart', triggerFeedback, {passive: true});
 });
+
+// Drucknamen erstellung und print
+function starteDruck() {
+    const lnrInput = document.getElementById('lnr');
+    const lnrValue = lnrInput?.value?.trim() || "unbekannt";
+    
+    // 1. Titel VOR dem Druckaufruf ändern
+    const originalTitle = document.title;
+    document.title = `Leistungsnachweis_Nr-${lnrValue}`;
+
+    // 2. Drucken auslösen
+    window.print();
+
+    // 3. Titel nach einer kurzen Verzögerung zurücksetzen
+    // (Mobilgeräte brauchen oft einen Moment, um den Titel zu erfassen)
+    setTimeout(() => {
+        document.title = originalTitle;
+    }, 1000);
+}
+
+
 
 // 4. PWA DATEI-HANDLER & Service Worker immer unten im Script
 if ('launchQueue' in window) {
