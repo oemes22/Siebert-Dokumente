@@ -4,19 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sibert-Isolierungen</title>
-		<!-- Anfang Verknüpfung zum Web App Manifest -->
     <link rel="manifest" href="manifest.json">
-    <!-- Optimierung für iOS (Safari) -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="icon-192.png">
-	<!-- Ende Verknüpfung zum Web App Manifest -->
 	
 <style>
   :root {
-    --primary-text: #000000; /* Maximaler Kontrast */
-    --btn-text: #0046b8;    /* Dunkleres, kräftiges Blau für die Links */
-    --bg-card: rgba(255, 255, 255, 0.9); /* Fast deckendes Weiß für Lesbarkeit */
+    --primary-text: #000000;
+    --btn-text: #0046b8;
+    --bg-card: rgba(255, 255, 255, 0.9);
   }
 
   body {
@@ -28,36 +25,30 @@
     align-items: center;
     padding-top: 60px;
     color: var(--primary-text);
-    
-    /* Dein kräftiger Kugel-Farbverlauf */
     background: radial-gradient(
       circle at left top,
       rgba(255, 0, 0, 0.5) 0%,
-      rgba(255, 255, 0, 1) 5%,  /* Korrigiert auf 1 (Maximum) */
+      rgba(255, 255, 0, 1) 5%,
       rgba(0, 255, 0, 0.5) 10%,
       rgba(0, 0, 255, 0.5) 40%,
-	  rgba(0, 0, 255, 1  ) 100%
+	  rgba(0, 0, 255, 1) 100%
     );
     background-attachment: fixed;
-    background-color: #ffffff;
   }
 
   h1 {
     font-size: 2.2rem;
-    font-weight: 900; /* Extra fett */
+    font-weight: 900;
     margin-bottom: 5px;
-    /* Dunklerer Verlauf für die Schrift, damit sie auf Gelb/Rot knallt */
     background: linear-gradient(135deg, #000000, #1a2a3a);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 2px 4px rgba(255,255,255,0.5)); /* Leichter Lichtsaum zur Trennung */
   }
 
   p {
-    font-weight: 700; /* Schrift dicker für besseren Kontrast */
+    font-weight: 700;
     margin-bottom: 50px;
     font-size: 1.1rem;
-    color: #000;
   }
 
   ul {
@@ -67,42 +58,35 @@
     max-width: 380px;
   }
 
-  li {
-    margin-bottom: 18px;
-  }
+  li { margin-bottom: 18px; }
 
   a {
     display: block;
-    background: var(--bg-card); /* Viel helleres Weiß */
+    background: var(--bg-card);
     backdrop-filter: blur(10px);
     color: var(--btn-text);
     padding: 22px;
     border-radius: 18px;
     text-decoration: none;
-    font-weight: 800; /* Sehr fett für Lesbarkeit */
+    font-weight: 800;
     text-align: center;
-    border: 2px solid #000000; /* Schwarzer Rahmen für harten Kontrast */
+    border: 2px solid #000000;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
   }
 
   a:hover {
-    transform: translateY(-3px) scale(1.02);
     background: #ffffff;
-    color: #000; /* Text wird beim Hover schwarz */
-    border-color: #2f7dfa;
+    color: #000;
   }
 
-  a:active {
-    transform: translateY(0);
+  #version-container {
+    margin-top: auto;
+    padding: 20px;
+    font-size: 0.9rem;
+    opacity: 0.8;
   }
 </style>
-
-
-
-
-
-
 </head>
 <body>
 
@@ -110,46 +94,42 @@
     <p>Bitte wähle eine Vorlage aus:</p>
 
     <ul>
-        <li>
-            <a href="LNR.html">Leistungsnachweis Rohre</a>
-        </li>
-        <li>
-            <a href="Kappenaufmaß.html">Kappenaufmaß</a>
-        </li>
+        <li><a href="LNR.html">Leistungsnachweis Rohre</a></li>
+        <li><a href="Kappenaufmaß.html">Kappenaufmaß</a></li>
     </ul>
 	
-	<!-- Anzeige-Element für Versionsnummer -->
-<p>Version: <span id="app-version"></span></p>
+    <div id="version-container">
+     <p>Version: <span id="app-version"></span></p> 
+    </div>
 
-<script language="JavaScript">  
-
-// Dieses Script immer als letztes im Scriptblock
+<script>  
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        // 1. Kanal für die Kommunikation öffnen
         const bwChannel = new BroadcastChannel('sw_status');
+        const display = document.getElementById('app-version');
 
-        // 2. Auf Nachrichten vom Service Worker hören
+        // Empfang der Version vom Service Worker
         bwChannel.onmessage = (event) => {
             if (event.data.type === 'VERSION_INFO') {
-                const display = document.getElementById('version-display');
-                if (display) display.innerText = event.data.version;
-                console.log('Version erhalten:', event.data.version);
+                display.innerText = event.data.version;
+                console.log('Version vom SW erhalten:', event.data.version);
             }
         };
 
-        // Dein bestehender Registrierungs-Code
         navigator.serviceWorker.register('./sw.js')
         .then(reg => {
             console.log('Service Worker registriert!');
-            // 3. Aktiv nach der Version fragen, sobald registriert
-            bwChannel.postMessage({ type: 'GET_VERSION' });
+            // Nach Registrierung Version anfragen
+            setTimeout(() => {
+                bwChannel.postMessage({ type: 'GET_VERSION' });
+            }, 500);
         })
-        .catch(err => console.log('Service Worker Fehler:', err));
+        .catch(err => {
+            display.innerText = "";
+            console.error('SW-Fehler:', err);
+        });
     });
 }
-
-
 </script>
 
 </body>

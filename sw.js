@@ -1,29 +1,30 @@
-const CACHE_NAME = 'lnr-app-v1.2';
-// Assets OHNE "./" am Anfang sind oft stabiler auf GitHub Pages
+const CACHE_NAME = 'lnr-app-v1.3';
+const VERSION = '1.3'; // Diese Variable wird an die Webseite gesendet
+const bwChannel = new BroadcastChannel('sw_status');
+
 const ASSETS = [
     'index.html',
-	'LNR.html',
+    'LNR.html',
     'style.css',
     'Logo.svg',
     'manifest.json',
     'icon-192.png',
     'icon-512.png'
- ];
+];
 
-
+// Installation & Caching
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
                 console.log('Caching assets...');
-                // Tipp: Nutze einzelne cache.add() für kritische Dateien, 
-                // damit ein fehlendes Logo nicht die ganze PWA blockiert.
                 return cache.addAll(ASSETS);
             })
-            .then(() => self.skipWaiting()) // Erzwingt sofortige Aktivierung
+            .then(() => self.skipWaiting())
     );
 });
 
+// Aktivierung & Cache-Bereinigung
 self.addEventListener('activate', event => {
     event.waitUntil(
         caches.keys().then(keys => {
@@ -31,27 +32,26 @@ self.addEventListener('activate', event => {
                 keys.filter(key => key !== CACHE_NAME)
                     .map(key => caches.delete(key))
             );
-        }).then(() => self.clients.claim()) // Übernimmt sofort die Kontrolle
-    );
-});
-
-self.addEventListener('fetch', event => {
-    event.respondWith(
-        caches.match(event.request).then(cachedResponse => {
-            return cachedResponse || fetch(event.request).catch(() => {
-                // Optional: Hier könnte eine Offline-Fallback-Seite geladen werden
-            });
+        }).then(() => {
+            self.clients.claim();
+            // Automatisch Version senden, sobald aktiviert
+            bwChannel.postMessage({ type: 'VERSION_INFO', version: VERSION });
         })
     );
 });
 
-self.addEventListener('activate', () => {
-  bwChannel.postMessage({ type: 'VERSION_INFO', version: VERSION });
+// Fetch-Strategie: Cache first, then Network
+self.addEventListener('fetch', event => {
+    event.respondWith(
+        caches.match(event.request).then(cachedResponse => {
+            return cachedResponse || fetch(event.request);
+        })
+    );
 });
 
 // Antworten, falls die Seite aktiv nachfragt
 bwChannel.onmessage = (event) => {
-  if (event.data.type === 'GET_VERSION') {
-    bwChannel.postMessage({ type: 'VERSION_INFO', version: VERSION });
-  }
+    if (event.data.type === 'GET_VERSION') {
+        bwChannel.postMessage({ type: 'VERSION_INFO', version: VERSION });
+    }
 };
