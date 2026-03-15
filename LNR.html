@@ -779,7 +779,7 @@ function getGeneratedFileName() {
                   jetzt.getFullYear();
     
     // Erzeugt z.B. "Hausbau_Regensburg_06-03-2026.lnr"
-    return `${bau}_${ort}_${datum}.lnr`.replace(/[/\\?%*:|"<>\s]/g, '_');
+    return `LNR-${bau}_${ort}_${datum}.lnr`.replace(/[/\\?%*:|"<>\s]/g, '_');
 }
 
 // 2. SPEICHERN: Erstellt die CSV mit Semikolon und Zeilenumbrüchen
