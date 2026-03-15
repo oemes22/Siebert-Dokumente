@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdnjs.cloudflare.com"></script>
+    <title>Kappenaufmaß</title>
+    <style>
+        :root { --border: #000; --filter-bg: #f8f9fa; --row-height: 25.5px; --accent: #007bff; }
+        @page { size: A4 portrait; margin: 0; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background: #f0f2f5; font-size: 11px; display: flex; flex-direction: column; align-items: center; min-width: min-content; }
+        .viewport-wrapper { width: 100%; overflow-x: auto; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .page { width: 210mm; height: 297mm; padding: 8mm 10mm; margin: 10px; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.1); box-sizing: border-box; display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden; position: relative; }
+        
+        /* Header */
+        .header-box { display: flex; align-items: center; margin-bottom: 10px; border-bottom: 3px solid #333; padding-bottom: 8px; flex-shrink: 0; gap: 20px; }
+        .logo-container { height: 85px; width: 85px; display: flex; justify-content: flex-start; align-items: center; flex-shrink: 0; }
+        .header-center { flex-grow: 1; display: flex; flex-direction: column; gap: 2px; }
+        .header-center label { font-weight: bold; font-size: 10px; color: #555; text-transform: uppercase; }
+        .header-center input { border: none; border-bottom: 1px solid #ccc; font-size: 16px; font-weight: bold; outline: none; padding: 4px 0; width: 100%; background: transparent; }
+        .header-right-stack { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; width: 120px; }
+        .header-right-stack > div { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+        .header-right-stack label { font-weight: bold; font-size: 9px; color: #555; text-align: right; white-space: nowrap; }
+        .header-right-stack input { border: none; border-bottom: 1px solid #ccc; font-size: 12px; font-weight: bold; outline: none; text-align: center; width: 65px; background: transparent; }
+
+        /* Tabelle */
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        th { background: #f2f2f2; border: 1px solid var(--border); padding: 1px; font-size: 9.5px; height: 16px; text-align: center; }
+        td { 
+  border: 1px solid var(--border); 
+  height: var(--row-height); 
+  min-height: var(--row-height);
+  max-height: var(--row-height); /* Erzwingt die Höhe */
+  position: relative; 
+  overflow: hidden; /* Schneidet alles ab, was übersteht */
+  white-space: nowrap; /* Verhindert Zeilenumbrüche, die die Zelle dehnen */
+  box-sizing: border-box;
+}
+        .filter-row { background: var(--filter-bg); height: 30px; }
+        .filter-input { width: 100%; height: 100%; border: none; font-size: 11px; text-align: center; background: transparent; outline: none; cursor: pointer; appearance: auto; }
+        
+        .cell, .cell-text { width: 100%; height: 100%; border: none; padding: 0; margin: 0; font-size: 10.5px; outline: none; background: transparent; display: block; position: absolute; top: 0; left: 0; text-align: center; }
+        textarea.cell-text { resize: none; overflow: hidden; text-align: left; padding: 3px 5px; white-space: pre-wrap; line-height: 1.1; }
+        .cell-check { cursor: pointer; width: 16px; height: 16px; margin-top: 5px; }
+
+        /* Container für das SVG in der Tabelle */
+.form-display-container { 
+  position: absolute; /* Nimmt das Bild aus dem normalen Fluss */
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0;
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  overflow: hidden;
+}
+
+.form-display-container svg { 
+    width: 90%;
+    height: 90%;
+    display: block;
+}
+
+        .col-nr { width: 22px; } .col-dn { width: 30px; } .col-dm { width: 38px; } .col-bl { width: 45px; } 
+        .col-da { width: 45px; } .col-fo { width: 50px; } .col-au { width: 45px; } .col-an { width: auto; }
+        .col-st { width: 45px; background-color: #fdfdfd; text-align: center; }
+
+        .notes-container { margin-top: 8px; flex-shrink: 0; }
+        .notes-container label { font-weight: bold; font-size: 9px; color: #555; text-transform: uppercase; display: block; margin-bottom: 2px; }
+        #general_notes { width: 100%; height: 45px; border: 1px solid #ccc; padding: 4px; font-family: inherit; font-size: 11px; resize: none; outline: none; box-sizing: border-box; background: #fafafa; }
+
+        /* Modal */
+        .form-modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
+        .form-modal-content { background: white; margin: 5% auto; padding: 20px; width: 320px; border-radius: 8px; text-align: center; }
+        .img-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+        .img-grid div { border: 1px solid #ccc; padding: 5px; cursor: pointer; border-radius: 4px; background: #fff; display: flex; align-items: center; justify-content: center; min-height: 50px; }
+        .img-grid svg { width: 100%; height: auto; max-height: 40px; }
+
+        .controls { width: 100%; max-width: 210mm; display: flex; justify-content: center; gap: 10px; padding: 15px 0 30px 0; }
+        button { padding: 8px 16px; cursor: pointer; background: #fff; border: 2px solid #ccc; border-radius: 12px; font-weight: bold;}
+        .btn-neu {padding: 8px 16px; cursor: pointer; background: #fff; border: 2px solid #ff0000; border-radius: 12px; font-weight: bold; width: 20%; font-size: 0.8rem; }
+
+        @media print { 
+            body { background: none; } .viewport-wrapper { display: block; min-height: auto; }
+            .page { box-shadow: none; margin: 0; width: 210mm; height: 297mm; padding: 8mm 10mm; } 
+            .col-st, .controls, .filter-row, .form-modal { display: none !important; } 
+            #general_notes { background: none; border-color: #000; height: 60px; }
+        }
+		input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Entfernt die Pfeile in Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Optional: Verhindert das Scrollen des Seiteninhalts bei Pfeiltasten */
+.cell:focus {
+  outline: 2px solid var(--accent);
+  background: #fff;
+}
+/* Markiert die aktuell ausgewählte Zelle hellblau */
+.cell:focus, .cell-text:focus { 
+    background-color: #e7f3ff !important; 
+    outline: 2px solid #007bff; 
+    z-index: 10; 
+}
+
+.logo {
+    width: 75px;
+    height: auto;
+    display: block;
+    min-width: 65px;
+}
+
+    </style>
+</head>
+<body onload="initTable()">
+
+<div class="viewport-wrapper">
+    <div class="page">
+        <div class="header-box">
+            <div class="logo-container">
+                <a href="index.html">
+                <img src="Logo.svg" alt="Firmenlogo" class="logo">
+                </a>
+            </div>
+            <div class="header-center">
+                <label>Projekt / Bauvorhaben</label>
+                <input type="text" id="h_p" oninput="sync()">
+            </div>
+            <div class="header-right-stack">
+                <div><label>Aufmaß-Nr:</label><input type="text" id="h_n" oninput="sync()"></div>
+                <div><label>DATUM</label><input type="text" id="h_d" oninput="sync()"></div>
+				<div><label>Material:</label><input type="text" id="h_m" oninput="sync()"></div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-nr">Nr.</th><th class="col-dn">DN</th><th class="col-dm">Ø</th><th class="col-bl">BL</th>
+                        <th class="col-da">Dämm.</th><th class="col-fo">Form</th><th class="col-au">Ausl.</th><th class="col-an">Anmerkung</th>
+                        <th class="col-st">Status</th>
+                    </tr>
+                    <tr class="filter-row">
+                        <th><select class="filter-input" data-col="0" onchange="filterTable()"><option value="">-</option></select></th>
+                        <th><select class="filter-input" data-col="1" onchange="filterTable()"><option value="">-</option></select></th>
+                        <th><select class="filter-input" data-col="2" onchange="filterTable()"><option value="">-</option></select></th>
+                        <th><select class="filter-input" data-col="3" onchange="filterTable()"><option value="">-</option></select></th>
+                        <th><select class="filter-input" data-col="4" onchange="filterTable()"><option value="">-</option></select></th>
+                        <th><select class="filter-input" data-col="5" onchange="filterTable()"><option value="">-</option></select></th>
+                        <th><select class="filter-input" data-col="6" onchange="filterTable()"><option value="">-</option></select></th>
+                        <th></th>
+
+
+                        <th><select id="statusFilter" class="filter-input" onchange="filterTable()"><option value="">Alle</option><option value="erledigt">Erledigt</option><option value="offen">Offen</option></select></th>
+                    </tr>
+                </thead>
+                <tbody id="tb"></tbody>
+            </table>
+        </div>
+
+        <div class="notes-container">
+            <label>Zusätzliche Anmerkungen</label>
+            <textarea id="general_notes" placeholder="..." oninput="sync()"></textarea>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button onclick="exportCSV()">💾 Speichern</button>
+        <button onclick="document.getElementById('fileInput').click()">📂 Laden</button>
+        <button onclick="starteDruck()">🖨️ Export</button>
+        <button class="btn-neu" onclick="clearTable()">🗑️ Neu</button>
+        <input type="file" id="fileInput" accept=".ka" style="display:none" onchange="importCSV(this)">
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="formModal" class="form-modal" onclick="if(event.target === this) closeModal()">
+    <div class="form-modal-content">
+        <h3>Form wählen</h3>
+        <div class="img-grid" id="imgGrid"></div>
+        <div style="margin-top:20px; display:flex; gap:10px; justify-content:center;">
+            <button onclick="closeModal()">Abbrechen</button>
+            <button style="background:#dc3545; color:white; border:none;" onclick="selectImg('')">Löschen</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // HIER DEINE SVG INHALTE EINFÜGEN
+    const SVG_LIBRARY = {
+    'R2': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g transform="translate(-59.244 -39.112)" fill="#fffbfb" stroke-linecap="round" stroke-width=".929"><path d="m69.709 44.577a5 5 0 0 1-4.977 4.9999 5 5 0 0 1-5.0228-4.954 5 5 0 0 1 4.9309-5.0455 5 5 0 0 1 5.0681 4.9076" stroke="#000" style="paint-order:normal""")/>><path d="m59.709 44.577h10" stroke="#ff0101" style="paint-order:stroke fill markers""")/>></g></svg>`,
+    
+    'R3': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g transform="translate(-59.244 -39.112)" fill="#fffbfb" stroke-linecap="round" stroke-width=".929"><path d="m69.709 44.577a5 5 0 0 1-4.977 4.9999 5 5 0 0 1-5.0228-4.954 5 5 0 0 1 4.9309-5.0455 5 5 0 0 1 5.0681 4.9076" stroke="#000" style="paint-order:fill markers stroke""")/>><path d="m59.709 44.577h10" stroke="#ff0101" style="paint-order:fill markers stroke""")/>><path d="m64.709 44.577v-5" stroke="#ff0101" style="paint-order:fill markers stroke""")/>></g></svg>`,
+    
+    'R4': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g transform="translate(-59.244 -39.093)" fill="#fffbfb" stroke-linecap="round"><path d="m69.709 44.577a5 5 0 0 1-4.977 4.9999 5 5 0 0 1-5.0228-4.954 5 5 0 0 1 4.9309-5.0455 5 5 0 0 1 5.0681 4.9076" stroke="#000" stroke-width=".929" style="paint-order:fill markers stroke""")/>><path d="m59.709 44.577h10" stroke="#ff0101" stroke-width=".929" style="paint-order:fill markers stroke""")/>><path d="m64.709 49.577v-10" stroke="#ff0101" stroke-width=".96768" style="paint-order:fill markers stroke""")/>></g></svg>`,
+    
+    'H2': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><path d="m6.2673 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" fill="#fff" stroke="#000" stroke-linejoin="round" stroke-width=".929" style="paint-order:fill markers stroke""")/>><path d="m5.7903 10.978v-10.35" fill="none" stroke="#e30000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2405""")/>></svg>`,
+    
+    'H2a': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><path d="m6.2705 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" fill="#fff" stroke="#000" stroke-linejoin="round" stroke-width=".929" style="paint-order:fill markers stroke""")/>><path d="m0.4645 5.805h10.658" fill="none" stroke="#e30000" stroke-linecap="round" stroke-linejoin="round" stroke-width=".929" style="paint-order:normal""")/>></svg>`,
+    
+    'H3': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g fill="#fff" stroke-linejoin="round"><path d="m6.2673 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" stroke="#000" stroke-width=".929" style="paint-order:fill markers stroke""")/>><path d="m5.7903 11.134v-10.656" stroke="#e30000" stroke-linecap="round" stroke-width=".94262""")/>><path d="m5.7901 5.8023 5.3292 0.00385" stroke="#e30000" stroke-linecap="round" stroke-width=".92869""")/>></g></svg>`,
+    
+    'H3a': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g fill="#fff" stroke-linejoin="round"><path d="m6.2673 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" stroke="#000" stroke-width=".929" style="paint-order:fill markers stroke""")/>><path d="m5.7903 11.134v-10.656" stroke="#e30000" stroke-linecap="round" stroke-width=".929""")/>><path d="m0.46448 5.8033 5.3258 0.00193" stroke="#e30000" stroke-linecap="round" stroke-width=".92895""")/>></g></svg>`,
+    
+    'H3b': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g fill="#fff" stroke-linejoin="round"><path d="m6.2673 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" stroke="#000" stroke-width=".929" style="paint-order:fill markers stroke""")/>><path d="m5.7903 5.8043v-5.3217" stroke="#e30000" stroke-linecap="round" stroke-width=".91054""")/>><path d="m0.46496 5.8038 10.654 9.668e-4" stroke="#e30000" stroke-linecap="round" stroke-width=".92992""")/>></g></svg>`,
+    
+    'H4': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g fill="#fff" stroke-linejoin="round"><path d="m6.2673 0.4645a5.8051 5.3417 0 0 0-5.0276 2.6706 5.8051 5.3417 0 0 0 0 5.3418 5.8051 5.3417 0 0 0 5.0276 2.6706h4.8519v-10.683z" stroke="#000" stroke-width=".929" style="paint-order:fill markers stroke""")/>><path d="m5.7903 11.134v-10.656" stroke="#e30000" stroke-linecap="round" stroke-width=".929""")/>><path d="m0.46496 5.8038 10.654 9.668e-4" stroke="#e30000" stroke-linecap="round" stroke-width=".92992""")/>></g></svg>`,
+    
+    'K2': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g transform="translate(-59.244 -39.112)" fill="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width=".929"><rect x="59.709" y="39.577" width="10" height="10" stroke="#000""")/>><path d="m59.709 44.577h10" stroke="#e30000""")/>></g></svg>`,
+    
+    'K3': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g transform="translate(-59.244 -39.104)" fill="#fff" stroke-linecap="round" stroke-linejoin="round"><rect x="59.709" y="39.577" width="10" height="10" stroke="#000" stroke-width=".929""")/>><path d="m59.709 44.577h10" stroke="#e30000" stroke-width=".929""")/>><path d="m64.709 39.56v5.0321" stroke="#e30000" stroke-width=".91279""")/>></g></svg>`,
+    
+    'K4': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g transform="translate(-59.244 -39.112)" fill="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width=".929"><rect x="59.709" y="39.577" width="10" height="10" stroke="#000""")/>><path d="m59.709 44.577h10" stroke="#e30000""")/>><path d="m64.709 39.577v10" stroke="#e30000""")/>></g></svg>`
+};
+
+
+    const ROWS = 30;
+    const COLS = ['nr', 'dn', 'dm', 'bl', 'da', 'fo', 'au', 'an', 'st'];
+    let activeRow = null;
+
+    function initTable() {
+        const tb = document.getElementById('tb');
+        tb.innerHTML = '';
+        for (let i = 1; i <= ROWS; i++) {
+            let tr = document.createElement('tr');
+            COLS.forEach(c => {
+                let td = document.createElement('td');
+                td.className = `col-${c}`;
+                if (c === 'an') {
+                    let txt = document.createElement('textarea');
+                    txt.className = 'cell-text'; txt.id = `r${i}_${c}`;
+                    txt.oninput = () => { sync(); updateFilterOptions(); };
+                    td.appendChild(txt);
+                } else if (c === 'fo') {
+                    let div = document.createElement('div');
+                    div.className = 'form-display-container'; 
+                    div.id = `r${i}_fo_display`;
+                    div.onclick = () => openModal(i);
+                    td.appendChild(div);
+                    let hidden = document.createElement('input');
+                    hidden.type = 'hidden'; hidden.id = `r${i}_fo`;
+                    td.appendChild(hidden);
+                } else if (c === 'st') {
+                    let chk = document.createElement('input');
+                    chk.type = 'checkbox'; chk.className = 'cell-check'; chk.id = `r${i}_${c}`;
+                    chk.onchange = () => { sync(); filterTable(); };
+                    td.appendChild(chk);
+                } else {
+                    let inp = document.createElement('input');
+                    inp.className = 'cell'; inp.type = (['dm', 'bl', 'da', 'au', 'dn'].includes(c)) ? "number" : "text";
+                    inp.id = `r${i}_${c}`;
+                    if(c === 'nr') { inp.value = i; inp.readOnly = true; }
+                    inp.oninput = () => { sync(); updateFilterOptions(); };
+                    td.appendChild(inp);
+                }
+                tr.appendChild(td);
+            });
+            tb.appendChild(tr);
+        }
+        setupGrid(); load(); updateFilterOptions();
+    }
+
+    function setupGrid() {
+        const grid = document.getElementById('imgGrid');
+        grid.innerHTML = '';
+        Object.keys(SVG_LIBRARY).forEach(key => {
+            let div = document.createElement('div');
+            div.onclick = (e) => { e.stopPropagation(); selectImg(key); };
+            div.innerHTML = SVG_LIBRARY[key];
+            grid.appendChild(div);
+        });
+    }
+
+    function openModal(row) { activeRow = row; document.getElementById('formModal').style.display = 'block'; }
+    function closeModal() { document.getElementById('formModal').style.display = 'none'; }
+
+    function selectImg(key) {
+        const hidden = document.getElementById(`r${activeRow}_fo`);
+        const display = document.getElementById(`r${activeRow}_fo_display`);
+        hidden.value = key;
+        display.innerHTML = key ? SVG_LIBRARY[key] : '';
+        closeModal(); sync(); updateFilterOptions(); filterTable();
+    }
+
+    // --- Hilfsfunktionen (Sync, Filter, Export, Import) ---
+
+    function updateFilterOptions() {
+        const filters = document.querySelectorAll('.filter-row .filter-input:not(#statusFilter)');
+        const rows = document.querySelectorAll('#tb tr');
+        filters.forEach(select => {
+            const colIdx = parseInt(select.getAttribute('data-col'));
+            const currentVal = select.value;
+            const values = new Set();
+          rows.forEach(row => {
+    const cell = row.cells[colIdx];
+    const input = cell.querySelector('input, textarea');
+    // Liest den Wert aus dem Input-Feld (auch wenn es readOnly ist)
+    let val = input ? input.value : ""; 
+    if (val && val.trim() !== "") values.add(val.trim());
+});
+            select.innerHTML = '<option value="">-</option>';
+            Array.from(values).sort().forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v; opt.innerText = v;
+                if (v === currentVal) opt.selected = true;
+                select.appendChild(opt);
+            });
+        });
+    }
+
+    function filterTable() {
+        const filters = document.querySelectorAll('.filter-row .filter-input:not(#statusFilter)');
+        const statusFilter = document.getElementById('statusFilter').value;
+        const rows = document.getElementById("tb").getElementsByTagName("tr");
+        for (let i = 0; i < rows.length; i++) {
+            let isVisible = true;
+            filters.forEach(f => {
+                const val = f.value;
+                const colIdx = parseInt(f.getAttribute('data-col'));
+                if (val) {
+                    const cell = rows[i].cells[colIdx];
+                    // Ersetze Zeile 455 durch:
+const input = cell.querySelector('input:not([type="hidden"]), textarea');
+const hidden = cell.querySelector('input[type="hidden"]');
+let cellVal = input ? input.value : (hidden ? hidden.value : cell.innerText.trim());
+
+                    if (cellVal !== val) isVisible = false;
+                }
+            });
+            if (statusFilter) {
+                const checkbox = document.getElementById(`r${i+1}_st`);
+                if (statusFilter === 'erledigt' && !checkbox.checked) isVisible = false;
+                if (statusFilter === 'offen' && checkbox.checked) isVisible = false;
+            }
+            rows[i].style.display = isVisible ? "" : "none";
+        }
+    }
+
+   function sync() {
+    const d = {
+        p: document.getElementById('h_p').value,
+        n: document.getElementById('h_n').value,
+        d: document.getElementById('h_d').value,
+        m: document.getElementById('h_m').value, // Neu: Material
+        gn: document.getElementById('general_notes').value,
+        rs: {}
+    };
+        for(let i=1; i<=ROWS; i++){
+            d.rs[i] = COLS.map(c => {
+                const el = document.getElementById(`r${i}_${c}`);
+                return c === 'st' ? el.checked : el.value;
+            });
+        }
+        localStorage.setItem('aufmass_v19_inline', JSON.stringify(d));
+    }
+
+function load() {
+    const s = localStorage.getItem('aufmass_v19_inline');
+    if(!s) return;
+    const d = JSON.parse(s);
+    document.getElementById('h_p').value = d.p || "";
+    document.getElementById('h_n').value = d.n || "";
+    document.getElementById('h_d').value = d.d || "";
+    document.getElementById('h_m').value = d.m || ""; // Neu: Material laden
+    document.getElementById('general_notes').value = d.gn || "";
+        for(let i=1; i<=ROWS; i++) {
+            if(d.rs && d.rs[i]) COLS.forEach((c, j) => {
+                const el = document.getElementById(`r${i}_${c}`);
+                if(el) {
+                    if(c === 'st') el.checked = d.rs[i][j];
+                    else el.value = d.rs[i][j] || "";
+                    if(c === 'fo') {
+                        const display = document.getElementById(`r${i}_fo_display`);
+                        display.innerHTML = el.value ? SVG_LIBRARY[el.value] : '';
+                    }
+                }
+            });
+        }
+    }
+	
+	function getGeneratedFileName() {
+    const proj = document.getElementById('h_p').value.trim() || "Aufmass";
+    const jetzt = new Date();
+    const datum = String(jetzt.getDate()).padStart(2, '0') + "." + 
+                  String(jetzt.getMonth() + 1).padStart(2, '0') + "." + 
+                  jetzt.getFullYear();
+    
+    // Erzeugt z.B. "Neubau_10.03.2026.ka"
+    return `KA-${proj}_${datum}.ka`.replace(/[/\\?%*:|"<>\s]/g, '_');
+}
+
+
+async function exportCSV() {
+    const proj = document.getElementById('h_p').value;
+    const notes = document.getElementById('general_notes').value.replace(/\n/g, '[BR]').replace(/;/g, ',');
+    
+    let txt = `V19ST|${proj}|${document.getElementById('h_n').value}|${document.getElementById('h_d').value}|${document.getElementById('h_m').value}|${notes}\n`;
+    
+    for(let i=1; i<=ROWS; i++) {
+        txt += COLS.map(c => {
+            const el = document.getElementById(`r${i}_${c}`);
+            const val = c === 'st' ? (el.checked ? "erledigt" : "offen") : el.value;
+            return val.toString().replace(/;/g, ',');
+        }).join(';') + "\n";
+    }
+
+    const fileName = getGeneratedFileName();
+
+    if ('showSaveFilePicker' in window) {
+        try {
+            const handle = await window.showSaveFilePicker({
+                suggestedName: fileName,
+                types: [{
+                    description: 'Kappenaufmaß Datei',
+                    accept: { 'application/octet-stream': ['.ka'] },
+                }],
+            });
+            const writable = await handle.createWritable();
+            await writable.write(txt);
+            await writable.close();
+        } catch (err) {
+            console.error("Speichern abgebrochen:", err);
+        }
+    } else {
+        const b = new Blob([txt], { type: 'text/plain' });
+        const a = document.createElement('a');
+        a.download = fileName;
+        a.href = window.URL.createObjectURL(b);
+        a.click();
+    }
+}
+
+
+    function importCSV(input) {
+        if(!input.files.length) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const lines = e.target.result.split('\n');
+            if(lines[0].startsWith('V19ST')) {
+                const meta = lines[0].split('|');
+document.getElementById('h_p').value = meta[1] || "";
+document.getElementById('h_n').value = meta[2] || "";
+document.getElementById('h_d').value = meta[3] || "";
+document.getElementById('h_m').value = meta[4] || ""; // Neu: Material importieren
+document.getElementById('general_notes').value = (meta[5] || "").replace(/\[BR\]/g, '\n'); 
+            }
+            for(let i = 1; i <= ROWS; i++) {
+                if(lines[i]) {
+                    const vals = lines[i].split(';');
+                    COLS.forEach((c, j) => {
+                        const el = document.getElementById(`r${i}_${c}`);
+                        if(el) {
+                            if(c === 'st') el.checked = (vals[j] === "erledigt");
+                            else el.value = vals[j] || "";
+                            if(c === 'fo') document.getElementById(`r${i}_fo_display`).innerHTML = el.value ? SVG_LIBRARY[el.value] : '';
+                        }
+                    });
+                }
+            }
+            sync(); updateFilterOptions(); filterTable();
+        };
+        reader.readAsText(input.files[0]);
+    }
+
+    function clearTable() { if(confirm("Alles löschen?")) { localStorage.clear(); location.reload(); } }
+	
+	// Globaler Event-Listener für das gesamte Fenster
+window.addEventListener('keydown', function(e) {
+    // 1. ESC-TASTE: Schließt das Modal unter allen Umständen
+    if (e.key === 'Escape' || e.keyCode === 27) {
+        const modal = document.getElementById('formModal');
+        if (modal) {
+            modal.style.display = 'none'; // Schließt das Modal direkt
+            console.log("Modal über Esc geschlossen");
+        }
+        return;
+    }
+
+    // 2. TABELLEN-NAVIGATION (Pfeiltasten & Enter)
+    const active = document.activeElement;
+    if (!active || !active.id) return;
+
+    const match = active.id.match(/^r(\d+)_(\w+)$/);
+    if (match) {
+        let row = parseInt(match[1]);
+        const col = match[2];
+        const colIdx = COLS.indexOf(col);
+
+        switch(e.key) {
+            case 'ArrowUp':
+                e.preventDefault();
+                if (row > 1) focusCell(row - 1, col);
+                break;
+            case 'ArrowDown':
+                e.preventDefault();
+                if (row < ROWS) focusCell(row + 1, col);
+                break;
+            case 'ArrowLeft':
+                if (active.selectionStart === 0) {
+                    if (colIdx > 0) focusCell(row, COLS[colIdx - 1]);
+                }
+                break;
+            case 'ArrowRight':
+                if (active.selectionEnd === active.value.length) {
+                    if (colIdx < COLS.length - 1) focusCell(row, COLS[colIdx + 1]);
+                }
+                break;
+            case 'Enter':
+                e.preventDefault();
+                if (row < ROWS) focusCell(row + 1, col);
+                break;
+        }
+    }
+}, true); // Das "true" sorgt dafür, dass die Taste als Erstes abgefangen wird
+
+function focusCell(r, c) {
+    const el = document.getElementById(`r${r}_${c}`);
+    if (el) {
+        el.focus();
+        if (typeof el.select === 'function') el.select();
+    }
+}
+
+function starteDruck() {
+    const lnrInput = document.getElementById('h_p');
+    const lnrValue = lnrInput?.value?.trim() || "unbekannt";
+    
+    // 1. Titel VOR dem Druckaufruf ändern
+    const originalTitle = document.title;
+    document.title = `Kappenaufmaß-${lnrValue}`;
+
+    // 2. Drucken auslösen
+    window.print();
+
+    // 3. Titel nach einer kurzen Verzögerung zurücksetzen
+    // (Mobilgeräte brauchen oft einen Moment, um den Titel zu erfassen)
+    setTimeout(() => {
+        document.title = originalTitle;
+    }, 1000);
+}
+
+
+
+// 4. PWA DATEI-HANDLER & Service Worker immer unten im Script
+if ('launchQueue' in window) {
+    window.launchQueue.setConsumer(async (launchParams) => {
+        if (launchParams.files.length > 0) {
+            const file = await launchParams.files[0].getFile();
+            const mockEvent = { files: [file] };
+            importCSV(mockEvent);
+        }
+    });
+		
+}	
+</script>
+</body>
+</html>
