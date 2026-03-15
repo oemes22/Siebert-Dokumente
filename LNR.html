@@ -13,7 +13,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="icon-192.png">
 	<!-- Ende Verknüpfung zum Web App Manifest -->
-	<script src="https://cdnjs.cloudflare.com"></script>
 
 <!-- Theme Color für die Browser-Leiste -->
 <meta name="theme-color" content="#5895a8">
@@ -409,7 +408,7 @@
     </button>
 	
 	<!-- Export Button -->
-	<button onclick="starteDruck()" class="btn-export">
+	<button onclick="window.print()" class="btn-export">
 	🖨️ Export
 	</button>
 	
@@ -780,7 +779,7 @@ function getGeneratedFileName() {
                   jetzt.getFullYear();
     
     // Erzeugt z.B. "Hausbau_Regensburg_06-03-2026.lnr"
-    return `LNR-${bau}_${ort}_${datum}.lnr`.replace(/[/\\?%*:|"<>\s]/g, '_');
+    return `${bau}_${ort}_${datum}.lnr`.replace(/[/\\?%*:|"<>\s]/g, '_');
 }
 
 // 2. SPEICHERN: Erstellt die CSV mit Semikolon und Zeilenumbrüchen
@@ -894,38 +893,22 @@ document.querySelectorAll('.numpad-grid button').forEach(button => {
     button.addEventListener('touchstart', triggerFeedback, {passive: true});
 });
 
-// Drucknamen erstellung und print to pdf
-function starteDruck() {
-    const element = document.body; // Oder deine Formular-ID
-    const lnrValue = document.getElementById('lnr').value || "unbekannt";
+// Script für den Drucknamen
+let originalTitle = document.title;
 
-    const opt = {
-      margin: 10,
-      filename: `Leistungsnachweis_Nr-${lnrValue}.pdf`,
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
-    // Erzeugt das PDF lokal auf dem Handy
-    html2pdf().set(opt).from(element).save();
-}
-
-function starteDruck() {
+// Wird direkt VOR dem Öffnen des Druckfensters ausgeführt
+window.addEventListener('beforeprint', () => {
     const lnrInput = document.getElementById('lnr');
-    const lnrValue = lnrInput?.value?.trim() || "unbekannt";
+    const lnrValue = lnrInput ? lnrInput.value : '';
     
-    // 1. Titel VOR dem Druckaufruf ändern
-    const originalTitle = document.title;
-    document.title = `Leistungsnachweis_Nr-${lnrValue}`;
+    originalTitle = document.title; // Aktuellen Titel merken
+    document.title = "Leistungsnachweis Nr-" + lnrValue;
+});
 
-    // 2. Drucken auslösen
-    window.print();
-
-    // 3. Titel nach einer kurzen Verzögerung zurücksetzen
-    // (Mobilgeräte brauchen oft einen Moment, um den Titel zu erfassen)
-    setTimeout(() => {
-        document.title = originalTitle;
-    }, 1000);
-}
+// Wird direkt NACH dem Schließen (Drucken oder Abbrechen) ausgeführt
+window.addEventListener('afterprint', () => {
+    document.title = originalTitle; // Titel wieder zurücksetzen
+});
 
 
 

@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script src="https://cdnjs.cloudflare.com"></script>
     <title>Kappenaufmaß</title>
     <style>
         :root { --border: #000; --filter-bg: #f8f9fa; --row-height: 25.5px; --accent: #007bff; }
@@ -175,7 +174,7 @@ input[type=number] {
     <div class="controls">
         <button onclick="exportCSV()">💾 Speichern</button>
         <button onclick="document.getElementById('fileInput').click()">📂 Laden</button>
-        <button onclick="starteDruck()">🖨️ Export</button>
+        <button onclick="window.print()">🖨️ Export</button>
         <button class="btn-neu" onclick="clearTable()">🗑️ Neu</button>
         <input type="file" id="fileInput" accept=".ka" style="display:none" onchange="importCSV(this)">
     </div>
@@ -394,7 +393,7 @@ function load() {
                   jetzt.getFullYear();
     
     // Erzeugt z.B. "Neubau_10.03.2026.ka"
-    return `KA-${proj}_${datum}.ka`.replace(/[/\\?%*:|"<>\s]/g, '_');
+    return `${proj}_${datum}.ka`.replace(/[/\\?%*:|"<>\s]/g, '_');
 }
 
 
@@ -529,36 +528,32 @@ function focusCell(r, c) {
     }
 }
 
-function starteDruck() {
-    const lnrInput = document.getElementById('h_p');
-    const lnrValue = lnrInput?.value?.trim() || "unbekannt";
+// Script für den Drucknamen
+let originalTitle = document.title;
+
+// Wird direkt VOR dem Öffnen des Druckfensters ausgeführt
+window.addEventListener('beforeprint', () => {
+    const h_pInput = document.getElementById('h_p');
+    const h_pValue = h_pInput ? h_pInput.value : '';
     
-    // 1. Titel VOR dem Druckaufruf ändern
-    const originalTitle = document.title;
-    document.title = `Kappenaufmaß-${lnrValue}`;
+    originalTitle = document.title; // Aktuellen Titel merken
+    document.title = "Kappenaufmaß-" + h_pValue;
+});
 
-    // 2. Drucken auslösen
-    window.print();
-
-    // 3. Titel nach einer kurzen Verzögerung zurücksetzen
-    // (Mobilgeräte brauchen oft einen Moment, um den Titel zu erfassen)
-    setTimeout(() => {
-        document.title = originalTitle;
-    }, 1000);
-}
-
-
+// Wird direkt NACH dem Schließen (Drucken oder Abbrechen) ausgeführt
+window.addEventListener('afterprint', () => {
+    document.title = originalTitle; // Titel wieder zurücksetzen
+});
 
 // 4. PWA DATEI-HANDLER & Service Worker immer unten im Script
 if ('launchQueue' in window) {
     window.launchQueue.setConsumer(async (launchParams) => {
         if (launchParams.files.length > 0) {
             const file = await launchParams.files[0].getFile();
-            const mockEvent = { files: [file] };
-            importCSV(mockEvent);
+            const mockEvent = { target: { files: [file] } };
+            handleFileSelect(mockEvent);
         }
     });
-		
 }	
 </script>
 </body>
