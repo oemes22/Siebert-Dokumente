@@ -117,17 +117,38 @@
             <a href="Kappenaufmaß.html">Kappenaufmaß</a>
         </li>
     </ul>
+	
+	<!-- Anzeige-Element für Versionsnummer -->
+<p>Version: <span id="app-version"></span></p>
 
 <script language="JavaScript">  
 
 // Dieses Script immer als letztes im Scriptblock
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
+        // 1. Kanal für die Kommunikation öffnen
+        const bwChannel = new BroadcastChannel('sw_status');
+
+        // 2. Auf Nachrichten vom Service Worker hören
+        bwChannel.onmessage = (event) => {
+            if (event.data.type === 'VERSION_INFO') {
+                const display = document.getElementById('version-display');
+                if (display) display.innerText = event.data.version;
+                console.log('Version erhalten:', event.data.version);
+            }
+        };
+
+        // Dein bestehender Registrierungs-Code
         navigator.serviceWorker.register('./sw.js')
-        .then(reg => console.log('Service Worker registriert!'))
+        .then(reg => {
+            console.log('Service Worker registriert!');
+            // 3. Aktiv nach der Version fragen, sobald registriert
+            bwChannel.postMessage({ type: 'GET_VERSION' });
+        })
         .catch(err => console.log('Service Worker Fehler:', err));
     });
 }
+
 
 </script>
 

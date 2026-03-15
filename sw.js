@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lnr-app-v1.1';
+const CACHE_NAME = 'lnr-app-v1.2';
 // Assets OHNE "./" am Anfang sind oft stabiler auf GitHub Pages
 const ASSETS = [
     'index.html',
@@ -44,3 +44,14 @@ self.addEventListener('fetch', event => {
         })
     );
 });
+
+self.addEventListener('activate', () => {
+  bwChannel.postMessage({ type: 'VERSION_INFO', version: VERSION });
+});
+
+// Antworten, falls die Seite aktiv nachfragt
+bwChannel.onmessage = (event) => {
+  if (event.data.type === 'GET_VERSION') {
+    bwChannel.postMessage({ type: 'VERSION_INFO', version: VERSION });
+  }
+};
