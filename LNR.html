@@ -460,6 +460,15 @@
 	
 <script language="JavaScript">
 
+
+// Name für Lokal Storage zwecks gezielt löschen
+const pageNamespace = "leistungsnachweis_rohre"; 
+
+function saveToPageStorage(key, value) {
+    localStorage.setItem(pageNamespace + "_" + key, value);
+}
+
+
 // Funktion zum Einfügen des aktuellen Datums im Format TT.MM.JJJJ
 window.addEventListener('load', () => {
     const inputFeld = document.getElementById('ort-datum');
@@ -483,7 +492,7 @@ window.addEventListener('load', () => {
             inputFeld.value = `Regensburg / ${datumFormatiert}`;
             
             // Sofort im LocalStorage speichern
-            localStorage.setItem('ort-datum', inputFeld.value);
+            saveToPageStorage('ort-datum', inputFeld.value);
             console.log("Standard-Datum gesetzt: " + inputFeld.value);
         }
     }, 200); 
@@ -590,7 +599,7 @@ function addChar(char) {
         activeInput.value += char;
         // Sofort in der Map und im Display speichern
         formulas.set(activeInput, activeInput.value);
-        localStorage.setItem(activeInput.id || activeInput.name, activeInput.value);
+        saveToPageStorage((activeInput.id || activeInput.name), activeInput.value);
         
         updateNumpadDisplay();
         
@@ -604,7 +613,7 @@ function deleteChar() {
     if (activeInput) {
         activeInput.value = activeInput.value.slice(0, -1);
         formulas.set(activeInput, activeInput.value);
-        localStorage.setItem(activeInput.id || activeInput.name, activeInput.value);
+        saveToPageStorage((activeInput.id || activeInput.name), activeInput.value);
         
         updateNumpadDisplay();
         
@@ -618,13 +627,13 @@ function deleteChar() {
 function loadFormData() {
     const inputs = document.querySelectorAll('input, textarea');
     inputs.forEach(input => {
-        // WICHTIG: Das Datei-Feld ("file") darf niemals automatisch befüllt werden
-        if (input.type === "file") return;
-
-        const savedValue = localStorage.getItem(input.id || input.name);
+        if (input.type === "file") return; 
+        
+        // Geändert: Namespace beim Laden berücksichtigen
+        const savedValue = localStorage.getItem(pageNamespace + "_" + (input.id || input.name));
+        
         if (savedValue !== null && !input.readOnly) {
             input.value = savedValue;
-            
             if (input.classList.contains('numpad-input')) {
                 formulas.set(input, savedValue);
                 calculateAndFormat(input);
@@ -636,6 +645,7 @@ function loadFormData() {
 
 
 
+
 // Beim Laden der Seite ausführen
 window.addEventListener('load', loadFormData);
 
@@ -643,7 +653,8 @@ window.addEventListener('load', loadFormData);
 document.addEventListener('input', (event) => {
     const target = event.target;
     if (target.id || target.name) {
-        localStorage.setItem(target.id || target.name, target.value);
+        // Nutzt jetzt die Namespace-Funktion
+        saveToPageStorage((target.id || target.name), target.value);
     }
 });
 
@@ -727,47 +738,34 @@ function updateTableSums() {
 
 // Funktion zum Leeren des Blattes und des localStorage
 function clearAllFields() {
-    if (confirm("Möchten Sie wirklich alle Eingaben löschen?")) {
-        // 1. LocalStorage komplett bereinigen
-        localStorage.clear();
-
-        // 2. Alle relevanten Eingabefelder im Dokument finden
-        const inputs = document.querySelectorAll('input, textarea');
-        
-        inputs.forEach(field => {
-            // Schreibgeschützte Felder (wie das berechnete Datum) überspringen
-            if (field.readOnly || field.type === "file") return;
-
-            // Feld leeren
-            field.value = "";
-
-            // Falls es ein Numpad-Feld ist, auch die interne Formel-Map löschen
-            if (field.classList.contains('numpad-input') && typeof formulas !== 'undefined') {
-                formulas.delete(field);
+    if (confirm("Möchten Sie wirklich alle Eingaben dieses Formulars löschen?")) {
+        // 1. Nur diesen Namespace löschen
+        Object.keys(localStorage).forEach(key => {
+            if (key.startsWith(pageNamespace + "_")) {
+                localStorage.removeItem(key);
             }
         });
 
-        // 3. Summen in der Tabelle auf 0 setzen
-        if (typeof updateTableSums === 'function') {
-            updateTableSums();
-        }
+        // 2. Felder leeren
+        const inputs = document.querySelectorAll('input, textarea');
+        inputs.forEach(field => {
+            if (field.readOnly || field.type === "file") return;
+            field.value = "";
+            if (typeof formulas !== 'undefined') formulas.delete(field);
+        });
 
-        // 4. Das Standard-Datum wieder einsetzen (da wir oben alles gelöscht haben)
+        if (typeof updateTableSums === 'function') updateTableSums();
+        
+        // 3. Datum neu setzen
         const dateField = document.getElementById('ort-datum');
         if (dateField) {
             const jetzt = new Date();
-            const tag = String(jetzt.getDate()).padStart(2, '0');
-            const monat = String(jetzt.getMonth() + 1).padStart(2, '0');
-            const jahr = jetzt.getFullYear();
-            dateField.value = `Regensburg / ${tag}.${monat}.${jahr}`;
-            localStorage.setItem('ort-datum', dateField.value);
+            const datum = `${String(jetzt.getDate()).padStart(2, '0')}.${String(jetzt.getMonth() + 1).padStart(2, '0')}.${jetzt.getFullYear()}`;
+            dateField.value = `Regensburg / ${datum}`;
+            saveToPageStorage('ort-datum', dateField.value);
         }
-
-
     }
 }
-
-
 
 // 1. HILFSFUNKTION: Generiert den Dateinamen aus Feldern + Datum
 function getGeneratedFileName() {
@@ -858,7 +856,7 @@ function handleFileSelect(event) {
                     formulas.set(field, value);
                     silentCalculate(field);
                 }
-                localStorage.setItem(id, value);
+                saveToPageStorage(id, value);
             }
         });
         updateTableSums();

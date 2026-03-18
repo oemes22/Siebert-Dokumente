@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leistungsnachweis Zeit</title>
+    <link rel="stylesheet" href="style.css">
+	
+	<!-- Anfang Verknüpfung zum Web App Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <!-- Optimierung für iOS (Safari) -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="icon-192.png">
+	<!-- Ende Verknüpfung zum Web App Manifest -->
+
+<!-- Theme Color für die Browser-Leiste -->
+<meta name="theme-color" content="#5895a8">
+
+</head>
+<body>
+<div class="scrollzoom">    
+    <div class="container">
+        
+        <header>
+            <h1>
+			<table class="form-layout-table">   
+			<tr>
+                    <td class="label-cell"><label for="lnz">Leistungsnachweis Nr.:</label></td>
+                    <td class="input-cell" colspan="3"><input type="text" id="lnz"></td>
+            </tr>	
+			</table>
+		    </h1>
+		
+				
+            <div class="logo-placeholder">
+                <a href="index.html">
+                <img src="Logo.svg" alt="Firmenlogo" class="logo">
+                </a>
+            </div>
+        </header>
+
+        <!-- FORMULAR-SEKTION ALS TABELLE -->
+        <section class="form-section">
+            <table class="form-layout-table">
+                <tr>
+                    <td class="label-cell"><label for="auftraggeber">Auftraggeber:</label></td>
+                    <td class="input-cell" colspan="3"><input list="list_auftraggeber" type="text" id="auftraggeber"></td>
+                </tr>
+                <tr>
+                    <td class="label-cell"><label for="leistungsort">Leistungsort:</label></td>
+                    <td class="input-cell" colspan="3"><input type="text" id="leistungsort"></td>
+                </tr>
+                <tr>
+                    <td class="label-cell"><label for="bauvorhaben">Bauvorhaben:</label></td>
+                    <td class="input-cell"><input type="text" id="bauvorhaben"></td>
+                    <td class="label-cell inline-label-cell"><label for="bestellnr">Best.Nr.:</label></td>
+                    <td class="input-cell" style="width: 25%;"><input type="text" id="bestellnr"></td>
+                </tr>
+                <tr>
+                    <td class="label-cell"><label for="zeitraum">Zeitraum:</label></td>
+                    <td class="input-cell"><input type="text" id="zeitraum"></td>
+                    <td class="label-cell inline-label-cell"><label for="kommissionsnr">Kom.Nr.:</label></td>
+                    <td class="input-cell" style="width: 25%;"><input type="text" id="kommissionsnr"></td>
+                </tr>
+                <tr>
+                    <td class="label-cell"><label for="monteur">Monteur:</label></td>
+                    <td class="input-cell"><input list="list_monteur" type="text" id="monteur"></td>
+                    <td class="label-cell inline-label-cell"><label for="koordinator">Koordinator:</label></td>
+                    <td class="input-cell" style="width: 25%;"><input type="text" id="koordinator"></td>
+                </tr>
+            </table>
+        </section>
+		        <section class="notes-section">
+            <div class="notes-label">Beschreibung:</div>
+            <textarea id="beschreibung" rows="3"></textarea>
+        </section>
+
+        <!-- DATEN-TABELLE -->
+        <section class="table-section">
+            <table>
+                <colgroup>
+                    <col style="width: 10%;">
+                    <col style="width: 10%;">
+                    <col style="width: 10%;">
+                    <col style="width: 70%;">         
+                </colgroup>
+				<!-- Kopfzeile -->
+                <thead>
+                    <tr>
+                        <th rowspan="2"><input id="frei" Value="Pos."</input></th>
+                        <th rowspan="2">Menge</th>
+                        <th rowspan="2">Einh.</th>
+                        <th rowspan="2">Beschreibung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Tabellenzeilen -->
+                    <tr>
+                        <td><input id="a1" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="a2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="a3" class="input-haupttabelle" list="list_einheit"></input></td>
+						<td><input id="a4" class="input-haupttabelle" list="list_beschreibung"></input></td>
+
+                    </tr>
+					<tr>                    
+                        <td><input id="b1"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="b2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="b3"  class="input-haupttabelle" list="list_einheit"></input></td>
+						<td><input id="b4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
+                    </tr>
+					<tr>                    
+                        <td><input id="c1"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="c2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="c3"  class="input-haupttabelle" list="list_einheit"></input></td>
+						<td><input id="c4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
+                    </tr>
+					<tr>                    
+                        <td><input id="d1"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="d2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="d3"  class="input-haupttabelle" list="list_einheit"></input></td>
+						<td><input id="d4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
+                    </tr>
+					<tr>                    
+                        <td><input id="e1"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="e2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="e3"  class="input-haupttabelle" list="list_einheit"></input></td>
+						<td><input id="e4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
+                    </tr>
+					<tr>                    
+                        <td><input id="f1"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="f2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="f3"  class="input-haupttabelle" list="list_einheit"></input></td>
+						<td><input id="f4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
+                    </tr>
+					<tr>                    
+                        <td><input id="g1"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="g2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="g3"  class="input-haupttabelle" list="list_einheit"></input></td>
+						<td><input id="g4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
+                    </tr>
+					<tr>                    
+                        <td><input id="h1"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="h2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="h3"  class="input-haupttabelle" list="list_einheit"></input></td>
+						<td><input id="h4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
+                    </tr>
+					<tr>                    
+                        <td><input id="i1"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="i2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="i3"  class="input-haupttabelle" list="list_einheit"></input></td>
+						<td><input id="i4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
+                    </tr>
+					<tr>                    
+                        <td><input id="j1"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="j2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="j3"  class="input-haupttabelle" list="list_einheit"></input></td>
+						<td><input id="j4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
+                    </tr>
+					<tr>                    
+                        <td><input id="k1"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="k2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="k3"  class="input-haupttabelle" list="list_einheit"></input></td>
+						<td><input id="k4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
+                    </tr>
+					<tr>                    
+                        <td><input id="l1"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="l2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="l3"  class="input-haupttabelle" list="list_einheit"></input></td>
+						<td><input id="l4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
+                    </tr>
+					<tr>                    
+                        <td><input id="m1"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="m2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="m3"  class="input-haupttabelle" list="list_einheit"></input></td>
+						<td><input id="m4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
+                    </tr>
+					<tr>                    
+                        <td><input id="n1"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="n2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="n3"  class="input-haupttabelle" list="list_einheit"></input></td>
+						<td><input id="n4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
+                    </tr>
+					<tr>                    
+                        <td><input id="o1"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="o2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="o3"  class="input-haupttabelle" list="list_einheit"></input></td>
+						<td><input id="o4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
+                    </tr>
+					<tr>                    
+                        <td><input id="p1"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="p2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="p3"  class="input-haupttabelle" list="list_einheit"></input></td>
+						<td><input id="p4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
+                    </tr>
+					<tr>                    
+                        <td><input id="q1"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="q2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="q3"  class="input-haupttabelle" list="list_einheit"></input></td>
+						<td><input id="q4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
+
+                    </tr>
+                </tbody>
+    </table>
+</section>
+            </table>
+        </section>
+
+        <!-- ANMERKUNGEN -->
+        <section class="notes-section">
+            <div class="notes-label">Anmerkungen:</div>
+            <textarea id="anmerkungen" rows="3"></textarea>
+        </section>
+
+        <!-- FOOTER-SEKTION ALS TABELLE -->
+        <section class="footer-section">
+            <table class="form-layout-table">
+                <tr>
+                    <td class="label-cell"><label for="ort-datum">Ort/Datum:</label></td>
+                    <td class="input-cell"><input type="text" id="ort-datum"></td>
+                    <td class="label-cell inline-label-cell"><label for="datum-rechts">Datum:</label></td>
+                    <td class="input-cell" style="width: 25%;"><input type="text" id="datum-rechts" readonly></td>
+                </tr>
+                <tr>
+                    <td class="label-cell"><label for="auftragnehmer">Auftragnehmer:</label></td>
+                    <td class="input-cell"><input type="text" id="auftragnehmer" readonly></td>
+                    <td class="label-cell inline-label-cell"><label for="auftraggeber-unten">Auftraggeber:</label></td>
+                    <td class="input-cell" style="width: 25%;"><input type="text" id="auftraggeber-unten" readonly></td>
+                </tr>
+            </table>
+        </section>
+		
+		<!-- Knöpfe unten -->
+<section class="action-section no-print">
+    
+    <!-- Speichern Button -->
+    <button onclick="saveAsLNZ()" class="btn-save">
+        💾 Speichern
+    </button>
+
+    <!-- Laden Button -->
+    <button onclick="document.getElementById('fileInput').click()" class="btn-load">
+        📂 Laden
+    </button>
+	
+	<!-- Export Button -->
+	<button onclick="window.print()" class="btn-export">
+	🖨️ Export
+	</button>
+	
+    <!-- Verstecktes Feld für die Dateiwahl -->
+    <input type="file" id="fileInput" style="display:none" accept=".lnz" onchange="handleFileSelect(event)">
+
+    <!-- Reset Button -->
+    <button onclick="clearAllFields()" class="btn-clear">
+        🗑️ Neu
+    </button>
+</section>
+
+
+    </div>
+</div>
+
+	
+<script language="JavaScript">
+
+const pageNamespace = "leistungsnachweis_zeit";  // Zuweisung für den Lokal Storage für jede Seite änderm.
+
+// 2. Zentrale Speicher-Funktion mit Namespace
+function saveToPageStorage(key, value) {
+    localStorage.setItem(pageNamespace + "_" + key, value);
+}
+
+// Funktion zum Einfügen des aktuellen Datums im Format TT.MM.JJJJ
+window.addEventListener('load', () => {
+    const inputFeld = document.getElementById('ort-datum');
+    
+    // Wir warten 200ms, damit der LocalStorage (loadFormData) sicher fertig ist
+    setTimeout(() => {
+        const gespeicherterWert = localStorage.getItem('ort-datum');
+
+        // Nur wenn im LocalStorage NICHTS steht oder das Feld leer ist
+        if (!gespeicherterWert || inputFeld.value.trim() === "") {
+            const jetzt = new Date();
+            
+            // Führende Nullen erzwingen (06.03.2026)
+            const tag = String(jetzt.getDate()).padStart(2, '0');
+            const monat = String(jetzt.getMonth() + 1).padStart(2, '0');
+            const jahr = jetzt.getFullYear();
+            
+            const datumFormatiert = `${tag}.${monat}.${jahr}`;
+            
+            // Wert setzen
+            inputFeld.value = `Regensburg / ${datumFormatiert}`;
+            
+            // Sofort im LocalStorage speichern
+            localStorage.setItem('ort-datum', inputFeld.value);
+            console.log("Standard-Datum gesetzt: " + inputFeld.value);
+        }
+    }, 200); 
+});
+
+
+// Funktion zum Laden aus localStorage
+function loadFormData() {
+    const inputs = document.querySelectorAll('input, textarea');
+    inputs.forEach(input => {
+        if (input.type === "file") return;
+
+const savedValue = localStorage.getItem(pageNamespace + "_" + (input.id || input.name));
+
+
+        if (savedValue !== null && !input.readOnly) {
+            input.value = savedValue;
+        }
+    });
+}
+
+
+
+
+// Beim Laden der Seite ausführen
+window.addEventListener('load', loadFormData);
+
+// Funktion zum Speichern localStorage
+document.addEventListener('input', (event) => {
+    const target = event.target;
+    if (target.id || target.name) {
+   
+        saveToPageStorage((target.id || target.name), target.value);
+    }
+});
+
+
+// Funktion zum Leeren NUR der felder dieses Namespaces im Lokal Storage
+function clearAllFields() {
+    if (confirm("Möchten Sie wirklich alle Eingaben dieses Formulars löschen?")) {
+        
+        // 1. Nur Einträge dieses Namespaces aus dem LocalStorage entfernen
+        Object.keys(localStorage).forEach(key => {
+            if (key.startsWith(pageNamespace + "_")) {
+                localStorage.removeItem(key);
+            }
+        });
+
+        // 2. Alle relevanten Eingabefelder im Dokument finden
+        const inputs = document.querySelectorAll('input, textarea');
+
+        inputs.forEach(field => {
+            // Schreibgeschützte Felder oder Datei-Upload überspringen
+            if (field.readOnly || field.type === "file") return;
+
+            // Feld im Browser leeren
+            field.value = "";
+        });
+
+        //  Standard-Datum wieder setzen, falls gewünscht
+        const dateField = document.getElementById('ort-datum');
+        if (dateField) {
+            const jetzt = new Date();
+            const tag = String(jetzt.getDate()).padStart(2, '0');
+            const monat = String(jetzt.getMonth() + 1).padStart(2, '0');
+            const jahr = jetzt.getFullYear();
+            
+            const standardWert = `Regensburg / ${tag}.${monat}.${jahr}`;
+            dateField.value = standardWert;
+            saveToPageStorage('ort-datum', standardWert);
+                }
+
+        // Standard-Wert für das Feld "frei" setzen
+        const freiField = document.getElementById('frei');
+        if (freiField) {
+            const standardFrei = "Pos.";
+            freiField.value = standardFrei;
+            saveToPageStorage('frei', standardFrei); // Speichert es ebenfalls im Storage, falls nötig
+        }
+        console.log("Namespace '" + pageNamespace + "' wurde bereinigt.");
+    }
+}
+
+
+// 1. HILFSFUNKTION: Generiert den Dateinamen aus Feldern + Datum
+function getGeneratedFileName() {
+    const bau = document.getElementById('bauvorhaben').value.trim() || "Projekt";
+    const ort = document.getElementById('leistungsort').value.trim() || "Ort";
+    const jetzt = new Date();
+    const datum = String(jetzt.getDate()).padStart(2, '0') + "-" + 
+                  String(jetzt.getMonth() + 1).padStart(2, '0') + "-" + 
+                  jetzt.getFullYear();
+    
+    return `LNZ-${bau}_${ort}_${datum}.lnz`.replace(/[/\\?%*:|"<>\s]/g, '_');
+}
+
+async function saveAsLNZ() {
+    let csvRows = [];
+    const allInputs = document.querySelectorAll('input, textarea');
+
+    allInputs.forEach(input => {
+        // Ignoriere Felder ohne ID oder den File-Upload
+        if (!input.id || input.id === "fileInput") return;
+        
+        // Direkter Zugriff auf den Wert (Numpad-Logik entfernt)
+        let val = input.value;
+
+        // CSV-Safe Formatierung
+        let escaped = '"' + String(val).replace(/"/g, '""') + '"';
+        csvRows.push(`${input.id};${escaped}`);
+    });
+
+    const csvContent = csvRows.join("\r\n");
+    const fileName = getGeneratedFileName();
+
+    // 1. Versuch: Moderner "Speichern unter"-Dialog
+    if ('showSaveFilePicker' in window) {
+        try {
+            const handle = await window.showSaveFilePicker({
+                suggestedName: fileName,
+                types: [{
+                    description: 'LNZ Datei',
+                    accept: { 'application/octet-stream': ['.lnz'] }
+                }],
+            });
+            const writable = await handle.createWritable();
+            await writable.write(csvContent);
+            await writable.close();
+            return; 
+        } catch (err) {
+            console.log("Speichern abgebrochen oder Fehler:", err);
+            if (err.name === 'AbortError') return;
+        }
+    }
+
+    // 2. Fallback: Mobilgeräte & Safari
+    const blob = new Blob([csvContent], { type: 'application/octet-stream' });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+    URL.revokeObjectURL(link.href);
+}
+
+// 3. LADEN: Verarbeitet die Datei
+function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const lines = e.target.result.split(/\r?\n/);
+
+        lines.forEach(line => {
+            if (!line.includes(';')) return;
+            
+            // Zerlegen der Zeile in ID und Wert
+            const parts = line.split(';');
+            const id = parts[0];
+            // Entfernt die CSV-Anführungszeichen und stellt maskierte Anführungszeichen wieder her
+            let value = parts.slice(1).join(';').replace(/^"|"$/g, '').replace(/""/g, '"');
+
+const field = document.getElementById(id);
+if (field) {
+    field.value = value;
+saveToPageStorage(id, value);
+}
+        });
+        
+        // Input zurücksetzen, damit dieselbe Datei erneut gewählt werden kann
+        event.target.value = ""; 
+    };
+    reader.readAsText(file);
+}
+
+// Script für den Drucknamen
+let originalTitle = document.title;
+
+// Wird direkt VOR dem Öffnen des Druckfensters ausgeführt
+window.addEventListener('beforeprint', () => {
+    const lnzInput = document.getElementById('lnz');
+    const lnzValue = lnzInput ? lnzInput.value : '';
+    
+    originalTitle = document.title; // Aktuellen Titel merken
+    document.title = "Leistungsnachweis Nr-" + lnzValue;
+});
+
+// Wird direkt NACH dem Schließen (Drucken oder Abbrechen) ausgeführt
+window.addEventListener('afterprint', () => {
+    document.title = originalTitle; // Titel wieder zurücksetzen
+});
+
+// Erweiterte Navigation für die Tabelle (Pfeiltasten, Enter, Esc)
+document.addEventListener('keydown', function(e) {
+    const active = document.activeElement;
+    if (!active || !active.classList.contains('input-haupttabelle')) return;
+
+    // Aktuelle Position bestimmen (z. B. "a" und "1" aus "a1")
+    const id = active.id;
+    let rowChar = id.charAt(0);
+    let colNum = parseInt(id.slice(1));
+
+    let nextRowChar = rowChar;
+    let nextColNum = colNum;
+
+    // 1. ESC-Taste: Eingabe abbrechen / Feld verlassen
+    if (e.key === 'Escape') {
+        active.blur(); 
+        return;
+    }
+
+    // 2. Tasten-Logik
+    switch (e.key) {
+        case 'ArrowUp':
+            nextRowChar = String.fromCharCode(rowChar.charCodeAt(0) - 1);
+            break;
+        case 'ArrowDown':
+        case 'Enter':
+            e.preventDefault();
+            nextRowChar = String.fromCharCode(rowChar.charCodeAt(0) + 1);
+            break;
+        case 'ArrowLeft':
+            if (active.selectionStart === 0) {
+                if (colNum > 1) {
+                    nextColNum = colNum - 1;
+                } else {
+                    // Von Spalte 1 (z.B. b1) zurück in die vorherige Zeile Ende (a4)
+                    nextRowChar = String.fromCharCode(rowChar.charCodeAt(0) - 1);
+                    nextColNum = 4;
+                }
+            } else return;
+            break;
+        case 'ArrowRight':
+            if (active.selectionEnd === active.value.length) {
+                if (colNum < 4) {
+                    nextColNum = colNum + 1;
+                } else {
+                    // Von Spalte 4 (z.B. a4) in die nächste Zeile Anfang (b1)
+                    nextRowChar = String.fromCharCode(rowChar.charCodeAt(0) + 1);
+                    nextColNum = 1;
+                }
+            } else return;
+            break;
+        default:
+            return;
+    }
+
+    // Zielfeld suchen und Fokus setzen
+    const nextId = nextRowChar + nextColNum;
+    const nextField = document.getElementById(nextId);
+
+    if (nextField) {
+        e.preventDefault(); // Verhindert Cursor-Sprünge beim Zellenwechsel
+        nextField.focus();
+    }
+});
+
+
+
+
+// 4. PWA DATEI-HANDLER & Service Worker immer unten im Script
+if ('launchQueue' in window) {
+    window.launchQueue.setConsumer(async (launchParams) => {
+        if (launchParams.files.length > 0) {
+            const file = await launchParams.files[0].getFile();
+            const mockEvent = { target: { files: [file] } };
+            handleFileSelect(mockEvent);
+        }
+    });
+}
+
+
+
+
+</script>
+
+	
+</body>
+
+<!-- Dropdown-Listen -->
+
+<datalist id="list_auftraggeber">
+<option value="Lohner & Sohn GmbH & Co. KG"><option value="Schmid Sanitär/Heizung GmbH"><option value="Apleona HSG Südost GmbH"><option value="Caverion Deutschland GmbH"><option value="Heizung Sanitär Hoppen"><option value="Prommersberger Sanitär GmbH"><option value="Sanitär Heizung Lüftung Markus Boin">
+</datalist>
+
+
+<datalist id="list_einheit">
+<option value="Stk."><option value="m"><option value="m²"><option value="l"><option value="ml"><option value="g"><option value="kg"><option value="Std."><option value="€"><option value="ME">
+</datalist>
+
+
+<datalist id="list_beschreibung">
+<option value="aluk. Rohrschale"><option value="PVC"><option value="PVC-Bogen"><option value="WBC-Schweißmittel"><option value="PVC-Endmanschette"><option value="lose Wolle"><option value="Wickeldraht"><option value="Alu-Klebeband"><option value="synth. Kautschuck"><option value="synth. Kautschuck-Schlauch SK"><option value="Montageband"><option value="Blechmantel verzinkt"><option value="Blechbogen verzinkt"><option value="Blechmantel Aluminium"><option value="Blechbogen Aluminium"><option value="Arbeitszeit"><option value="Anfahrt / Fahrzeugkosten"><option value="Kleinmaterial / Befestigung 5,00€/ME">
+</datalist>
+
+<datalist id="list_monteur">
+<option value="Alex"><option value="Ronny"><option value="Mario"><option value="Denis"><option value="Niko">
+</datalist>
+
+</html>

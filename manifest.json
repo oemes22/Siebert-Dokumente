@@ -16,6 +16,12 @@
       }
     },
     {
+      "action": "LNZ.html",
+      "accept": {
+        "application/octet-stream": [".lnz"]
+      }
+    },
+    {
       "action": "Kappenaufmaß.html",
       "accept": {
         "application/octet-stream": [".ka"]

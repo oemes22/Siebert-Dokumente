@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Theme Color für die Browser-Leiste -->
+    <meta name="theme-color" content="#5895a8">
     <title>Kappenaufmaß</title>
     <style>
         :root { --border: #000; --filter-bg: #f8f9fa; --row-height: 25.5px; --accent: #007bff; }
@@ -193,6 +195,11 @@ input[type=number] {
 </div>
 
 <script>
+
+// 1. Eindeutiger Name für dieses Formular
+const pageNamespace = "kappenaufmass_projekt_a"; 
+
+
     // HIER DEINE SVG INHALTE EINFÜGEN
     const SVG_LIBRARY = {
     'R2': `<svg xmlns="http://www.w3.org" width="100%" height="100%" viewBox="0 0 12 12" overflow="visible"><g transform="translate(-59.244 -39.112)" fill="#fffbfb" stroke-linecap="round" stroke-width=".929"><path d="m69.709 44.577a5 5 0 0 1-4.977 4.9999 5 5 0 0 1-5.0228-4.954 5 5 0 0 1 4.9309-5.0455 5 5 0 0 1 5.0681 4.9076" stroke="#000" style="paint-order:normal""")/>><path d="m59.709 44.577h10" stroke="#ff0101" style="paint-order:stroke fill markers""")/>></g></svg>`,
@@ -358,11 +365,11 @@ let cellVal = input ? input.value : (hidden ? hidden.value : cell.innerText.trim
                 return c === 'st' ? el.checked : el.value;
             });
         }
-        localStorage.setItem('aufmass_v19_inline', JSON.stringify(d));
+        localStorage.setItem(pageNamespace + '_data', JSON.stringify(d));
     }
 
 function load() {
-    const s = localStorage.getItem('aufmass_v19_inline');
+    const s = localStorage.getItem(pageNamespace + '_data');
     if(!s) return;
     const d = JSON.parse(s);
     document.getElementById('h_p').value = d.p || "";
@@ -401,7 +408,7 @@ async function exportCSV() {
     const proj = document.getElementById('h_p').value;
     const notes = document.getElementById('general_notes').value.replace(/\n/g, '[BR]').replace(/;/g, ',');
     
-    let txt = `V19ST|${proj}|${document.getElementById('h_n').value}|${document.getElementById('h_d').value}|${document.getElementById('h_m').value}|${notes}\n`;
+    let txt = `Kappenaufmaß|${proj}|${document.getElementById('h_n').value}|${document.getElementById('h_d').value}|${document.getElementById('h_m').value}|${notes}\n`;
     
     for(let i=1; i<=ROWS; i++) {
         txt += COLS.map(c => {
@@ -469,7 +476,14 @@ document.getElementById('general_notes').value = (meta[5] || "").replace(/\[BR\]
         reader.readAsText(input.files[0]);
     }
 
-    function clearTable() { if(confirm("Alles löschen?")) { localStorage.clear(); location.reload(); } }
+function clearTable() { 
+    if(confirm("Möchten Sie alle Eingaben dieses Formulars löschen?")) { 
+        // Löscht nur den spezifischen Eintrag im Speicher
+        localStorage.removeItem(pageNamespace + '_data');
+        location.reload(); 
+    } 
+}
+
 	
 	// Globaler Event-Listener für das gesamte Fenster
 window.addEventListener('keydown', function(e) {

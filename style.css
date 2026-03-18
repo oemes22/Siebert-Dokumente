@@ -159,6 +159,7 @@ td:focus-within {
 .notes-section {
     border: 1px solid #000;
     margin-top: 20px;
+	margin-bottom: 20px;
     display: flex;
     padding: 0;
 }
