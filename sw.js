@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lnr-app-v1.4';
+const CACHE_NAME = 'lnr-app-v1.3';
 const VERSION = '1.4 Käsebrot'; // Diese Variable wird an die Webseite gesendet
 const bwChannel = new BroadcastChannel('sw_status');
 

@@ -301,6 +301,10 @@ button:active {
 
 button:focus { outline: none; }
 
+@view-transition {
+  navigation: auto;
+}
+
 /* --- 10. PRINT STYLES (ORIGINAL PDF 0.1.3 / 0.1.4) --- */
 @media print {
     * {
