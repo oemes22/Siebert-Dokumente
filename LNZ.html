@@ -388,7 +388,7 @@ function getGeneratedFileName() {
                   String(jetzt.getMonth() + 1).padStart(2, '0') + "-" + 
                   jetzt.getFullYear();
     
-    return `LNZ-${bau}_${ort}_${datum}.lnz`.replace(/[/\\?%*:|"<>\s]/g, '_');
+    return `LNZ-${bau}_${ort}_${datum}.lnz`.replace(/[/\\?%*:|"<>\s,]/g, '_');
 }
 
 async function saveAsLNZ() {

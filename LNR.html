@@ -669,8 +669,10 @@ function calculateAndFormat(inputField) {
             let formula = rawValue.replace(/,/g, '.').replace(/x/g, '*');
             let result = eval(formula);
             if (!isNaN(result)) {
-                // Ergebnis runden und Punkt zurück zu Komma
-                inputField.value = result.toString().replace(/\./g, ',');
+// Rundet auf maximal 2 Stellen, zeigt bei ganzen Zahlen keine Kommastellen
+let rounded = Math.round(result * 100) / 100; 
+inputField.value = rounded.toString().replace(/\./g, ',');
+
             }
         } catch (e) {
             console.log("Formel unvollständig");
@@ -777,7 +779,7 @@ function getGeneratedFileName() {
                   jetzt.getFullYear();
     
     // Erzeugt z.B. "Hausbau_Regensburg_06-03-2026.lnr"
-    return `LNR-${bau}_${ort}_${datum}.lnr`.replace(/[/\\?%*:|"<>\s]/g, '_');
+    return `LNR-${bau}_${ort}_${datum}.lnr`.replace(/[/\\?%*:|"<>\s,]/g, '_');
 }
 
 // 2. SPEICHERN: Erstellt die CSV mit Semikolon und Zeilenumbrüchen
@@ -873,7 +875,10 @@ function silentCalculate(inputField) {
             let formula = rawValue.replace(/,/g, '.').replace(/x/g, '*');
             let result = eval(formula);
             if (!isNaN(result)) {
-                inputField.value = result.toString().replace(/\./g, ',');
+// Rundet auf maximal 2 Stellen, zeigt bei ganzen Zahlen keine Kommastellen
+let rounded = Math.round(result * 100) / 100; 
+inputField.value = rounded.toString().replace(/\./g, ',');
+
             }
         } catch (e) { console.log("Rechenfehler beim Laden"); }
     }
