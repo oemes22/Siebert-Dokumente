@@ -25,15 +25,34 @@
     align-items: center;
     padding-top: 60px;
     color: var(--primary-text);
-    background: radial-gradient(
-      circle at left top,
-      rgba(255, 0, 0, 0.5) 0%,
-      rgba(255, 255, 0, 1) 5%,
-      rgba(0, 255, 0, 0.5) 10%,
-      rgba(0, 0, 255, 0.5) 40%,
-	  rgba(0, 0, 255, 1) 100%
-    );
-    background-attachment: fixed;
+	
+/* --- EXTRA FEINES TECHNIK-RASTER (SCROLLBAR) --- */
+background: 
+    /* 1. Haupt-Raster (alle 50px - Deutliche Linien) */
+    linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px),
+    /* 2. Mittel-Raster (alle 25px - Mittlere Linien) */
+    linear-gradient(rgba(255,255,255,0.15) 0.8px, transparent 0.8px),
+    linear-gradient(90deg, rgba(255,255,255,0.15) 0.8px, transparent 0.8px),
+    /* 3. Fein-Raster (alle 5px - Millimeter-Optik) */
+    linear-gradient(rgba(255,255,255,0.08) 0.5px, transparent 0.5px),
+    linear-gradient(90deg, rgba(255,255,255,0.08) 0.5px, transparent 0.5px),
+    /* 4. Dein originaler bunter Hintergrundverlauf */
+radial-gradient(
+  circle at left top,
+  rgba(255, 50, 50, 0.6) 0%,   /* Vibrantes, aber weicheres Rot */
+  rgba(255, 215, 0, 0.5) 8%,   /* Gold-Gelb (weniger "Neon") */
+  rgba(46, 204, 113, 0.4) 15%, /* Smaragdgrün */
+  rgba(41, 128, 185, 0.6) 45%, /* Sattes Ocean-Blau */
+  rgba(15, 15, 25, 1) 100%     /* Sehr dunkles Blau-Schwarz */
+);
+
+/* Die kleineren Größen für das feine Gitter */
+background-size: 50px 50px, 50px 50px, 25px 25px, 25px 25px, 5px 5px, 5px 5px, 100% 100%;
+
+/* WICHTIG: background-attachment: scroll sorgt dafür, dass das Gitter mitwandert */
+background-attachment: scroll; 
+/* ------------------------------------------- */
   }
 
   h1 {
@@ -80,12 +99,15 @@
     color: #000;
   }
 
-  #version-container {
-    margin-top: auto;
-    padding: 20px;
-    font-size: 0.9rem;
-    opacity: 0.8;
-  }
+#version-container {
+  margin-top: auto;      /* Schiebt den Container ganz nach unten */
+  padding: 20px;
+  font-size: 0.6rem;
+  color: white;
+  width: 100%;           /* Nutzt die volle Breite */
+  text-align: right;     /* Richtet den Text innerhalb rechts aus */
+  box-sizing: border-box; /* Verhindert Overlap durch Padding */
+}
 </style>
 </head>
 <body>

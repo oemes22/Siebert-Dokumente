@@ -112,8 +112,8 @@ h1 {
     height: 28px;
 }
 
-td:focus-within {
-    background-color: #9de8fc;
+.table-section td:focus-within {
+    background-color: #9de8fc !important;
     outline: none;
 }
 
@@ -122,10 +122,24 @@ td:focus-within {
     outline: none;
 }
 
+/* --- 5. HAUPTTABELLE DATEN & KOPFZEILE (UPDATE) --- */
+
+/* Jede 2. Spalte in der Datentabelle bekommt einen dezenten Grauschleier */
+.table-section td:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Kopfzeile: Ersetzt deinen Block von Zeile 125-128 */
 .table-section thead th {
-    background-color: #f2f2f2;
+    background-color: #f2f2f2; /* Dein Standard-Grau */
     font-weight: bold;
 }
+
+/* Jede 2. Spalte im Header etwas dunkler, damit die Spalte "durchläuft" */
+.table-section thead th:nth-child(even) {
+    background-color: #e2e2e2; 
+}
+
 
  tfoot { 
  background-color: #f2f2f2; font-weight: bold; font-size:0.65rem; "
@@ -320,6 +334,16 @@ button:focus { outline: none; }
     .no-print, 
     .action-section { 
         display: none !important; 
-    }
+		}
+		
+		  .table-section td:nth-child(even) {
+    background-color: transparent !important;
+  }
+
+  /* Entfernt die dunklere Färbung der geraden Spalten im Tabellenkopf */
+  .table-section thead th:nth-child(even) {
+    background-color: #f2f2f2 !important; /* Setzt es auf das Standard-Grau der anderen Header-Zellen */
+  }
+		
 }
 
