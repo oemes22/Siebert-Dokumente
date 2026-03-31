@@ -15,6 +15,12 @@
         "application/octet-stream": [".lnr"]
       }
     },
+	    {
+      "action": "Std.html",
+      "accept": {
+        "application/octet-stream": [".stdz"]
+      }
+    },
     {
       "action": "LNZ.html",
       "accept": {

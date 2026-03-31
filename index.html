@@ -97,7 +97,34 @@ background-attachment: scroll;
   a:hover {
     background: #ffffff;
     color: #000;
+	
   }
+  
+  #std-icon-link {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  width:  40px;
+  height: 40px;
+  padding: 0;         
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.2rem;
+  border-radius: 50%;   
+  z-index: 1000;        /* Immer im Vordergrund */
+  box-shadow: 0 10px 30px #ffffbf;
+  background: transparent;
+  backdrop-filter: blur(10px);
+  border: none;
+  text-decoration: none;
+}
+
+#std-icon-link:hover {
+  background: transparent;
+  transform: scale(1.2); /* Kleiner Vergrößerungs-Effekt */
+}
+
 
 #version-container {
   margin-top: auto;      /* Schiebt den Container ganz nach unten */
@@ -112,13 +139,14 @@ background-attachment: scroll;
 </head>
 <body>
 
+    <a href="Std.html" id="std-icon-link" title="Stundenzettel">🕒</a>
     <h1>Siebert-Isolierungen</h1>
     <p>Bitte wähle eine Vorlage aus:</p>
 
     <ul>
-        <li><a href="LNR.html">Leistungsnachweis Rohre</a></li>
-		<li><a href="LNZ.html">Leistungsnachweis (Regie)</a></li>
-        <li><a href="Kappenaufmaß.html">Kappenaufmaß</a></li>
+        <li><a href="LNR.html">Leistungsnachweis Rohre 📏</a></li>
+		<li><a href="LNZ.html">Leistungsnachweis (Regie) ⏳</a></li>
+        <li><a href="Kappenaufmaß.html">Kappenaufmaß 🔘</a></li>
     </ul>
 	
     <div id="version-container">

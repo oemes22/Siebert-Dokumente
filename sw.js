@@ -1,5 +1,5 @@
-const CACHE_NAME = 'lnr-app-v1.6';
-const VERSION = '1.6 Schinkenstulle'; // Diese Variable wird an die Webseite gesendet
+const CACHE_NAME = 'lnr-app-v1.1';
+const VERSION = '1.1 Butterschnitte'; // Diese Variable wird an die Webseite gesendet
 const bwChannel = new BroadcastChannel('sw_status');
 
 const ASSETS = [
@@ -7,6 +7,7 @@ const ASSETS = [
     'LNR.html',
 	'LNZ.html',
 	'Kappenaufmaß.html',
+	'Std.html',
     'style.css',
     'Logo.svg',
     'manifest.json',
