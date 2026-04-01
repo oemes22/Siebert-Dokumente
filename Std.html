@@ -143,6 +143,12 @@ input[type=number] {
     z-index: 10; 
 }
 
+/* Markiert die gesamte Zeile, wenn eine Zelle darin fokussiert wird */
+#tb tr:focus-within {
+    background-color: rgba(235, 222, 52, 0.4); 
+}
+
+
 .logo {
     width: 75px;
     height: auto;
@@ -169,7 +175,7 @@ input[type=number] {
                 <div><label>Name:</label><input type="text" id="name" list="list_name" oninput="sync()"></div>
 <div>
   <label>Monat/Jahr</label>
-  <input type="text" id="m_j" placeholder="MM.YYYY" oninput="sync(); fillDays()">
+  <input inputMode="decimal" type="text" id="m_j" placeholder="MM.YYYY" oninput="sync(); fillDays()">
 </div>
             </div>
         </div>
@@ -237,7 +243,7 @@ input[type=number] {
     </label>
 </div>
 			
-			<div style="width: 15%"><label>Datum:</label><input inputMode="decimal" type="text" id="datum_ag" readonly></div>
+			<div style="width: 15%"><label>Datum:</label><input type="text" id="datum_ag" readonly></div>
 			<div style="width: 35%"><label>Unterschrift Arbeitgeber:</label><input type="text" id="unterschrift_ag" readonly></div>
         </div>
 		
