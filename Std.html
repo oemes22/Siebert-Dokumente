@@ -237,7 +237,7 @@ input[type=number] {
     </label>
 </div>
 			
-			<div style="width: 15%"><label>Datum:</label><input type="text" id="datum_ag" readonly></div>
+			<div style="width: 15%"><label>Datum:</label><input inputMode="decimal" type="text" id="datum_ag" readonly></div>
 			<div style="width: 35%"><label>Unterschrift Arbeitgeber:</label><input type="text" id="unterschrift_ag" readonly></div>
         </div>
 		
@@ -275,35 +275,38 @@ function initTable() {
             td.className = `col-${c}`;
 
             let input = document.createElement('input');
-            input.type = 'text';
+            input.type = 'text'; // Bleibt text für die Formatierungshilfen
             input.className = 'cell';
             input.id = `r${i}_${c}`;
-            
-            // Standard: Bei jeder Eingabe synchronisieren [5.281]
+
+            // NEU: Numerische Tastatur für Zeit- und Stundenfelder erzwingen
+            const numerischeSpalten = ['beginn', 'pause', 'ende', 'dauer'];
+            if (numerischeSpalten.includes(c)) {
+                input.inputMode = 'decimal'; 
+            }
+
+            // Standard: Bei jeder Eingabe synchronisieren
             input.oninput = sync;
 
             // --- SPEZIELLE LOGIK PRO SPALTE ---
             if (c === 'tag') {
-                input.readOnly = true; [5.285]
+                input.readOnly = true;
             }
             else if (c === 'beginn' || c === 'ende') {
-                input.addEventListener('blur', function() { formatInput(this, 'time'); }); [5.288]
+                input.addEventListener('blur', function() { formatInput(this, 'time'); });
             }
             else if (c === 'dauer' || c === 'pause') {
-                input.addEventListener('blur', function() { formatInput(this, 'hours'); }); [5.291]
+                input.addEventListener('blur', function() { formatInput(this, 'hours'); });
             }
             else if (c === 'sternchen') {
-                input.setAttribute('list', 'list_sternchen'); [5.294]
-                // Benutzerdefiniertes oninput: Erst Logik prüfen, dann sync() als Abschluss
+                input.setAttribute('list', 'list_sternchen');
                 input.oninput = function() {
-                    checkSternchen(i); 
-                    sync(); // Muss als letztes stehen, damit Änderungen im Speicher landen [6.298]
+                    checkSternchen(i);
+                    sync();
                 };
             }
-            // NEU: Verknüpfung der Bemerkungen-Spalte mit der Datalist
             else if (c === 'bemerkungen') {
                 input.setAttribute('list', 'list_orte');
-                // Hier bleibt input.oninput = sync (von oben) aktiv
             }
 
             td.appendChild(input);
@@ -311,8 +314,9 @@ function initTable() {
         });
         tb.appendChild(tr);
     }
-    load(); // Vorhandene Daten nach dem Erstellen laden [6.308]
+    load(); // Vorhandene Daten nach dem Erstellen laden
 }
+
 
 
 // Hilfsfunktion für die automatische Formatierung
