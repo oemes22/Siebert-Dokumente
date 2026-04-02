@@ -563,13 +563,13 @@ function getTextWidth(text, font) {
 function adjustFontSize(el) {
     if (!el || !el.value) {
         // Wenn leer: Zurück auf Standard
-        el.style.fontSize = (el.dataset.originalSize || "16") + "px";
+        el.style.fontSize = (el.dataset.originalSize || "12") + "px";
         return;
     }
 
     // 1. Originalgröße einmalig merken
     if (!el.dataset.originalSize) {
-        el.dataset.originalSize = parseFloat(window.getComputedStyle(el).fontSize) || 16;
+        el.dataset.originalSize = parseFloat(window.getComputedStyle(el).fontSize) || 12;
     }
 
     let startSize = parseFloat(el.dataset.originalSize);
