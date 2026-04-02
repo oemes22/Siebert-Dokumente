@@ -45,33 +45,33 @@
             <table class="form-layout-table">
                 <tr>
                     <td class="label-cell"><label for="auftraggeber">Auftraggeber:</label></td>
-                    <td class="input-cell" colspan="3"><input list="list_auftraggeber" type="text" id="auftraggeber"></td>
+                    <td class="input-cell" colspan="3"><input class="schrift-schrumpfen" list="list_auftraggeber" type="text" id="auftraggeber"></td>
                 </tr>
                 <tr>
                     <td class="label-cell"><label for="leistungsort">Leistungsort:</label></td>
-                    <td class="input-cell" colspan="3"><input type="text" id="leistungsort"></td>
+                    <td class="input-cell" colspan="3"><input class="schrift-schrumpfen" type="text" id="leistungsort"></td>
                 </tr>
                 <tr>
                     <td class="label-cell"><label for="bauvorhaben">Bauvorhaben:</label></td>
-                    <td class="input-cell"><input type="text" id="bauvorhaben"></td>
+                    <td class="input-cell"><input class="schrift-schrumpfen" type="text" id="bauvorhaben"></td>
                     <td class="label-cell inline-label-cell"><label for="bestellnr">Best.Nr.:</label></td>
-                    <td class="input-cell" style="width: 25%;"><input type="text" id="bestellnr"></td>
+                    <td class="input-cell" style="width: 25%;"><input class="schrift-schrumpfen" type="text" id="bestellnr"></td>
                 </tr>
                 <tr>
                     <td class="label-cell"><label for="zeitraum">Zeitraum:</label></td>
-                    <td class="input-cell"><input type="text" id="zeitraum"></td>
+                    <td class="input-cell"><input class="schrift-schrumpfen" type="text" id="zeitraum"></td>
                     <td class="label-cell inline-label-cell"><label for="kommissionsnr">Kom.Nr.:</label></td>
-                    <td class="input-cell" style="width: 25%;"><input type="text" id="kommissionsnr"></td>
+                    <td class="input-cell" style="width: 25%;"><input class="schrift-schrumpfen" type="text" id="kommissionsnr"></td>
                 </tr>
                 <tr>
                     <td class="label-cell"><label for="monteur">Monteur:</label></td>
-                    <td class="input-cell"><input list="list_monteur" type="text" id="monteur"></td>
+                    <td class="input-cell"><input class="schrift-schrumpfen" list="list_monteur" type="text" id="monteur"></td>
                     <td class="label-cell inline-label-cell"><label for="koordinator">Koordinator:</label></td>
-                    <td class="input-cell" style="width: 25%;"><input type="text" id="koordinator"></td>
+                    <td class="input-cell" style="width: 25%;"><input class="schrift-schrumpfen" type="text" id="koordinator"></td>
                 </tr>
                 <tr class="activity-row">
                     <td class="label-cell"><label for="taetigkeit">Tätigkeit:</label></td>
-                    <td class="input-cell" colspan="3"><input type="text" id="taetigkeit" value="Dämmen von Rohrleitungen"></td>
+                    <td class="input-cell" colspan="3"><input class="schrift-schrumpfen" type="text" id="taetigkeit" value="Dämmen von Rohrleitungen"></td>
                 </tr>
             </table>
         </section>
@@ -106,7 +106,7 @@
                         <th rowspan="2">Endst.</th>
                         <th rowspan="2">Trichter</th>
                         <th rowspan="2">Stutzen</th>
-                        <th rowspan="2">Stk.</th>
+                        <th rowspan="2"><input id="stk" value="Stk."></input></th>
                         <th rowspan="2"><input id="frei"></input></th>
                     </tr>
                 </thead>
@@ -766,6 +766,13 @@ function clearAllFields() {
             dateField.value = `Regensburg / ${datum}`;
             saveToPageStorage('ort-datum', dateField.value);
         }
+		        // Standard-Wert für das Feld "stk" setzen
+        const stkField = document.getElementById('stk');
+        if (stkField) {
+            const standardStk = "Stk.";
+            stkField.value = standardStk;
+            saveToPageStorage('stk', standardStk); // Speichert es ebenfalls im Storage, falls nötig
+        }
     }
 }
 
@@ -836,36 +843,51 @@ async function saveAsLNR() {
 
 
 
-// 3. LADEN: Verarbeitet die Datei
+// 3. LADEN: Verarbeitet die Datei (verbesserte Version für Zeilenumbrüche)
 function handleFileSelect(event) {
     const file = event.target.files[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onload = function(e) {
-        const lines = e.target.result.split(/\r?\n/);
+        const content = e.target.result;
 
-        lines.forEach(line => {
-            if (!line.includes(';')) return;
-            const parts = line.split(';');
-            const id = parts[0];
-            let value = parts.slice(1).join(';').replace(/^"|"$/g, '').replace(/""/g, '"');
+        // Dieser reguläre Ausdruck findet Paare von ID; "Wert" 
+        // Er erlaubt Zeilenumbrüche innerhalb der Anführungszeichen durch das 's' Flag
+        const regex = /([^;\r\n]+);"(.*?)"(?:\r?\n|$)/gs;
+        let match;
+
+        while ((match = regex.exec(content)) !== null) {
+            const id = match[1].trim();
+            // Entfernt die CSV-Maskierung (doppelte Anführungszeichen -> einfache)
+            let value = match[2].replace(/""/g, '"');
 
             const field = document.getElementById(id);
             if (field) {
                 field.value = value;
+                
+                // Deine spezifische Numpad/Formel-Logik
                 if (field.classList.contains('numpad-input')) {
-                    formulas.set(field, value);
+                    if (typeof formulas !== 'undefined') {
+                        formulas.set(field, value);
+                    }
                     silentCalculate(field);
                 }
+                
                 saveToPageStorage(id, value);
             }
-        });
-        updateTableSums();
+        }
+
+        // Tabellensummen nach dem vollständigen Einlesen einmalig aktualisieren
+        if (typeof updateTableSums === 'function') {
+            updateTableSums();
+        }
+        
         event.target.value = ""; 
     };
     reader.readAsText(file);
 }
+
 
 // Hilfsfunktion für das Laden
 function silentCalculate(inputField) {
@@ -912,6 +934,71 @@ window.addEventListener('beforeprint', () => {
 window.addEventListener('afterprint', () => {
     document.title = originalTitle; // Titel wieder zurücksetzen
 });
+
+
+// Hilfsfunktion zur exakten Breitenmessung (Span-Methode)
+function getTextWidth(text, font) {
+    const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
+    const context = canvas.getContext("2d");
+    context.font = font;
+    return context.measureText(text).width;
+}
+
+function adjustFontSize(el) {
+    if (!el || !el.value) {
+        // Wenn leer: Zurück auf Standard
+        el.style.fontSize = (el.dataset.originalSize || "16") + "px";
+        return;
+    }
+
+    // 1. Originalgröße einmalig merken
+    if (!el.dataset.originalSize) {
+        el.dataset.originalSize = parseFloat(window.getComputedStyle(el).fontSize) || 16;
+    }
+
+    let startSize = parseFloat(el.dataset.originalSize);
+    let currentSize = startSize;
+    
+    // 2. Verfügbare Breite im Input (minus Padding)
+    const style = window.getComputedStyle(el);
+    const padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+    const availableWidth = el.clientWidth - padding - 5; // 5px Sicherheit
+
+    if (availableWidth <= 0) return; // Verhindert Fehler beim Laden
+
+    // 3. Schrift schrittweise verkleinern, bis der Text passt
+    const fontFamily = style.fontFamily;
+    const fontWeight = style.fontWeight;
+
+    while (currentSize > 8) {
+        const textWidth = getTextWidth(el.value, `${fontWeight} ${currentSize}px ${fontFamily}`);
+        if (textWidth <= availableWidth) break;
+        currentSize -= 0.5;
+    }
+
+    el.style.fontSize = currentSize + "px";
+}
+
+// Initialisierung
+function initApp() {
+    const inputs = document.querySelectorAll('.schrift-schrumpfen');
+    inputs.forEach(el => {
+        // Listener für jede Änderung
+        el.addEventListener('input', () => adjustFontSize(el));
+        // Einmal prüfen (für geladene Daten)
+        setTimeout(() => adjustFontSize(el), 100);
+    });
+}
+
+// Starten wenn alles bereit ist
+if (document.readyState === 'loading') {
+    window.addEventListener('load', initApp);
+} else {
+    initApp();
+}
+
+
+
 
 
 

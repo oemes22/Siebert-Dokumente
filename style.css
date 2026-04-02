@@ -94,6 +94,9 @@ h1 {
     padding-left: 20px !important;
 }
 
+.geteilte-ansicht {display: flex; }
+
+
 /* --- 5. HAUPTTABELLE DATEN (ORIGINAL PDF 0.1.2) --- */
 .table-section table {
     width: 100%;
@@ -101,6 +104,7 @@ h1 {
     table-layout: fixed;
     word-wrap: break-word;
     margin-top: 10px;
+	margin-right: 1px;
 }
 
 .table-section th,
@@ -157,7 +161,7 @@ h1 {
 	scroll-margin-bottom: 420px; /* Höhe des Numpads + Sicherheitsabstand */
 }
 
-#frei{
+#frei, #stk{
     width: 100%;
     box-sizing: border-box;
     border: none;
@@ -174,6 +178,7 @@ h1 {
     border: 1px solid #000;
     margin-top: 20px;
 	margin-bottom: 20px;
+	margin-right: 1px;
     display: flex;
     padding: 0;
 }
@@ -195,6 +200,31 @@ textarea {
     font-family: inherit;
     font-size: 0.75rem;
 }
+
+.schrift-schrumpfen {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+}
+
+.input-as-label {
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: bold;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    color: inherit;
+}
+
+/* Verhindert den blauen Rahmen beim Klicken */
+.input-as-label:focus {
+    outline: none;
+    background: rgba(88, 149, 168, 0.1); /* Hauchzarter Hintergrund beim Editieren */
+}
+
 
 /* ---Knöpfe unten--- */
 .action-section {
@@ -343,6 +373,18 @@ button:focus { outline: none; }
   /* Entfernt die dunklere Färbung der geraden Spalten im Tabellenkopf */
   .table-section thead th:nth-child(even) {
     background-color: #f2f2f2 !important; /* Setzt es auf das Standard-Grau der anderen Header-Zellen */
+  }
+  
+    textarea {
+    /* Versteckt die Scrollbalken komplett */
+    overflow: hidden !important;
+    
+    /* Entfernt typische Browser-UI-Elemente wie den Resize-Griff */
+    resize: none;
+
+  /* Speziell für Chrome/Safari/Edge, um Scrollbars sicher zu killen */
+  textarea::-webkit-scrollbar {
+    display: none;
   }
 		
 }

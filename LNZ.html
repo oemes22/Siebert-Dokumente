@@ -45,35 +45,35 @@
             <table class="form-layout-table">
                 <tr>
                     <td class="label-cell"><label for="auftraggeber">Auftraggeber:</label></td>
-                    <td class="input-cell" colspan="3"><input list="list_auftraggeber" type="text" id="auftraggeber"></td>
+                    <td class="input-cell" colspan="3"><input class="schrift-schrumpfen" list="list_auftraggeber" type="text" id="auftraggeber"></td>
                 </tr>
                 <tr>
                     <td class="label-cell"><label for="leistungsort">Leistungsort:</label></td>
-                    <td class="input-cell" colspan="3"><input type="text" id="leistungsort"></td>
+                    <td class="input-cell" colspan="3"><input class="schrift-schrumpfen" type="text" id="leistungsort"></td>
                 </tr>
                 <tr>
                     <td class="label-cell"><label for="bauvorhaben">Bauvorhaben:</label></td>
-                    <td class="input-cell"><input type="text" id="bauvorhaben"></td>
+                    <td class="input-cell"><input class="schrift-schrumpfen" type="text" id="bauvorhaben"></td>
                     <td class="label-cell inline-label-cell"><label for="bestellnr">Best.Nr.:</label></td>
-                    <td class="input-cell" style="width: 25%;"><input type="text" id="bestellnr"></td>
+                    <td class="input-cell" style="width: 25%;"><input class="schrift-schrumpfen" type="text" id="bestellnr"></td>
                 </tr>
                 <tr>
                     <td class="label-cell"><label for="zeitraum">Zeitraum:</label></td>
-                    <td class="input-cell"><input type="text" id="zeitraum"></td>
+                    <td class="input-cell"><input class="schrift-schrumpfen" type="text" id="zeitraum"></td>
                     <td class="label-cell inline-label-cell"><label for="kommissionsnr">Kom.Nr.:</label></td>
-                    <td class="input-cell" style="width: 25%;"><input type="text" id="kommissionsnr"></td>
+                    <td class="input-cell" style="width: 25%;"><input class="schrift-schrumpfen" type="text" id="kommissionsnr"></td>
                 </tr>
                 <tr>
                     <td class="label-cell"><label for="monteur">Monteur:</label></td>
-                    <td class="input-cell"><input list="list_monteur" type="text" id="monteur"></td>
+                    <td class="input-cell"><input class="schrift-schrumpfen" list="list_monteur" type="text" id="monteur"></td>
                     <td class="label-cell inline-label-cell"><label for="koordinator">Koordinator:</label></td>
-                    <td class="input-cell" style="width: 25%;"><input type="text" id="koordinator"></td>
+                    <td class="input-cell" style="width: 25%;"><input class="schrift-schrumpfen" type="text" id="koordinator"></td>
                 </tr>
             </table>
         </section>
 		        <section class="notes-section">
             <div class="notes-label">Beschreibung:</div>
-            <textarea id="beschreibung" rows="3"></textarea>
+            <textarea id="beschreibung" rows="4" ></textarea>
         </section>
 
         <!-- DATEN-TABELLE -->
@@ -88,7 +88,7 @@
 				<!-- Kopfzeile -->
                 <thead>
                     <tr>
-                        <th rowspan="2"><input id="frei" Value="Pos."</input></th>
+                        <th rowspan="2"><input id="frei" Value="Pos."></input></th>
                         <th rowspan="2">Menge</th>
                         <th rowspan="2">Einh.</th>
                         <th rowspan="2">Beschreibung</th>
@@ -374,7 +374,6 @@ function clearAllFields() {
             freiField.value = standardFrei;
             saveToPageStorage('frei', standardFrei); // Speichert es ebenfalls im Storage, falls nötig
         }
-        console.log("Namespace '" + pageNamespace + "' wurde bereinigt.");
     }
 }
 
@@ -441,34 +440,35 @@ async function saveAsLNZ() {
 
 // 3. LADEN: Verarbeitet die Datei
 function handleFileSelect(event) {
-    const file = event.target.files[0];
-    if (!file) return;
+  const file = event.target.files[0];
+  if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const lines = e.target.result.split(/\r?\n/);
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const content = e.target.result;
+    
+    // Regulärer Ausdruck, um CSV-Zeilen korrekt zu trennen, 
+    // auch wenn Zeilenumbrüche innerhalb von Anführungszeichen vorkommen.
+    const re = /([^;]+);"(.*?)"(?:\r?\n|$)/gs;
+    let match;
 
-        lines.forEach(line => {
-            if (!line.includes(';')) return;
-            
-            // Zerlegen der Zeile in ID und Wert
-            const parts = line.split(';');
-            const id = parts[0];
-            // Entfernt die CSV-Anführungszeichen und stellt maskierte Anführungszeichen wieder her
-            let value = parts.slice(1).join(';').replace(/^"|"$/g, '').replace(/""/g, '"');
+    while ((match = re.exec(content)) !== null) {
+      const id = match[1].trim();
+      // Ersetzt doppelte Anführungszeichen wieder durch einfache
+      const value = match[2].replace(/""/g, '"');
 
-const field = document.getElementById(id);
-if (field) {
-    field.value = value;
-saveToPageStorage(id, value);
+      const field = document.getElementById(id);
+      if (field) {
+        field.value = value;
+        saveToPageStorage(id, value);
+      }
+    }
+
+    event.target.value = "";
+  };
+  reader.readAsText(file);
 }
-        });
-        
-        // Input zurücksetzen, damit dieselbe Datei erneut gewählt werden kann
-        event.target.value = ""; 
-    };
-    reader.readAsText(file);
-}
+
 
 // Script für den Drucknamen
 let originalTitle = document.title;
@@ -552,6 +552,66 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
+// Hilfsfunktion zur exakten Breitenmessung (Span-Methode)
+function getTextWidth(text, font) {
+    const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
+    const context = canvas.getContext("2d");
+    context.font = font;
+    return context.measureText(text).width;
+}
+
+function adjustFontSize(el) {
+    if (!el || !el.value) {
+        // Wenn leer: Zurück auf Standard
+        el.style.fontSize = (el.dataset.originalSize || "16") + "px";
+        return;
+    }
+
+    // 1. Originalgröße einmalig merken
+    if (!el.dataset.originalSize) {
+        el.dataset.originalSize = parseFloat(window.getComputedStyle(el).fontSize) || 16;
+    }
+
+    let startSize = parseFloat(el.dataset.originalSize);
+    let currentSize = startSize;
+    
+    // 2. Verfügbare Breite im Input (minus Padding)
+    const style = window.getComputedStyle(el);
+    const padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+    const availableWidth = el.clientWidth - padding - 5; // 5px Sicherheit
+
+    if (availableWidth <= 0) return; // Verhindert Fehler beim Laden
+
+    // 3. Schrift schrittweise verkleinern, bis der Text passt
+    const fontFamily = style.fontFamily;
+    const fontWeight = style.fontWeight;
+
+    while (currentSize > 8) {
+        const textWidth = getTextWidth(el.value, `${fontWeight} ${currentSize}px ${fontFamily}`);
+        if (textWidth <= availableWidth) break;
+        currentSize -= 0.5;
+    }
+
+    el.style.fontSize = currentSize + "px";
+}
+
+// Initialisierung
+function initApp() {
+    const inputs = document.querySelectorAll('.schrift-schrumpfen');
+    inputs.forEach(el => {
+        // Listener für jede Änderung
+        el.addEventListener('input', () => adjustFontSize(el));
+        // Einmal prüfen (für geladene Daten)
+        setTimeout(() => adjustFontSize(el), 100);
+    });
+}
+
+// Starten wenn alles bereit ist
+if (document.readyState === 'loading') {
+    window.addEventListener('load', initApp);
+} else {
+    initApp();
+}
 
 
 
