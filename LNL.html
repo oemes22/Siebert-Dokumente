@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leistungsnachweis Zeit</title>
+    <title>Leistungsnachweis Lüftungskanäle</title>
     <link rel="stylesheet" href="style.css">
 	
 	<!-- Anfang Verknüpfung zum Web App Manifest -->
@@ -26,8 +26,8 @@
             <h1>
 			<table class="form-layout-table">   
 			<tr>
-                    <td class="label-cell"><label for="lnz">Leistungsnachweis Nr.:</label></td>
-                    <td class="input-cell" colspan="3"><input type="text" id="lnz"></td>
+                    <td class="label-cell"><label for="lnl">Leistungsnachweis Nr.:</label></td>
+                    <td class="input-cell" colspan="3"><input type="text" id="lnl"></td>
             </tr>	
 			</table>
 		    </h1>
@@ -69,147 +69,93 @@
                     <td class="label-cell inline-label-cell"><input class="wechsel-label" id="koordinatorlabel" value="Koordinator:"></input></td>
                     <td class="input-cell" style="width: 25%;"><input class="schrift-schrumpfen" type="text" id="koordinator"></td>
                 </tr>
+                <tr class="activity-row">
+                    <td class="label-cell"><label for="taetigkeit">Tätigkeit:</label></td>
+                    <td class="input-cell" colspan="3"><input class="schrift-schrumpfen" type="text" id="taetigkeit" value="Dämmen von Lüftungskanälen"></td>
+                </tr>
             </table>
         </section>
-		        <section class="notes-section">
-            <div class="notes-label">Beschreibung:</div>
-            <textarea id="beschreibung" rows="4" ></textarea>
-        </section>
+		
 
         <!-- DATEN-TABELLE -->
         <section class="table-section">
-            <table>
+		<div class="geteilte-ansicht">   
+            <table style="margin-right: 1%">
                 <colgroup>
-                    <col style="width: 10%;">
-                    <col style="width: 10%;">
-                    <col style="width: 10%;">
-                    <col style="width: 70%;">         
-                </colgroup>
+                    <col style="width: 14%;">
+                    <col style="width: 7%;">
+                    <col style="width: 7%;">
+                    <col style="width: 7%;">
+					<col style="width: 7%;"> 
+                    <col style="width: 7%;">	
+				</colgroup>
+				
 				<!-- Kopfzeile -->
                 <thead>
                     <tr>
-                        <th rowspan="2"><input id="frei" Value="Pos."></input></th>
-                        <th rowspan="2">Menge</th>
-                        <th rowspan="2">Einh.</th>
-                        <th rowspan="2">Beschreibung</th>
+                        <th rowspan="2">Form</th>
+                        <th rowspan="2">Seite A</th>
+                        <th rowspan="2">Seite B</th>
+                        <th rowspan="2">Länge</th>
+						<th rowspan="2">Menge</th>
+                        <th rowspan="2">Fläche</th>
                     </tr>
+                    
                 </thead>
                 <tbody>
                     <!-- Tabellenzeilen -->
                     <tr>
-                        <td><input id="a1" class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="a2" class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="a3" class="input-haupttabelle" list="list_einheit"></input></td>
-						<td><input id="a4" class="input-haupttabelle" list="list_beschreibung"></input></td>
-
-                    </tr>
-					<tr>                    
-                        <td><input id="b1"  class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="b2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="b3"  class="input-haupttabelle" list="list_einheit"></input></td>
-						<td><input id="b4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
-                    </tr>
-					<tr>                    
-                        <td><input id="c1"  class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="c2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="c3"  class="input-haupttabelle" list="list_einheit"></input></td>
-						<td><input id="c4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
-                    </tr>
-					<tr>                    
-                        <td><input id="d1"  class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="d2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="d3"  class="input-haupttabelle" list="list_einheit"></input></td>
-						<td><input id="d4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
-                    </tr>
-					<tr>                    
-                        <td><input id="e1"  class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="e2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="e3"  class="input-haupttabelle" list="list_einheit"></input></td>
-						<td><input id="e4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
-                    </tr>
-					<tr>                    
-                        <td><input id="f1"  class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="f2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="f3"  class="input-haupttabelle" list="list_einheit"></input></td>
-						<td><input id="f4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
-                    </tr>
-					<tr>                    
-                        <td><input id="g1"  class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="g2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="g3"  class="input-haupttabelle" list="list_einheit"></input></td>
-						<td><input id="g4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
-                    </tr>
-					<tr>                    
-                        <td><input id="h1"  class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="h2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="h3"  class="input-haupttabelle" list="list_einheit"></input></td>
-						<td><input id="h4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
-                    </tr>
-					<tr>                    
-                        <td><input id="i1"  class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="i2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="i3"  class="input-haupttabelle" list="list_einheit"></input></td>
-						<td><input id="i4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
-                    </tr>
-					<tr>                    
-                        <td><input id="j1"  class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="j2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="j3"  class="input-haupttabelle" list="list_einheit"></input></td>
-						<td><input id="j4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
-                    </tr>
-					<tr>                    
-                        <td><input id="k1"  class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="k2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="k3"  class="input-haupttabelle" list="list_einheit"></input></td>
-						<td><input id="k4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
-                    </tr>
-					<tr>                    
-                        <td><input id="l1"  class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="l2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="l3"  class="input-haupttabelle" list="list_einheit"></input></td>
-						<td><input id="l4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
-                    </tr>
-					<tr>                    
-                        <td><input id="m1"  class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="m2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="m3"  class="input-haupttabelle" list="list_einheit"></input></td>
-						<td><input id="m4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
-                    </tr>
-					<tr>                    
-                        <td><input id="n1"  class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="n2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="n3"  class="input-haupttabelle" list="list_einheit"></input></td>
-						<td><input id="n4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
-                    </tr>
-					<tr>                    
-                        <td><input id="o1"  class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="o2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="o3"  class="input-haupttabelle" list="list_einheit"></input></td>
-						<td><input id="o4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
-                    </tr>
-					<tr>                    
-                        <td><input id="p1"  class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="p2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="p3"  class="input-haupttabelle" list="list_einheit"></input></td>
-						<td><input id="p4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
-                    </tr>
-					<tr>                    
-                        <td><input id="q1"  class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="q2"  class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="q3"  class="input-haupttabelle" list="list_einheit"></input></td>
-						<td><input id="q4"  class="input-haupttabelle" list="list_beschreibung"></input></td>
-
+                        <td><input id="1form1" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="1seitea1" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="1seiteb1" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="1laenge1" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="1menge1" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="1flaeche1" class="input-haupttabelle" inputmode="decimal"></input></td>						
                     </tr>
                 </tbody>
-    </table>
-</section>
             </table>
+			<table>
+                <colgroup>
+                    <col style="width: 14%;">
+                    <col style="width: 7%;">
+                    <col style="width: 7%;">
+                    <col style="width: 7%;">
+					<col style="width: 7%;"> 
+                    <col style="width: 7%;">	
+				</colgroup>
+				
+				<!-- Kopfzeile -->
+                <thead>
+                    <tr>
+                        <th rowspan="2">Form</th>
+                        <th rowspan="2">Seite A</th>
+                        <th rowspan="2">Seite B</th>
+                        <th rowspan="2">Länge</th>
+						<th rowspan="2">Menge</th>
+                        <th rowspan="2">Fläche</th>
+                    </tr>
+                    
+                </thead>
+                <tbody>
+                    <!-- Tabellenzeilen -->
+                    <tr>
+                        <td><input id="1form2" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="1seitea2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="1seiteb2" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="1laenge2" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="1menge2" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="1flaeche2" class="input-haupttabelle" inputmode="decimal"></input></td>						
+                    </tr>
+                </tbody>
+            </table>
+		</div>	
         </section>
+
 
         <!-- ANMERKUNGEN -->
         <section class="notes-section">
             <div class="notes-label">Anmerkungen:</div>
-            <textarea id="anmerkungen" rows="3"></textarea>
+            <textarea id="anmerkungen" rows="2"></textarea>
         </section>
 
         <!-- FOOTER-SEKTION ALS TABELLE -->
@@ -365,16 +311,9 @@ function clearAllFields() {
             const standardWert = `Regensburg / ${tag}.${monat}.${jahr}`;
             dateField.value = standardWert;
             saveToPageStorage('ort-datum', standardWert);
-                }
-
-        // Standard-Wert für das Feld "frei" setzen
-        const freiField = document.getElementById('frei');
-        if (freiField) {
-            const standardFrei = "Pos.";
-            freiField.value = standardFrei;
-            saveToPageStorage('frei', standardFrei); // Speichert es ebenfalls im Storage, falls nötig
         }
-						        // Standard-Wert für das Feld "B.Nr.:" setzen
+
+				        // Standard-Wert für das Feld "B.Nr.:" setzen
         const bnrField = document.getElementById('bnrlabel');
         if (bnrField) {
             const standardBnr = "B.Nr.:";
@@ -396,6 +335,14 @@ function clearAllFields() {
             const standardKoo = "Koordinator:";
             kooField.value = standardKoo;
             saveToPageStorage('koordinatorlabel', standardKoo); 
+        }
+        
+				        // Standard-Wert für das Feld "Tätigkeit:" setzen
+        const taeField = document.getElementById('taetigkeit');
+        if (taeField) {
+            const standardTae = "Dämmen von Lüftungskanälen:";
+            taeField.value = standardTae;
+            saveToPageStorage('taetigkeit', standardTae); 
         }
     }
 }
@@ -463,35 +410,34 @@ async function saveAsLNZ() {
 
 // 3. LADEN: Verarbeitet die Datei
 function handleFileSelect(event) {
-  const file = event.target.files[0];
-  if (!file) return;
+    const file = event.target.files[0];
+    if (!file) return;
 
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const content = e.target.result;
-    
-    // Regulärer Ausdruck, um CSV-Zeilen korrekt zu trennen, 
-    // auch wenn Zeilenumbrüche innerhalb von Anführungszeichen vorkommen.
-    const re = /([^;]+);"(.*?)"(?:\r?\n|$)/gs;
-    let match;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const lines = e.target.result.split(/\r?\n/);
 
-    while ((match = re.exec(content)) !== null) {
-      const id = match[1].trim();
-      // Ersetzt doppelte Anführungszeichen wieder durch einfache
-      const value = match[2].replace(/""/g, '"');
+        lines.forEach(line => {
+            if (!line.includes(';')) return;
+            
+            // Zerlegen der Zeile in ID und Wert
+            const parts = line.split(';');
+            const id = parts[0];
+            // Entfernt die CSV-Anführungszeichen und stellt maskierte Anführungszeichen wieder her
+            let value = parts.slice(1).join(';').replace(/^"|"$/g, '').replace(/""/g, '"');
 
-      const field = document.getElementById(id);
-      if (field) {
-        field.value = value;
-        saveToPageStorage(id, value);
-      }
-    }
-
-    event.target.value = "";
-  };
-  reader.readAsText(file);
+const field = document.getElementById(id);
+if (field) {
+    field.value = value;
+saveToPageStorage(id, value);
 }
-
+        });
+        
+        // Input zurücksetzen, damit dieselbe Datei erneut gewählt werden kann
+        event.target.value = ""; 
+    };
+    reader.readAsText(file);
+}
 
 // Script für den Drucknamen
 let originalTitle = document.title;
@@ -575,7 +521,7 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Hilfsfunktion zur exakten Breitenmessung (Span-Methode)
+// Funktion Schriftgröße automatisch anpassen
 function getTextWidth(text, font) {
     const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
     const context = canvas.getContext("2d");
@@ -636,37 +582,6 @@ if (document.readyState === 'loading') {
     initApp();
 }
 
-// Funktion zur Formatierung auf 2 Dezimalstellen (0,00)
-function formatToTwoDecimals(event) {
-    let value = event.target.value;
-    if (value === "") return;
-
-    // Ersetzt Komma durch Punkt für die Berechnung
-    value = value.replace(',', '.');
-    
-    let floatValue = parseFloat(value);
-    if (!isNaN(floatValue)) {
-        // Formatiert zurück auf das deutsche Format mit Komma
-        event.target.value = floatValue.toLocaleString('de-DE', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
-        
-        // Speichere den formatierten Wert direkt im LocalStorage
-        saveToPageStorage(event.target.id, event.target.value);
-    }
-}
-
-// Event-Listener an die Spalten 1 (Pos) und 2 (Menge) binden
-document.addEventListener('focusout', (event) => {
-    const id = event.target.id;
-    // Prüft, ob die ID auf 1 (Pos) oder 2 (Menge) endet (z.B. a1, b2, c1...)
-    if (id && (id.endsWith('1') || id.endsWith('2')) && event.target.classList.contains('input-haupttabelle')) {
-        formatToTwoDecimals(event);
-    }
-});
-
-
 
 
 // 4. PWA DATEI-HANDLER & Service Worker immer unten im Script
@@ -679,6 +594,8 @@ if ('launchQueue' in window) {
         }
     });
 }
+
+
 
 
 </script>

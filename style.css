@@ -77,6 +77,7 @@ h1 {
     font-size: 0.75em;
     padding-right: 8px;
     width: 1%;
+	border:none;
 }
 
 .input-cell input {
@@ -84,7 +85,7 @@ h1 {
     border: none;
     border-bottom: 1px solid #000;
     padding: 0 0 2px 5px;
-    font-size: 0.75rem; 
+    font-size: 12px; 
     background: transparent;
     outline: none;
     box-sizing: border-box;
@@ -92,6 +93,18 @@ h1 {
 
 .inline-label-cell {
     padding-left: 20px !important;
+}
+
+.wechsel-label{
+  border: none;               /* Entfernt den Rahmen */
+  background: transparent;    /* Entfernt den weißen Hintergrund */
+  outline: none;              /* Verhindert den blauen Ring beim Anklicken */
+  padding: 0;                 /* Entfernt Innenabstände */
+  font-family: inherit;       /* Übernimmt die Schriftart vom Elternelement */
+  font-size: inherit;         /* Übernimmt die Schriftgröße */
+  color: inherit;             /* Übernimmt die Textfarbe */  
+  border:none;
+  width: 70px;
 }
 
 .geteilte-ansicht {display: flex; }

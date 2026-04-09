@@ -54,19 +54,19 @@
                 <tr>
                     <td class="label-cell"><label for="bauvorhaben">Bauvorhaben:</label></td>
                     <td class="input-cell"><input class="schrift-schrumpfen" type="text" id="bauvorhaben"></td>
-                    <td class="label-cell inline-label-cell"><label for="bestellnr">Best.Nr.:</label></td>
+                    <td class="label-cell inline-label-cell"><input class="wechsel-label" id="bnrlabel" value="B.Nr.:"></input></td>
                     <td class="input-cell" style="width: 25%;"><input class="schrift-schrumpfen" type="text" id="bestellnr"></td>
                 </tr>
                 <tr>
                     <td class="label-cell"><label for="zeitraum">Zeitraum:</label></td>
                     <td class="input-cell"><input class="schrift-schrumpfen" type="text" id="zeitraum"></td>
-                    <td class="label-cell inline-label-cell"><label for="kommissionsnr">Kom.Nr.:</label></td>
+                    <td class="label-cell inline-label-cell"><input class="wechsel-label" id="komnrlabel" value="Kom.Nr.:"></input></td>
                     <td class="input-cell" style="width: 25%;"><input class="schrift-schrumpfen" type="text" id="kommissionsnr"></td>
                 </tr>
                 <tr>
                     <td class="label-cell"><label for="monteur">Monteur:</label></td>
                     <td class="input-cell"><input class="schrift-schrumpfen" list="list_monteur" type="text" id="monteur"></td>
-                    <td class="label-cell inline-label-cell"><label for="koordinator">Koordinator:</label></td>
+                    <td class="label-cell inline-label-cell"><input class="wechsel-label" id="koordinatorlabel" value="Koordinator:"></input></td>
                     <td class="input-cell" style="width: 25%;"><input class="schrift-schrumpfen" type="text" id="koordinator"></td>
                 </tr>
                 <tr class="activity-row">
@@ -668,11 +668,10 @@ function calculateAndFormat(inputField) {
             // Komma zu Punkt, x zu * für die JS-Berechnung
             let formula = rawValue.replace(/,/g, '.').replace(/x/g, '*');
             let result = eval(formula);
+            
             if (!isNaN(result)) {
-// Rundet auf maximal 2 Stellen, zeigt bei ganzen Zahlen keine Kommastellen
-let rounded = Math.round(result * 100) / 100; 
-inputField.value = rounded.toString().replace(/\./g, ',');
-
+                // Erzwingt immer 2 Nachkommastellen und tauscht Punkt gegen Komma
+                inputField.value = result.toFixed(2).replace('.', ',');
             }
         } catch (e) {
             console.log("Formel unvollständig");
@@ -680,6 +679,7 @@ inputField.value = rounded.toString().replace(/\./g, ',');
     }
     updateTableSums();
 }
+
 
 function closeNumpad() {
     if (activeInput) {
@@ -720,8 +720,6 @@ function updateTableSums() {
             const input = row.cells[col.index]?.querySelector('input');
             if (input && input.value) {
                 // Wir wandeln Komma in Punkt um und versuchen die Zahl zu lesen
-                // Falls noch eine Formel im Feld steht, wird sie hier ignoriert,
-                // bis silentCalculate() sie beim Laden in eine Zahl umgewandelt hat.
                 let val = parseFloat(input.value.replace(/,/g, '.'));
                 if (!isNaN(val)) {
                     total += val;
@@ -731,11 +729,16 @@ function updateTableSums() {
 
         const footerCell = document.getElementById(col.id);
         if (footerCell) {
-            // Ergebnis runden (2 Nachkommastellen) und Punkt wieder zu Komma
-            footerCell.innerText = (Math.round(total * 100) / 100).toString().replace(/\./g, ',');
+            // Wenn total 0 ist, Feld leeren, sonst mit 2 Nachkommastellen formatieren
+            if (total === 0) {
+                footerCell.innerText = "";
+            } else {
+                footerCell.innerText = total.toFixed(2).replace('.', ',');
+            }
         }
     });
 }
+
 
 
 // Funktion zum Leeren des Blattes und des localStorage
@@ -771,8 +774,39 @@ function clearAllFields() {
         if (stkField) {
             const standardStk = "Stk.";
             stkField.value = standardStk;
-            saveToPageStorage('stk', standardStk); // Speichert es ebenfalls im Storage, falls nötig
+            saveToPageStorage('stk', standardStk); 
         }
+				        // Standard-Wert für das Feld "B.Nr.:" setzen
+        const bnrField = document.getElementById('bnrlabel');
+        if (bnrField) {
+            const standardBnr = "B.Nr.:";
+            bnrField.value = standardBnr;
+            saveToPageStorage('bnrlabel', standardBnr); 
+        }
+        
+				        // Standard-Wert für das Feld "Kom.Nr.:" setzen
+        const komField = document.getElementById('komnrlabel');
+        if (komField) {
+            const standardKom = "Kom.Nr.:";
+            komField.value = standardKom;
+            saveToPageStorage('komnrlabel', standardKom); 
+        }
+        
+				        // Standard-Wert für das Feld "Koordinator:" setzen
+        const kooField = document.getElementById('koordinatorlabel');
+        if (kooField) {
+            const standardKoo = "Koordinator:";
+            kooField.value = standardKoo;
+            saveToPageStorage('koordinatorlabel', standardKoo); 
+        }
+        
+				        // Standard-Wert für das Feld "Tätigkeit:" setzen
+        const taeField = document.getElementById('taetigkeit');
+        if (taeField) {
+            const standardTae = "Dämmen von Rohrleitungen:";
+            taeField.value = standardTae;
+            saveToPageStorage('taetigkeit', standardTae); 
+        }		
     }
 }
 

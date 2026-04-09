@@ -1,5 +1,5 @@
-const CACHE_NAME = 'lnr-app-v1.21';
-const VERSION = '1.21 Bratwurst'; // Diese Variable wird an die Webseite gesendet
+const CACHE_NAME = 'lnr-app-v2.0';
+const VERSION = '2.0 Feuerwurst'; // Diese Variable wird an die Webseite gesendet
 const bwChannel = new BroadcastChannel('sw_status');
 
 const ASSETS = [
