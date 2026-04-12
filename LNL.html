@@ -697,30 +697,31 @@ function handleFileSelect(event) {
 
     const reader = new FileReader();
     reader.onload = function(e) {
-        const lines = e.target.result.split(/\r?\n/);
+        const content = e.target.result;
+        
+        // Regulärer Ausdruck, um ID und Wert trotz Zeilenumbrüchen zu trennen
+        // Er sucht nach: ID; "Inhalt" (auch über mehrere Zeilen)
+        const regex = /([^;\r\n]+);"(.*?)"(?=\r?\n[^;]+;"|$)/gs;
+        
+        let match;
+        while ((match = regex.exec(content)) !== null) {
+            const id = match[1].trim();
+            // Entfernt CSV-Maskierung der Anführungszeichen
+            let value = match[2].replace(/""/g, '"');
 
-        lines.forEach(line => {
-            if (!line.includes(';')) return;
-            
-            // Zerlegen der Zeile in ID und Wert
-            const parts = line.split(';');
-            const id = parts[0];
-            // Entfernt die CSV-Anführungszeichen und stellt maskierte Anführungszeichen wieder her
-            let value = parts.slice(1).join(';').replace(/^"|"$/g, '').replace(/""/g, '"');
+            const field = document.getElementById(id);
+            if (field) {
+                field.value = value;
+                saveToPageStorage(id, value);
+            }
+        }
 
-const field = document.getElementById(id);
-if (field) {
-    field.value = value;
-saveToPageStorage(id, value);
-}
-        });
-            // NEU: Berechnung auslösen, nachdem alle Felder befüllt wurden
-    calculateFields();
-        // Input zurücksetzen, damit dieselbe Datei erneut gewählt werden kann
-        event.target.value = ""; 
+        calculateFields();
+        event.target.value = "";
     };
     reader.readAsText(file);
 }
+
 
 // Script für den Drucknamen
 let originalTitle = document.title;
