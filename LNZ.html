@@ -492,7 +492,6 @@ function handleFileSelect(event) {
   reader.readAsText(file);
 }
 
-
 // Script für den Drucknamen
 let originalTitle = document.title;
 
@@ -638,22 +637,22 @@ if (document.readyState === 'loading') {
 
 // Funktion zur Formatierung auf 2 Dezimalstellen (0,00)
 function formatToTwoDecimals(event) {
-    let value = event.target.value;
+    let target = event.target; // Hier wird das Feld definiert
+    let value = target.value;
     if (value === "") return;
 
-    // Ersetzt Komma durch Punkt für die Berechnung
+    // Ersetzt Komma durch Punkt, damit parseFloat() immer funktioniert
+    // (Egal ob in der CSV "12,50" oder "12.50" steht)
     value = value.replace(',', '.');
-    
+
     let floatValue = parseFloat(value);
     if (!isNaN(floatValue)) {
-        // Formatiert zurück auf das deutsche Format mit Komma
-        event.target.value = floatValue.toLocaleString('de-DE', {
+        // Formatiert konsistent auf deutsches Format (0,00)
+        target.value = floatValue.toLocaleString('de-DE', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         });
-        
-        // Speichere den formatierten Wert direkt im LocalStorage
-        saveToPageStorage(event.target.id, event.target.value);
+        saveToPageStorage(target.id, target.value);
     }
 }
 

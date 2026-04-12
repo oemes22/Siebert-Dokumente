@@ -77,10 +77,21 @@
         </section>
 		
 
+        <!-- Dämmdicke -->		
+		<section class="form-section">
+            <table class="form-layout-table">
+                <tr>
+                    <td class="label-cell"><label for="daemmdicke">Dämmdicke in mm:</label></td>
+                    <td class="input-cell"><input style="width:40px; text-align: center;" inputmode="decimal" id="daemmdicke"></td>
+                </tr>
+            </table>	
+		</section>
+		
+
         <!-- DATEN-TABELLE -->
         <section class="table-section">
 		<div class="geteilte-ansicht">   
-            <table style="margin-right: 1%">
+            <table style="margin-right: 1%; margin-bottom:20px;">
                 <colgroup>
                     <col style="width: 14%;">
                     <col style="width: 7%;">
@@ -105,16 +116,137 @@
                 <tbody>
                     <!-- Tabellenzeilen -->
                     <tr>
-                        <td><input id="1form1" class="input-haupttabelle" list="list_form"></input></td>
-						<td><input id="1seitea1" class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="1seiteb1" class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="1laenge1" class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="1menge1" class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="1flaeche1" class="input-haupttabelle" inputmode="decimal"></input></td>						
+                        <td><input id="a1" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="a2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="a3" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="a4" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="a5" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="a6" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
                     </tr>
+					                    <tr>
+                        <td><input id="b1" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="b2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="b3" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="b4" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="b5" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="b6" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="c1" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="c2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="c3" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="c4" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="c5" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="c6" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="d1" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="d2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="d3" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="d4" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="d5" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="d6" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="e1" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="e2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="e3" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="e4" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="e5" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="e6" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="f1" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="f2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="f3" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="f4" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="f5" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="f6" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="g1" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="g2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="g3" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="g4" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="g5" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="g6" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="h1" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="h2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="h3" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="h4" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="h5" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="h6" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="i1" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="i2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="i3" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="i4" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="i5" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="i6" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="j1" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="j2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="j3" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="j4" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="j5" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="j6" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="k1" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="k2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="k3" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="k4" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="k5" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="k6" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="l1" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="l2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="l3" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="l4" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="l5" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="l6" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="m1" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="m2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="m3" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="m4" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="m5" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="m6" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="n1" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="n2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="n3" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="n4" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="n5" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="n6" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="o1" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="o2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="o3" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="o4" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="o5" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="o6" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="p1" class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="p2" class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="p3" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="p4" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="p5" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="p6" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+
                 </tbody>
             </table>
-			<table>
+			<table  style="margin-bottom:20px;">
                 <colgroup>
                     <col style="width: 14%;">
                     <col style="width: 7%;">
@@ -139,17 +271,149 @@
                 <tbody>
                     <!-- Tabellenzeilen -->
                     <tr>
-                        <td><input id="1form2" class="input-haupttabelle" list="list_form"></input></td>
-						<td><input id="1seitea2" class="input-haupttabelle" inputmode="decimal"></input></td> 
-						<td><input id="1seiteb2" class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="1laenge2" class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="1menge2" class="input-haupttabelle" inputmode="decimal"></input></td>
-						<td><input id="1flaeche2" class="input-haupttabelle" inputmode="decimal"></input></td>						
+                        <td><input id="a7"  class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="a8"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="a9"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="a10" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="a11" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="a12" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="b7"  class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="b8"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="b9"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="b10" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="b11" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="b12" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="c7"  class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="c8"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="c9"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="c10" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="c11" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="c12" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="d7"  class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="d8"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="d9"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="d10" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="d11" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="d12" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="e7"  class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="e8"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="e9"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="e10" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="e11" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="e12" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="f7"  class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="f8"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="f9"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="f10" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="f11" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="f12" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="g7"  class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="g8"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="g9"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="g10" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="g11" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="g12" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="h7"  class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="h8"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="h9"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="h10" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="h11" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="h12" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="i7"  class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="i8"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="i9"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="i10" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="i11" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="i12" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="j7"  class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="j8"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="j9"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="j10" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="j11" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="j12" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="k7"  class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="k8"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="k9"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="k10" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="k11" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="k12" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="l7"  class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="l8"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="l9"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="l10" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="l11" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="l12" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="m7"  class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="m8"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="m9"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="m10" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="m11" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="m12" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="n7"  class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="n8"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="n9"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="n10" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="n11" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="n12" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="o7"  class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="o8"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="o9"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="o10" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="o11" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="o12" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
+                    </tr>
+					                    <tr>
+                        <td><input id="p7"  class="input-haupttabelle" list="list_form"></input></td>
+						<td><input id="p8"  class="input-haupttabelle" inputmode="decimal"></input></td> 
+						<td><input id="p9"  class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="p10" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="p11" class="input-haupttabelle" inputmode="decimal"></input></td>
+						<td><input id="p12" class="input-haupttabelle" inputmode="decimal" readonly></input></td>						
                     </tr>
                 </tbody>
             </table>
 		</div>	
         </section>
+		
+		        <!-- Berechnung m² gesamt -->		
+		<section class="form-section">
+            <table class="form-layout-table">
+                <tr>
+                    <td class="label-cell"><label for="fgeraden">Fläche aus geraden Teilen:</label></td>
+                    <td class="input-cell"><input inputmode="decimal" id="fgeraden"></td>
+                    <td class="label-cell inline-label-cell"><label for="fform">Fläche aus Formteilen:</label></td>
+                    <td class="input-cell"><input inputmode="decimal" id="fform"></td>
+                </tr>
+            </table>	
+		</section>
 
 
         <!-- ANMERKUNGEN -->
@@ -180,7 +444,7 @@
 <section class="action-section no-print">
     
     <!-- Speichern Button -->
-    <button onclick="saveAsLNZ()" class="btn-save">
+    <button onclick="saveAsLNL()" class="btn-save">
         💾 Speichern
     </button>
 
@@ -195,14 +459,29 @@
 	</button>
 	
     <!-- Verstecktes Feld für die Dateiwahl -->
-    <input type="file" id="fileInput" style="display:none" accept=".lnz" onchange="handleFileSelect(event)">
+    <input type="file" id="fileInput" style="display:none" accept=".lnl" onchange="handleFileSelect(event)">
 
     <!-- Reset Button -->
     <button onclick="clearAllFields()" class="btn-clear">
         🗑️ Neu
     </button>
+
 </section>
 
+<section class="action-section no-print">
+	
+	<p style="text-align:left; border-style: solid; padding:20px; line-height: 1.6; background-color: #e8ffee;" class="input-cell">📖 Hinweise zur Bedienung:<br><br>
+	
+        Es wird immer die größte Länge gemessen.<br><br>
+ 
+        Zu den Eingaben von Seite A und Seite B wird automatisch die Dämmdicke addiert.<br>
+		Bitte immer die richtigen Maße in die vorgegebenen Spalten schreiben.<br>
+		Formel: ((((Dämmdicke / 1000) × 8) + 2 × (Seite A + Seite B)) × Länge) x Menge<br><br>
+
+        Wenn du die Spalte Länge leer lässt oder eine Null eingibst, wird nur<br>
+	    Seite A × Seite B × Menge gerechnet.
+    </p>
+</section>
 
     </div>
 </div>
@@ -210,7 +489,7 @@
 	
 <script language="JavaScript">
 
-const pageNamespace = "leistungsnachweis_zeit";  // Zuweisung für den Lokal Storage für jede Seite änderm.
+const pageNamespace = "leistungsnachweis_lüftungskanal";  // Zuweisung für den Lokal Storage für jede Seite änderm.
 
 // 2. Zentrale Speicher-Funktion mit Namespace
 function saveToPageStorage(key, value) {
@@ -259,11 +538,10 @@ const savedValue = localStorage.getItem(pageNamespace + "_" + (input.id || input
         if (savedValue !== null && !input.readOnly) {
             input.value = savedValue;
         }
+		    // NEU: Berechnung nach dem Laden starten
+    calculateFields(); 
     });
 }
-
-
-
 
 // Beim Laden der Seite ausführen
 window.addEventListener('load', loadFormData);
@@ -289,16 +567,21 @@ function clearAllFields() {
             }
         });
 
-        // 2. Alle relevanten Eingabefelder im Dokument finden
-        const inputs = document.querySelectorAll('input, textarea');
+// 2. Alle relevanten Eingabefelder im Dokument finden
+const inputs = document.querySelectorAll('input, textarea');
 
-        inputs.forEach(field => {
-            // Schreibgeschützte Felder oder Datei-Upload überspringen
-            if (field.readOnly || field.type === "file") return;
+inputs.forEach(field => {
+    // Datei-Upload überspringen
+    if (field.type === "file") return;
 
-            // Feld im Browser leeren
-            field.value = "";
-        });
+    // Felder leeren (jetzt auch die readonly Flächen-Felder)
+    field.value = "";
+});
+
+// 3. Gesamtsummen und Berechnung aktualisieren
+if (typeof calculateFields === "function") {
+    calculateFields();
+}
 
         //  Standard-Datum wieder setzen, falls gewünscht
         const dateField = document.getElementById('ort-datum');
@@ -340,7 +623,7 @@ function clearAllFields() {
 				        // Standard-Wert für das Feld "Tätigkeit:" setzen
         const taeField = document.getElementById('taetigkeit');
         if (taeField) {
-            const standardTae = "Dämmen von Lüftungskanälen:";
+            const standardTae = "Dämmen von Lüftungskanälen";
             taeField.value = standardTae;
             saveToPageStorage('taetigkeit', standardTae); 
         }
@@ -357,10 +640,10 @@ function getGeneratedFileName() {
                   String(jetzt.getMonth() + 1).padStart(2, '0') + "-" + 
                   jetzt.getFullYear();
     
-    return `LNZ-${bau}_${ort}_${datum}.lnz`.replace(/[/\\?%*:|"<>\s,]/g, '_');
+    return `LNL-${bau}_${ort}_${datum}.lnl`.replace(/[/\\?%*:|"<>\s,]/g, '_');
 }
 
-async function saveAsLNZ() {
+async function saveAsLNL() {
     let csvRows = [];
     const allInputs = document.querySelectorAll('input, textarea');
 
@@ -368,7 +651,6 @@ async function saveAsLNZ() {
         // Ignoriere Felder ohne ID oder den File-Upload
         if (!input.id || input.id === "fileInput") return;
         
-        // Direkter Zugriff auf den Wert (Numpad-Logik entfernt)
         let val = input.value;
 
         // CSV-Safe Formatierung
@@ -385,8 +667,8 @@ async function saveAsLNZ() {
             const handle = await window.showSaveFilePicker({
                 suggestedName: fileName,
                 types: [{
-                    description: 'LNZ Datei',
-                    accept: { 'application/octet-stream': ['.lnz'] }
+                    description: 'LNL Datei',
+                    accept: { 'application/octet-stream': ['.lnl'] }
                 }],
             });
             const writable = await handle.createWritable();
@@ -432,7 +714,8 @@ if (field) {
 saveToPageStorage(id, value);
 }
         });
-        
+            // NEU: Berechnung auslösen, nachdem alle Felder befüllt wurden
+    calculateFields();
         // Input zurücksetzen, damit dieselbe Datei erneut gewählt werden kann
         event.target.value = ""; 
     };
@@ -444,11 +727,11 @@ let originalTitle = document.title;
 
 // Wird direkt VOR dem Öffnen des Druckfensters ausgeführt
 window.addEventListener('beforeprint', () => {
-    const lnzInput = document.getElementById('lnz');
-    const lnzValue = lnzInput ? lnzInput.value : '';
+    const lnlInput = document.getElementById('lnl');
+    const lnlValue = lnlInput ? lnlInput.value : '';
     
     originalTitle = document.title; // Aktuellen Titel merken
-    document.title = "Leistungsnachweis Nr-" + lnzValue;
+    document.title = "Leistungsnachweis Nr-" + lnlValue;
 });
 
 // Wird direkt NACH dem Schließen (Drucken oder Abbrechen) ausgeführt
@@ -582,6 +865,101 @@ if (document.readyState === 'loading') {
     initApp();
 }
 
+// Automatische Selektion NUR für Felder der Haupttabelle
+document.addEventListener('focusin', (e) => {
+  // Prüft, ob das fokussierte Feld die Klasse für die Tabelle hat
+  if (e.target.classList.contains('input-haupttabelle')) {
+    // Schreibgeschützte Ergebnisfelder (Fläche) ausschließen
+    if (!e.target.readOnly) {
+      setTimeout(() => {
+        e.target.select();
+      }, 50);
+    }
+  }
+});
+
+
+function calculateFields() {
+    const rows = "abcdefghijklmnop".split("");
+    let summeGerade = 0;
+    let summeForm = 0;
+    
+    const daemmdicke = parseFloat(document.getElementById("daemmdicke").value.replace(",", ".")) || 0;
+
+    rows.forEach(row => {
+        // Überprüfung beider Blöcke: links (Suffix 1-6) und rechts (Suffix 7-12)
+        [ {s:1}, {s:7} ].forEach(block => {
+            const s = block.s;
+
+            const formTyp = document.getElementById(row + s)?.value.trim() || "";
+            const seiteA = parseFloat(document.getElementById(row + (s+1))?.value.replace(",", ".")) || 0;
+            const seiteB = parseFloat(document.getElementById(row + (s+2))?.value.replace(",", ".")) || 0;
+            const laenge = parseFloat(document.getElementById(row + (s+3))?.value.replace(",", ".")) || 0;
+            const mengeInput = document.getElementById(row + (s+4))?.value.trim() || "";
+            const menge = mengeInput === "" ? 1 : (parseFloat(mengeInput.replace(",", ".")) || 0);
+            
+            const ergebnisFeld = document.getElementById(row + (s+5));
+            if (!ergebnisFeld) return;
+
+// ... innerhalb der rows.forEach und block-Schleife ab Zeile 876 ...
+let flaeche = 0;
+let istSonderberechnung = false; 
+
+if (seiteA > 0 || seiteB > 0) {
+    if (laenge === 0) {
+        // Formel: SeiteA * SeiteB * Menge
+        flaeche = (seiteA * seiteB) * menge;
+        istSonderberechnung = true; // Flag setzen für gerade Teile
+    } else {
+        // Standardformel für Kanäle
+        flaeche = ((((daemmdicke / 1000) * 8) + seiteA + seiteA + seiteB + seiteB) * laenge) * menge;
+    }
+
+    ergebnisFeld.value = flaeche.toFixed(2).replace(".", ",");
+
+    // Logik für die Summenbildung:
+    // Wenn Sonderberechnung (Länge 0) ODER kein Formtyp gewählt -> zu Geraden addieren
+    if (istSonderberechnung || formTyp === "") {
+        summeGerade += flaeche;
+    } else {
+        summeForm += flaeche;
+    }
+} else {
+    ergebnisFeld.value = "";
+}
+
+        });
+    });
+
+    // Summen in die unteren Felder schreiben
+    document.getElementById("fgeraden").value = summeGerade.toFixed(2).replace(".", ",");
+    document.getElementById("fform").value = summeForm.toFixed(2).replace(".", ",");
+}
+
+
+
+// Bestehenden Event-Listener nutzen
+document.addEventListener('input', calculateFields);
+
+// Funktion zur automatischen Ergänzung der führenden Null
+document.addEventListener('input', (event) => {
+    const target = event.target;
+    
+    // Wir prüfen, ob es ein Eingabefeld für Zahlen ist
+    if (target.tagName === 'INPUT' && (target.inputMode === 'decimal' || target.classList.contains('input-haupttabelle'))) {
+        let val = target.value;
+        
+        // Wenn das erste Zeichen ein Punkt oder Komma ist, eine 0 davor setzen
+        if (val.startsWith(',') || val.startsWith('.')) {
+            target.value = '0' + val;
+            
+            // Nach der Korrektur die Berechnung neu anstoßen
+            if (typeof calculateFields === "function") {
+                calculateFields();
+            }
+        }
+    }
+});
 
 
 // 4. PWA DATEI-HANDLER & Service Worker immer unten im Script
@@ -609,18 +987,18 @@ if ('launchQueue' in window) {
 <option value="Lohner & Sohn GmbH & Co. KG"><option value="Schmid Sanitär/Heizung GmbH"><option value="Apleona HSG Südost GmbH"><option value="Caverion Deutschland GmbH"><option value="Heizung Sanitär Hoppen"><option value="Prommersberger Sanitär GmbH"><option value="Sanitär Heizung Lüftung Markus Boin">
 </datalist>
 
-
-<datalist id="list_einheit">
-<option value="Stk."><option value="m"><option value="m²"><option value="l"><option value="ml"><option value="g"><option value="kg"><option value="Std."><option value="€"><option value="ME">
-</datalist>
-
-
-<datalist id="list_beschreibung">
-<option value="aluk. Rohrschale"><option value="PVC"><option value="PVC-Bogen"><option value="WBC-Schweißmittel"><option value="PVC-Endmanschette"><option value="lose Wolle"><option value="Wickeldraht"><option value="Alu-Klebeband"><option value="synth. Kautschuck"><option value="synth. Kautschuck-Schlauch SK"><option value="Montageband"><option value="Blechmantel verzinkt"><option value="Blechbogen verzinkt"><option value="Blechmantel Aluminium"><option value="Blechbogen Aluminium"><option value="Arbeitszeit"><option value="Anfahrt / Fahrzeugkosten"><option value="Kleinmaterial / Befestigung 5,00€/ME">
-</datalist>
-
 <datalist id="list_monteur">
 <option value="Alex"><option value="Ronny"><option value="Mario"><option value="Denis"><option value="Niko">
 </datalist>
 
+<datalist id="list_form">
+<option value="Bogen">
+<option value="Etage">
+<option value="Übergang">
+<option value="T-Stück">
+<option value="Hosenstück">
+<option value="anderes Formeil">
+<option value="Deckel">
+<option value="Einzelfläche">
+</datalist>
 </html>
