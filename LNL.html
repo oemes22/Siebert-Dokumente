@@ -884,55 +884,70 @@ function calculateFields() {
     const rows = "abcdefghijklmnop".split("");
     let summeGerade = 0;
     let summeForm = 0;
-    
+
+    // Dämmdicke auslesen
     const daemmdicke = parseFloat(document.getElementById("daemmdicke").value.replace(",", ".")) || 0;
 
     rows.forEach(row => {
-        // Überprüfung beider Blöcke: links (Suffix 1-6) und rechts (Suffix 7-12)
+        // Block links (Suffix 1-6) und Block rechts (Suffix 7-12)
         [ {s:1}, {s:7} ].forEach(block => {
             const s = block.s;
 
-            const formTyp = document.getElementById(row + s)?.value.trim() || "";
-            const seiteA = parseFloat(document.getElementById(row + (s+1))?.value.replace(",", ".")) || 0;
-            const seiteB = parseFloat(document.getElementById(row + (s+2))?.value.replace(",", ".")) || 0;
-            const laenge = parseFloat(document.getElementById(row + (s+3))?.value.replace(",", ".")) || 0;
-            const mengeInput = document.getElementById(row + (s+4))?.value.trim() || "";
+            // Felder referenzieren
+            const fFormTyp = document.getElementById(row + s);
+            const fSeiteA = document.getElementById(row + (s+1));
+            const fSeiteB = document.getElementById(row + (s+2));
+            const fLaenge = document.getElementById(row + (s+3));
+            const fMenge  = document.getElementById(row + (s+4));
+            const fErgebnis = document.getElementById(row + (s+5));
+
+            if (!fErgebnis) return;
+
+            // Werte parsen
+            const formTyp = fFormTyp?.value.trim() || "";
+            const seiteA = parseFloat(fSeiteA?.value.replace(",", ".")) || 0;
+            const seiteB = parseFloat(fSeiteB?.value.replace(",", ".")) || 0;
+            const laenge = parseFloat(fLaenge?.value.replace(",", ".")) || 0;
+            const mengeInput = fMenge?.value.trim() || "";
             const menge = mengeInput === "" ? 1 : (parseFloat(mengeInput.replace(",", ".")) || 0);
-            
-            const ergebnisFeld = document.getElementById(row + (s+5));
-            if (!ergebnisFeld) return;
 
-// ... innerhalb der rows.forEach und block-Schleife ab Zeile 876 ...
-let flaeche = 0;
-let istSonderberechnung = false; 
+            // NEU: EINGABEFELDER FORMATIEREN (für LocalStorage & CSV-Import)
+            // Wir formatieren nur, wenn ein Wert > 0 vorhanden ist
+            if (seiteA > 0 && fSeiteA === document.activeElement === false) fSeiteA.value = seiteA.toFixed(2).replace(".", ",");
+            if (seiteB > 0 && fSeiteB === document.activeElement === false) fSeiteB.value = seiteB.toFixed(2).replace(".", ",");
+            if (laenge > 0 && fLaenge === document.activeElement === false) fLaenge.value = laenge.toFixed(2).replace(".", ",");
+            // Menge optional auch formatieren:
+            if (mengeInput !== "" && menge > 0 && fMenge === document.activeElement === false) fMenge.value = menge.toFixed(2).replace(".", ",");
 
-if (seiteA > 0 || seiteB > 0) {
-    if (laenge === 0) {
-        // Formel: SeiteA * SeiteB * Menge
-        flaeche = (seiteA * seiteB) * menge;
-        istSonderberechnung = true; // Flag setzen für gerade Teile
-    } else {
-        // Standardformel für Kanäle
-        flaeche = ((((daemmdicke / 1000) * 8) + seiteA + seiteA + seiteB + seiteB) * laenge) * menge;
-    }
+            let flaeche = 0;
+            let istSonderberechnung = false;
 
-    ergebnisFeld.value = flaeche.toFixed(2).replace(".", ",");
+            if (seiteA > 0 || seiteB > 0) {
+                if (laenge === 0) {
+                    // Sonderberechnung: Fläche = A * B * Menge
+                    flaeche = (seiteA * seiteB) * menge;
+                    istSonderberechnung = true;
+                } else {
+                    // Standard: ((((Dämmdicke / 1000) * 8) + 2*A + 2*B) * Länge) * Menge
+                    flaeche = ((((daemmdicke / 1000) * 8) + seiteA + seiteA + seiteB + seiteB) * laenge) * menge;
+                }
 
-    // Logik für die Summenbildung:
-    // Wenn Sonderberechnung (Länge 0) ODER kein Formtyp gewählt -> zu Geraden addieren
-    if (istSonderberechnung || formTyp === "") {
-        summeGerade += flaeche;
-    } else {
-        summeForm += flaeche;
-    }
-} else {
-    ergebnisFeld.value = "";
-}
+                // Ergebnis-Zelle formatieren
+                fErgebnis.value = flaeche.toFixed(2).replace(".", ",");
 
+                // Summen-Logik
+                if (istSonderberechnung || formTyp === "") {
+                    summeGerade += flaeche;
+                } else {
+                    summeForm += flaeche;
+                }
+            } else {
+                fErgebnis.value = "";
+            }
         });
     });
 
-    // Summen in die unteren Felder schreiben
+    // Gesamtsummen formatieren
     document.getElementById("fgeraden").value = summeGerade.toFixed(2).replace(".", ",");
     document.getElementById("fform").value = summeForm.toFixed(2).replace(".", ",");
 }
@@ -974,6 +989,35 @@ if ('launchQueue' in window) {
     });
 }
 
+// PWA Teilen für Android
+const bwChannel = new BroadcastChannel('sw_status');
+
+bwChannel.onmessage = (event) => {
+    if (event.data.type === 'SHARE_FILE_RECEIVED') {
+        const file = event.data.file;
+        const fileName = event.data.fileName;
+
+        console.log(`Datei über Teilen-Funktion empfangen: ${fileName}`);
+
+        // Hier rufst du deine bestehende Lade-Logik auf
+        // Zum Beispiel:
+        if (typeof deinLadeFunktion === "function") {
+            deinLadeFunktion(file);
+        } else {
+            // Falls du einen FileReader nutzt:
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const inhalt = e.target.result;
+                console.log("Dateiinhalt bereit zur Verarbeitung");
+                // Verarbeite 'inhalt' hier...
+            };
+            reader.readAsText(file);
+        }
+    }
+};
+
+// Falls die Seite nach der Version fragt (bestehend aus deinem PDF)
+bwChannel.postMessage({ type: 'GET_VERSION' });
 
 
 

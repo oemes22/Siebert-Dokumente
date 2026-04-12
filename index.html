@@ -182,6 +182,44 @@ if ('serviceWorker' in navigator) {
         });
     });
 }
+
+// 4. PWA DATEI-HANDLER & Service Worker immer unten im Script
+if ('launchQueue' in window) {
+    window.launchQueue.setConsumer(async (launchParams) => {
+        if (launchParams.files.length > 0) {
+            const file = await launchParams.files[0].getFile();
+            const mockEvent = { target: { files: [file] } };
+            handleFileSelect(mockEvent);
+        }
+    });
+}
+
+// PWA Teilen für Android
+const bwChannel = new BroadcastChannel('sw_status');
+
+bwChannel.onmessage = (event) => {
+    if (event.data.type === 'SHARE_FILE_RECEIVED') {
+        const file = event.data.file;
+        const fileName = event.data.fileName;
+
+        console.log(`Datei über Teilen-Funktion empfangen: ${fileName}`);
+
+        // Hier rufst du deine bestehende Lade-Logik auf
+        // Zum Beispiel:
+        if (typeof deinLadeFunktion === "function") {
+            deinLadeFunktion(file);
+        } else {
+            // Falls du einen FileReader nutzt:
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const inhalt = e.target.result;
+                console.log("Dateiinhalt bereit zur Verarbeitung");
+                // Verarbeite 'inhalt' hier...
+            };
+            reader.readAsText(file);
+        }
+    }
+};
 </script>
 
 </body>

@@ -569,6 +569,36 @@ if ('launchQueue' in window) {
         }
     });
 }	
+
+// PWA Teilen für Android
+const bwChannel = new BroadcastChannel('sw_status');
+
+bwChannel.onmessage = (event) => {
+    if (event.data.type === 'SHARE_FILE_RECEIVED') {
+        const file = event.data.file;
+        const fileName = event.data.fileName;
+
+        console.log(`Datei über Teilen-Funktion empfangen: ${fileName}`);
+
+        // Hier rufst du deine bestehende Lade-Logik auf
+        // Zum Beispiel:
+        if (typeof deinLadeFunktion === "function") {
+            deinLadeFunktion(file);
+        } else {
+            // Falls du einen FileReader nutzt:
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const inhalt = e.target.result;
+                console.log("Dateiinhalt bereit zur Verarbeitung");
+                // Verarbeite 'inhalt' hier...
+            };
+            reader.readAsText(file);
+        }
+    }
+};
+
+
+
 </script>
 </body>
 </html>
