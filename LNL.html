@@ -957,6 +957,16 @@ function calculateFields() {
 // Bestehenden Event-Listener nutzen
 document.addEventListener('input', calculateFields);
 
+// Berechnet die Werte bei jeder Eingabe (für die Summen unten)
+document.addEventListener('input', calculateFields);
+
+// NEU: Formatiert das Feld sofort beim Verlassen (Blur)
+document.addEventListener('blur', (event) => {
+    if (event.target.classList.contains('input-haupttabelle') || event.target.id === 'daemmdicke') {
+        calculateFields();
+    }
+}, true);
+
 // Funktion zur automatischen Ergänzung der führenden Null
 document.addEventListener('input', (event) => {
     const target = event.target;
