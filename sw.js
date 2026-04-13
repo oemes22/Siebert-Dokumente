@@ -1,5 +1,5 @@
-const CACHE_NAME = 'lnr-app-v2.6';
-const VERSION = '2.6 Bockwurst';
+const CACHE_NAME = 'lnr-app-v2.7';
+const VERSION = '2.7 Bulette';
 const bwChannel = new BroadcastChannel('sw_status');
 
 const ASSETS = [

@@ -2,32 +2,39 @@
   "name": "MD Tools",
   "short_name": "MD",
   "description": "Formular-App zur Erfassung von Bauleistungen.",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "https://oemes22.github.io/Siebert-Dokumente/index.html",
+  "scope": "https://oemes22.github.io/Siebert-Dokumente/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#ffffff",
   "theme_color": "#5895a8",
   "file_handlers": [
-    { "action": "LNR.html", "accept": { "application/octet-stream": [".lnr"] } },
-    { "action": "LNL.html", "accept": { "application/octet-stream": [".lnl"] } },
-    { "action": "LNZ.html", "accept": { "application/octet-stream": [".lnz"] } },
-	{ "action": "STD.html", "accept": { "application/octet-stream": [".stdz"] } },
-    { "action": "Kappenaufmaß.html", "accept": { "application/octet-stream": [".ka"] } }
+    { "action": "https://oemes22.github.io/Siebert-Dokumente/LNR.html"         , "accept": { "application/octet-stream": [".lnr"] } },
+    { "action": "https://oemes22.github.io/Siebert-Dokumente/LNL.html"         , "accept": { "application/octet-stream": [".lnl"] } },
+    { "action": "https://oemes22.github.io/Siebert-Dokumente/LNZ.html"         , "accept": { "application/octet-stream": [".lnz"] } },
+	{ "action": "https://oemes22.github.io/Siebert-Dokumente/STD.html"         , "accept": { "application/octet-stream": [".stdz"] } },
+    { "action": "https://oemes22.github.io/Siebert-Dokumente/Kappenaufmaß.html", "accept": { "application/octet-stream": [".ka"] } }
   ],
   "share_target": {
-    "action": "./index.html",
+    "action": "https://oemes22.github.io/Siebert-Dokumente/index.html",
     "method": "POST",
     "enctype": "multipart/form-data",
     "params": {
-      "files": [
-        {
-          "name": "shared_files",
-          "accept": [".lnr", ".lnl", ".lnz", ".ka", ".stdz"]
-        }
-      ]
-    }
-  },
+    "files": [
+      {
+        "name": "shared_files",
+        "accept": [
+          "application/octet-stream", 
+          ".lnr", 
+          ".lnl", 
+          ".lnz", 
+          ".ka", 
+          ".stdz"
+        ]
+      }
+    ]
+  }
+},
   "icons": [
     {
       "src": "icon-192.png",
