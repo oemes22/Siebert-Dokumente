@@ -1009,22 +1009,23 @@ bwChannel.onmessage = (event) => {
 
         console.log(`Datei über Teilen-Funktion empfangen: ${fileName}`);
 
-        // Hier rufst du deine bestehende Lade-Logik auf
-        // Zum Beispiel:
-        if (typeof deinLadeFunktion === "function") {
-            deinLadeFunktion(file);
-        } else {
-            // Falls du einen FileReader nutzt:
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const inhalt = e.target.result;
-                console.log("Dateiinhalt bereit zur Verarbeitung");
-                // Verarbeite 'inhalt' hier...
-            };
-            reader.readAsText(file);
-        }
+        // Erstellt ein Mock-Event für die bestehende Lade-Funktion handleFileSelect
+        const mockEvent = {
+            target: {
+                files: [file]
+            }
+        };
+
+        // Ruft deine bereits definierte Lade-Logik auf
+        handleFileSelect(mockEvent);
+    }
+    
+    // Falls die Seite nach der Version fragt
+    if (event.data.type === 'GET_VERSION') {
+        bwChannel.postMessage({ type: 'VERSION_INFO', version: '1.0.0' });
     }
 };
+
 
 // Falls die Seite nach der Version fragt (bestehend aus deinem PDF)
 bwChannel.postMessage({ type: 'GET_VERSION' });

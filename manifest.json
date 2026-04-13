@@ -12,6 +12,7 @@
     { "action": "LNR.html", "accept": { "application/octet-stream": [".lnr"] } },
     { "action": "LNL.html", "accept": { "application/octet-stream": [".lnl"] } },
     { "action": "LNZ.html", "accept": { "application/octet-stream": [".lnz"] } },
+	{ "action": "STD.html", "accept": { "application/octet-stream": [".stdz"] } },
     { "action": "Kappenaufmaß.html", "accept": { "application/octet-stream": [".ka"] } }
   ],
   "share_target": {
@@ -22,7 +23,7 @@
       "files": [
         {
           "name": "shared_files",
-          "accept": [".lnr", ".lnl", ".lnz", ".ka"]
+          "accept": [".lnr", ".lnl", ".lnz", ".ka", ".stdz"]
         }
       ]
     }

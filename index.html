@@ -139,7 +139,7 @@ background-attachment: scroll;
 </head>
 <body>
 
-    <a href="Std.html" id="std-icon-link" title="Stundenzettel">🕒</a>
+    <a href="STD.html" id="std-icon-link" title="Stundenzettel">🕒</a>
     <h1>Siebert-Isolierungen</h1>
     <p>Bitte wähle eine Vorlage aus:</p>
 
@@ -194,32 +194,35 @@ if ('launchQueue' in window) {
     });
 }
 
-// PWA Teilen für Android
+// PWA Teilen für Android (Übersichtsseite mit automatischer Weiterleitung)
 const bwChannel = new BroadcastChannel('sw_status');
 
 bwChannel.onmessage = (event) => {
     if (event.data.type === 'SHARE_FILE_RECEIVED') {
         const file = event.data.file;
-        const fileName = event.data.fileName;
+        const fileName = event.data.fileName.toLowerCase();
 
-        console.log(`Datei über Teilen-Funktion empfangen: ${fileName}`);
+        console.log(`Datei empfangen: ${fileName}. Leite weiter...`);
 
-        // Hier rufst du deine bestehende Lade-Logik auf
-        // Zum Beispiel:
-        if (typeof deinLadeFunktion === "function") {
-            deinLadeFunktion(file);
+        // Mapping: Welche Endung gehört zu welcher Seite?
+        let targetPage = "";
+        if (fileName.endsWith('.lnr')) targetPage = "LNR.html";
+        else if (fileName.endsWith('.lnz')) targetPage = "LNZ.html";
+        else if (fileName.endsWith('.lnl')) targetPage = "LNL.html";
+        else if (fileName.endsWith('.stdz')) targetPage = "STD.html";
+        else if (fileName.endsWith('.ka')) targetPage = "Kappenaufmaß.html";
+
+        if (targetPage) {
+            // Wir speichern die Datei kurz im Cache oder IndexDB, 
+            // aber am einfachsten: Wir leiten weiter. 
+            // Der Service Worker wird die Datei beim Laden der Zielseite erneut senden.
+            window.location.href = targetPage;
         } else {
-            // Falls du einen FileReader nutzt:
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const inhalt = e.target.result;
-                console.log("Dateiinhalt bereit zur Verarbeitung");
-                // Verarbeite 'inhalt' hier...
-            };
-            reader.readAsText(file);
+            alert("Unbekanntes Dateiformat: " + fileName);
         }
     }
 };
+
 </script>
 
 </body>

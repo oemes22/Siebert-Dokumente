@@ -1,5 +1,5 @@
-const CACHE_NAME = 'lnr-app-v2.5';
-const VERSION = '2.5 Bockwurst';
+const CACHE_NAME = 'lnr-app-v2.6';
+const VERSION = '2.6 Bockwurst';
 const bwChannel = new BroadcastChannel('sw_status');
 
 const ASSETS = [
@@ -8,7 +8,7 @@ const ASSETS = [
   'LNL.html',
   'LNZ.html',
   'Kappenaufmaß.html',
-  'Std.html',
+  'STD.html',
   'style.css',
   'Logo.svg',
   'manifest.json',
@@ -62,6 +62,7 @@ self.addEventListener('fetch', event => {
           if (fileName.endsWith('.lnr')) targetPage = 'LNR.html';
           else if (fileName.endsWith('.lnl')) targetPage = 'LNL.html';
           else if (fileName.endsWith('.lnz')) targetPage = 'LNZ.html';
+		  else if (fileName.endsWith('.stdz')) targetPage = 'STD.html';
           else if (fileName.endsWith('.ka')) targetPage = 'Kappenaufmaß.html';
 
           // Datei-Daten per BroadcastChannel senden, sobald die Zielseite lädt

@@ -689,22 +689,18 @@ bwChannel.onmessage = (event) => {
 
         console.log(`Datei über Teilen-Funktion empfangen: ${fileName}`);
 
-        // Hier rufst du deine bestehende Lade-Logik auf
-        // Zum Beispiel:
-        if (typeof deinLadeFunktion === "function") {
-            deinLadeFunktion(file);
-        } else {
-            // Falls du einen FileReader nutzt:
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const inhalt = e.target.result;
-                console.log("Dateiinhalt bereit zur Verarbeitung");
-                // Verarbeite 'inhalt' hier...
-            };
-            reader.readAsText(file);
-        }
+        // Erstellt ein Mock-Event, damit die bestehende handleFileSelect-Funktion genutzt werden kann
+        const mockEvent = {
+            target: {
+                files: [file]
+            }
+        };
+
+        // Ruft deine Lade-Logik auf (Zeile 465)
+        handleFileSelect(mockEvent);
     }
 };
+
 </script>
 
 	
