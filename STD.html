@@ -703,7 +703,7 @@ if ('launchQueue' in window) {
         if (launchParams.files.length > 0) {
             const file = await launchParams.files[0].getFile();
             const mockEvent = { target: { files: [file] } };
-            handleFileSelect(mockEvent);
+            importCSV(mockInput); 
         }
     });
 }
@@ -726,7 +726,7 @@ bwChannel.onmessage = (event) => {
         };
 
         // Ruft deine Lade-Logik auf (Zeile 526)
-        importCSV(mockEvent);
+        importCSV(mockInput); 
     }
 };
 

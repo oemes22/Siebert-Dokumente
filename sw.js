@@ -1,5 +1,5 @@
-const CACHE_NAME = 'lnr-app-v2.7';
-const VERSION = '2.7 Bulette';
+const CACHE_NAME = 'lnr-app-v2.8';
+const VERSION = '2.8 Bulette';
 const bwChannel = new BroadcastChannel('sw_status');
 
 const ASSETS = [
