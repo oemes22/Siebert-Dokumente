@@ -419,7 +419,7 @@
         <!-- ANMERKUNGEN -->
         <section class="notes-section">
             <div class="notes-label">Anmerkungen:</div>
-            <textarea id="anmerkungen" rows="2"></textarea>
+            <textarea id="anmerkungen" rows="3"></textarea>
         </section>
 
         <!-- FOOTER-SEKTION ALS TABELLE -->
@@ -917,7 +917,7 @@ function calculateFields() {
             if (seiteB > 0 && fSeiteB === document.activeElement === false) fSeiteB.value = seiteB.toFixed(2).replace(".", ",");
             if (laenge > 0 && fLaenge === document.activeElement === false) fLaenge.value = laenge.toFixed(2).replace(".", ",");
             // Menge optional auch formatieren:
-            if (mengeInput !== "" && menge > 0 && fMenge === document.activeElement === false) fMenge.value = menge.toFixed(2).replace(".", ",");
+            //if (mengeInput !== "" && menge > 0 && fMenge === document.activeElement === false) fMenge.value = menge.toFixed(2).replace(".", ",");
 
             let flaeche = 0;
             let istSonderberechnung = false;

@@ -656,13 +656,13 @@ function formatToTwoDecimals(event) {
     }
 }
 
-// Event-Listener an die Spalten 1 (Pos) und 2 (Menge) binden
+// Event-Listener nur an Spalte 2 (Menge) binden
 document.addEventListener('focusout', (event) => {
-    const id = event.target.id;
-    // Prüft, ob die ID auf 1 (Pos) oder 2 (Menge) endet (z.B. a1, b2, c1...)
-    if (id && (id.endsWith('1') || id.endsWith('2')) && event.target.classList.contains('input-haupttabelle')) {
-        formatToTwoDecimals(event);
-    }
+  const id = event.target.id;
+  // Prüft, ob die ID auf '2' endet (Menge) und das Feld zur Haupttabelle gehört
+  if (id && id.endsWith('2') && event.target.classList.contains('input-haupttabelle')) {
+    formatToTwoDecimals(event);
+  }
 });
 
 
