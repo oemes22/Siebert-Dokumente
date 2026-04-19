@@ -34,7 +34,7 @@ html, body {
     box-shadow: 0 0 10px rgba(0,0,0,0.9);
     box-sizing: border-box;
     /* PLATZHALTER: Verhindert, dass Inhalt hinter dem Numpad verschwindet */
-    padding-bottom: 250px; 
+    padding-bottom: 25px;
 }
 
 /* --- 3. HEADER & LOGO (ORIGINAL PDF 0.1.1) --- */
@@ -63,7 +63,7 @@ h1 {
 .form-layout-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
 }
 
 .form-layout-table td {

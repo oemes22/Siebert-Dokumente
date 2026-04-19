@@ -1,5 +1,5 @@
-const CACHE_NAME = 'lnr-app-v3.0';
-const VERSION = '3.0 Pferdesalami';
+const CACHE_NAME = 'lnr-app-v3.1';
+const VERSION = '3.1 Labskaus';
 const bwChannel = new BroadcastChannel('sw_status');
 
 const ASSETS = [
