@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#5895a8">
+<title>Bedarfsrechner</title>
+<!-- Anfang Verknüpfung zum Web App Manifest -->
+<link rel="manifest" href="manifest.json">
+<!-- Optimierung für iOS (Safari) -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="apple-touch-icon" href="icon-192.png">
+<!-- Ende Verknüpfung zum Web App Manifest -->
+<style>
+:root {
+--primary-text: #ffffff;
+--accent-color: #2ecc71;
+--glass-bg: rgba(30, 30, 30, 0.5);
+--input-bg: rgba(255, 166, 76, 0.2);
+}
+
+body {
+font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+margin: 0;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+align-items: center;
+color: var(--primary-text);
+background: 
+linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px),
+linear-gradient(rgba(255,255,255,0.15) 0.8px, transparent 0.8px),
+linear-gradient(90deg, rgba(255,255,255,0.15) 0.8px, transparent 0.8px),
+linear-gradient(rgba(255,255,255,0.08) 0.5px, transparent 0.5px),
+linear-gradient(90deg, rgba(255,255,255,0.08) 0.5px, transparent 0.5px),
+radial-gradient(circle at left top, rgba(46, 204, 113, 0.4) 0%, rgba(41, 128, 185, 0.6) 45%, rgba(15, 15, 25, 1) 100%);
+background-size: 50px 50px, 50px 50px, 25px 25px, 25px 25px, 5px 5px, 5px 5px, 100% 100%;
+background-attachment: fixed;
+}
+
+.logo-container {
+position: absolute;
+top: 15px;
+left: 15px;
+width: calc(100% - 30px);
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.logo { height: 85px; width: 85px; }
+
+.screen_toolbox {
+margin-top: 100px;
+width: 95%;
+max-width: 800px;
+padding: 20px;
+}
+
+.glass-panel {
+background: var(--glass-bg);
+backdrop-filter: blur(10px);
+border-radius: 20px;
+border: 1px solid rgba(255,255,255,0.1);
+padding: 25px;
+margin-bottom: 20px;
+box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+h2 { color: #ffa64c; margin-top: 0; font-size: 1.5rem; letter-spacing: 1px; }
+h3 { color: #ffd2a6; margin-top: 0; letter-spacing: 1px; }
+.results-grid h3 {
+  grid-column: 1 / -1; /* Lässt die Überschrift über alle Spalten gehen */
+  margin-top: 35px;    /* Optional: Etwas Abstand nach oben für die Optik */
+  margin-bottom: 5px;  /* Optional: Weniger Abstand zur Karte darunter */
+}
+
+
+.input-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+gap: 20px;
+margin-bottom: 10px;
+}
+
+.input-group { display: flex; flex-direction: column; }
+
+label { font-size: 0.9rem; margin-bottom: 5px; opacity: 0.8; }
+
+input, select {
+background: var(--input-bg);
+border: 1px solid rgba(255,255,255,0.2);
+border-radius: 10px;
+padding: 12px;
+color: white;
+font-size: 1.1rem;
+outline: none;
+transition: all 0.3s;
+}
+
+/* Stylt die Liste, die beim Klicken aufklappt */
+select option {
+    background-color: #888888; /* Ein dunkler Hintergrund passend zu deinem Glass-Panel */
+    color: white;              /* Weiße Schrift */
+}
+
+/* Erstellt eine einheitliche Farbe für alle Platzhalter */
+::placeholder {
+  color: rgba(255, 255, 255, 0.2); /* Weiß mit 50% Deckkraft */
+  opacity: 1; /* Wichtig für Firefox, damit die Farbe voll übernommen wird */
+}
+
+input:focus { border-color: var(--accent-color); background: rgba(255, 166, 76, 0.4); }
+
+.results-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 15px;
+margin-top: 10px;
+}
+
+.result-card {
+background: rgba(0,0,0,0.2);
+padding: 15px;
+border-radius: 12px;
+border-left: 4px solid var(--accent-color);
+}
+
+.result-card.blue { border-left-color: blue; }
+.result-card.red { border-left-color: red; }
+
+.val { display: block; font-size: 1.4rem; font-weight: bold; margin-top: 5px; }
+.unit { font-size: 0.8rem; opacity: 0.7; margin-left: 5px; }
+
+.hidden { display: none; }
+
+.btn-reset {
+background: var(--input-bg);
+backdrop-filter: blur(10px);
+color: white;
+border: 1px solid rgba(255,255,255,0.2);
+border-radius: 10px;
+padding: 10px 15px;
+cursor: pointer;
+font-size: 0.8rem;
+text-transform: uppercase;
+transition: all 0.3s;
+}
+
+.btn-reset:hover {
+border-color: #e74c3c;
+background: rgba(231, 76, 60, 0.2);
+}
+</style>
+</head>
+<body>
+
+<div class="logo-container">
+<a href="index.html"><img src="Logo.svg" alt="Logo" class="logo"></a>
+<button onclick="resetPageStorage()" class="btn-reset">
+Zurücksetzen
+</button>
+</div>
+
+<div class="screen_toolbox">
+
+<!-- Hauptkonfiguration -->
+<div class="glass-panel">
+<h2>Konfiguration (Öffnung)</h2>
+<div class="input-grid">
+<div class="input-group">
+<label>Form Öffnung</label>
+<select id="form" onchange="toggleInputs()">
+<option value="eckig">Eckig</option>
+<option value="rund">Rund</option>
+</select>
+</div>
+<div class="input-group">
+<label id="label_a">Seite A (cm)</label>
+<input type="number" id="val_a" placeholder="0" oninput="calculate()">
+</div>
+<div id="group_b" class="input-group">
+<label>Seite B (cm)</label>
+<input type="number" id="val_b" placeholder="0" oninput="calculate()">
+</div>
+<div class="input-group">
+<label>Tiefe (cm)</label>
+<input type="number" id="val_t" placeholder="0" oninput="calculate()">
+</div>
+</div>
+</div>
+
+<!-- Abzugsmaße -->
+<div class="glass-panel">
+<h2>Abzugsmaße (Einbauten)</h2>
+<div class="input-grid">
+<div class="input-group">
+<label>Form Abzug</label>
+<select id="form_sub" onchange="toggleInputs()">
+<option value="eckig">Eckig</option>
+<option value="rund">Rund</option>
+</select>
+</div>
+<div class="input-group">
+<label id="label_a_sub">Seite A (cm)</label>
+<input type="number" id="val_a_sub" placeholder="0" oninput="calculate()">
+</div>
+<div id="group_b_sub" class="input-group">
+<label>Seite B (cm)</label>
+<input type="number" id="val_b_sub" placeholder="0" oninput="calculate()">
+</div>
+</div>
+</div>
+
+<!-- Ergebnis Bereich -->
+<div class="glass-panel">
+<h2>Berechnung</h2>
+<div class="results-grid">
+<div class="result-card">
+<label>Fläche</label>
+<span class="val" id="res_flaeche">0<span class="unit">m²</span></span>
+</div>
+<div class="result-card">
+<label>Volumen</label>
+<span class="val" id="res_volumen">0<span class="unit">Liter</span></span>
+</div>
+<h3>Trockenmörtel</h3>
+<div class="result-card blue">
+<label>Mörtel Hilti CP 636 (Kabel-, Kombischottungen)</label>
+<span class="val" id="res_moertel1">0<span class="unit">kg</span></span>
+</div>
+<div class="result-card blue">
+<label>Mörtel Hilti CP633 (Brandschutzklappen / LAR)</label>
+<span class="val" id="res_moertel2">0<span class="unit">kg</span></span>
+</div>
+<h3>Brandschutzsteine 20x13x5</h3>
+<div class="result-card red">
+<label>Hilti BS-Stein CFS-BL P (Quer F30/F90)</label>
+<span class="val" id="res_f30">0<span class="unit">Stk.</span></span>
+</div>
+<div class="result-card red">
+<label>Hilti BS-Stein CFS-BL P (Längs F90)</label>
+<span class="val" id="res_f90">0<span class="unit">Stk.</span></span>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+const pageNamespace = "bedarfsrechner";
+
+function saveToPageStorage() {
+const data = {
+form: document.getElementById('form').value,
+val_a: document.getElementById('val_a').value,
+val_b: document.getElementById('val_b').value,
+val_t: document.getElementById('val_t').value,
+form_sub: document.getElementById('form_sub').value,
+val_a_sub: document.getElementById('val_a_sub').value,
+val_b_sub: document.getElementById('val_b_sub').value
+};
+localStorage.setItem(pageNamespace, JSON.stringify(data));
+}
+
+function loadFromPageStorage() {
+const saved = localStorage.getItem(pageNamespace);
+if (saved) {
+const data = JSON.parse(saved);
+document.getElementById('form').value = data.form || 'eckig';
+document.getElementById('val_a').value = data.val_a || '';
+document.getElementById('val_b').value = data.val_b || '';
+document.getElementById('val_t').value = data.val_t || '';
+document.getElementById('form_sub').value = data.form_sub || 'eckig';
+document.getElementById('val_a_sub').value = data.val_a_sub || '';
+document.getElementById('val_b_sub').value = data.val_b_sub || '';
+toggleInputs();
+}
+}
+
+function resetPageStorage() {
+localStorage.removeItem(pageNamespace);
+const fields = ['val_a', 'val_b', 'val_t', 'val_a_sub', 'val_b_sub'];
+fields.forEach(id => document.getElementById(id).value = '');
+calculate();
+}
+
+function toggleInputs() {
+// Hauptform
+const form = document.getElementById('form').value;
+const groupB = document.getElementById('group_b');
+const labelA = document.getElementById('label_a');
+if(form === 'rund') {
+groupB.classList.add('hidden');
+labelA.innerText = "Durchmesser Ø (cm)";
+} else {
+groupB.classList.remove('hidden');
+labelA.innerText = "Seite A (cm)";
+}
+
+// Abzugsform
+const formSub = document.getElementById('form_sub').value;
+const groupBSub = document.getElementById('group_b_sub');
+const labelASub = document.getElementById('label_a_sub');
+if(formSub === 'rund') {
+groupBSub.classList.add('hidden');
+labelASub.innerText = "Durchmesser Ø (cm)";
+} else {
+groupBSub.classList.remove('hidden');
+labelASub.innerText = "Seite A (cm)";
+}
+calculate();
+}
+
+function calculate() {
+const getVal = (id) => parseFloat(document.getElementById(id).value) || 0;
+
+const form = document.getElementById('form').value;
+const a = getVal('val_a');
+const b = getVal('val_b');
+const t = getVal('val_t');
+
+const formSub = document.getElementById('form_sub').value;
+const aSub = getVal('val_a_sub');
+const bSub = getVal('val_b_sub');
+
+// Fläche Hauptöffnung
+let flaecheHaupt = (form === 'eckig') ? (a * b / 10000) : (Math.PI * Math.pow((a/2), 2) / 10000);
+
+// Fläche Abzug
+let flaecheAbzug = (formSub === 'eckig') ? (aSub * bSub / 10000) : (Math.PI * Math.pow((aSub/2), 2) / 10000);
+
+// Netto Fläche (nicht kleiner als 0)
+let flaeche = Math.max(0, flaecheHaupt - flaecheAbzug);
+
+const volumenm3 = flaeche * (t / 100);
+const liter = volumenm3 * 1000;
+
+const moertel1 = liter *  0.833; // 0,833 kg pro Liter = 24,00 Liter aus 20 kgCP 636
+const moertel2 = liter * 1.3699; // 1,3699 kg pro Liter = 18,25 Liter aus 25 kg Sack CP 633
+
+// Steinformat (z.B. 20x13x5cm)
+const f30_bedarf = (flaeche / 0.01).toFixed(1); 
+const f90_bedarf = (flaeche / 0.0065).toFixed(1); 
+
+document.getElementById('res_flaeche').innerHTML = flaeche.toFixed(4) + '<span class="unit">m²</span>';
+document.getElementById('res_volumen').innerHTML = liter.toFixed(2) + '<span class="unit">Liter</span>';
+document.getElementById('res_moertel1').innerHTML = moertel1.toFixed(1) + '<span class="unit">kg</span>';
+document.getElementById('res_moertel2').innerHTML = moertel2.toFixed(1) + '<span class="unit">kg</span>';
+document.getElementById('res_f30').innerHTML = f30_bedarf + '<span class="unit">Stk.</span>';
+document.getElementById('res_f90').innerHTML = f90_bedarf + '<span class="unit">Stk.</span>';
+
+saveToPageStorage();
+}
+
+window.onload = loadFromPageStorage;
+</script>
+
+</body>
+</html>

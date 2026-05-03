@@ -9,6 +9,7 @@ const ASSETS = [
   'LNZ.html',
   'Kappenaufmaß.html',
   'STD.html',
+  'Bedarfsrechner.html',
   'style.css',
   'Logo.svg',
   'manifest.json',
