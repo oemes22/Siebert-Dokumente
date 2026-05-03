@@ -1,5 +1,5 @@
-const CACHE_NAME = 'lnr-app-v3.1';
-const VERSION = '3.1 Labskaus';
+const CACHE_NAME = 'lnr-app-v3.3';
+const VERSION = '3.3 Kartoffelsalat';
 const bwChannel = new BroadcastChannel('sw_status');
 
 const ASSETS = [
