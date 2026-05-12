@@ -1,5 +1,5 @@
-const CACHE_NAME = 'lnr-app-v3.3';
-const VERSION = '3.3 Kartoffelsalat';
+const CACHE_NAME = 'lnr-app-v3.4';
+const VERSION = '3.4 Holzfällersteak';
 const bwChannel = new BroadcastChannel('sw_status');
 
 const ASSETS = [
@@ -10,6 +10,7 @@ const ASSETS = [
   'Kappenaufmaß.html',
   'STD.html',
   'Bedarfsrechner.html',
+  'Verhältnis.html',
   'style.css',
   'Logo.svg',
   'manifest.json',

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#5895a8">
+<title>Verhältnisrechner</title>
+<style>
+:root {
+    --primary-text: #ffffff;
+    --accent-color: #2ecc71;
+    --glass-bg: rgba(30, 30, 30, 0.5);
+    --input-bg: rgba(255, 166, 76, 0.2);
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--primary-text);
+    background: 
+        linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,0.15) 0.8px, transparent 0.8px),
+        linear-gradient(90deg, rgba(255,255,255,0.15) 0.8px, transparent 0.8px),
+        linear-gradient(rgba(255,255,255,0.08) 0.5px, transparent 0.5px),
+        linear-gradient(90deg, rgba(255,255,255,0.08) 0.5px, transparent 0.5px),
+        radial-gradient(circle at left top, rgba(46, 204, 113, 0.4) 0%, rgba(41, 128, 185, 0.6) 45%, rgba(15, 15, 25, 1) 100%);
+    background-size: 50px 50px, 50px 50px, 25px 25px, 25px 25px, 5px 5px, 5px 5px, 100% 100%;
+    background-attachment: fixed;
+}
+
+.logo-container {
+position: absolute;
+top: 15px;
+left: 15px;
+width: calc(100% - 30px);
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.logo { height: 85px; width: 85px; }
+
+.screen_toolbox {
+    margin-top: 100px;
+    width: 95%;
+    max-width: 800px;
+    padding: 20px;
+}
+
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(4px);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+h2 { color: #ffa64c; margin-top: 0; font-size: 1.5rem; letter-spacing: 1px; }
+h3 { color: #ffd2a6; margin-top: 20px; letter-spacing: 1px; }
+
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 20px;
+    align-items: flex-end;
+}
+
+.input-group { display: flex; flex-direction: column; }
+
+label { font-size: 0.9rem; margin-bottom: 5px; opacity: 0.8; }
+
+input {
+    background: var(--input-bg);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 12px;
+    color: white;
+    font-size: 1.1rem;
+    outline: none;
+    transition: all 0.3s;
+}
+
+input:focus { border-color: var(--accent-color); background: rgba(255, 166, 76, 0.4); }
+
+.results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.result-card {
+    background: rgba(0,0,0,0.2);
+    padding: 15px;
+    border-radius: 12px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.val { display: block; font-size: 1.4rem; font-weight: bold; margin-top: 5px; }
+.unit { font-size: 0.8rem; opacity: 0.7; margin-left: 5px; }
+
+.btn-reset {
+    background: var(--input-bg);
+    backdrop-filter: blur(10px);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.separator {
+    font-size: 1.5rem;
+    text-align: center;
+    padding-bottom: 10px;
+}
+</style>
+</head>
+<body>
+
+<div class="logo-container">
+    <a href="index.html"><img src="Logo.svg" alt="Logo" class="logo"></a>
+    <button onclick="resetValues()" class="btn-reset">Zurücksetzen</button>
+</div>
+
+<div class="screen_toolbox">
+    <!-- Verhältnis Basis -->
+    <div class="glass-panel">
+        <h2>Referenz-Verhältnis</h2>
+        <div class="input-grid">
+            <div class="input-group">
+                <label>Wert A</label>
+                <input type="number" id="base_a" placeholder="1" oninput="calculate()">
+            </div>
+            <div class="separator">:</div>
+            <div class="input-group">
+                <label>Wert B</label>
+                <input type="number" id="base_b" placeholder="1" oninput="calculate()">
+            </div>
+        </div>
+    </div>
+
+    <!-- Skalierung -->
+    <div class="glass-panel">
+        <h2>Skalierung (Dreisatz)</h2>
+        <div class="input-grid">
+            <div class="input-group">
+                <label>Neuer Wert C</label>
+                <input type="number" id="target_c" placeholder="X" oninput="calculate()">
+            </div>
+            <div class="separator">→</div>
+            <div class="input-group">
+                <label>Ergebnis D</label>
+                <input type="number" id="target_d" placeholder="Y" readonly style="opacity: 0.6;">
+            </div>
+        </div>
+    </div>
+
+    <!-- Ergebnisse -->
+    <div class="glass-panel">
+        <h2>Analyse</h2>
+        <div class="results-grid">
+            <div class="result-card">
+                <label>Vereinfacht</label>
+                <span class="val" id="res_simple">1 : 1</span>
+            </div>
+            <div class="result-card">
+                <label>Faktor (B/A)</label>
+                <span class="val" id="res_factor">1.00</span>
+            </div>
+            <div class="result-card" style="border-left-color: #ffa64c;">
+                <label>Anteil A</label>
+                <span class="val" id="res_perc_a">50<span class="unit">%</span></span>
+            </div>
+            <div class="result-card" style="border-left-color: #ffa64c;">
+                <label>Anteil B</label>
+                <span class="val" id="res_perc_b">50<span class="unit">%</span></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Eindeutiger Name für den Speicher dieses Rechners
+const pageNamespace = "verhaeltnisrechner";
+
+// 1. Funktion zum Speichern der Werte
+function saveToPageStorage() {
+    const data = {
+        base_a: document.getElementById('base_a').value,
+        base_b: document.getElementById('base_b').value,
+        target_c: document.getElementById('target_c').value
+    };
+    localStorage.setItem(pageNamespace, JSON.stringify(data));
+}
+
+// 2. Funktion zum Laden der Werte beim Start
+function loadFromPageStorage() {
+    const saved = localStorage.getItem(pageNamespace);
+    if (saved) {
+        const data = JSON.parse(saved);
+        document.getElementById('base_a').value = data.base_a || '';
+        document.getElementById('base_b').value = data.base_b || '';
+        document.getElementById('target_c').value = data.target_c || '';
+        calculate(); // Berechnet die Ergebnisse sofort nach dem Laden
+    }
+}
+
+function gcd(a, b) {
+    return b ? gcd(b, a % b) : a;
+}
+
+function calculate() {
+    const a = parseFloat(document.getElementById('base_a').value) || 0;
+    const b = parseFloat(document.getElementById('base_b').value) || 0;
+    const c = parseFloat(document.getElementById('target_c').value) || 0;
+
+    // Dreisatz: D = (B * C) / A
+    if (a !== 0) {
+        const d = (b * c) / a;
+        document.getElementById('target_d').value = d.toFixed(2);
+        
+        // Faktor
+        document.getElementById('res_factor').innerText = (b / a).toFixed(3);
+
+        // Anteile
+        const total = a + b;
+        document.getElementById('res_perc_a').innerHTML = ((a / total) * 100).toFixed(1) + '<span class="unit">%</span>';
+        document.getElementById('res_perc_b').innerHTML = ((b / total) * 100).toFixed(1) + '<span class="unit">%</span>';
+
+        // Vereinfachen
+        const common = gcd(Math.round(a * 100), Math.round(b * 100));
+        const simpleA = Math.round(a * 100) / common;
+        const simpleB = Math.round(b * 100) / common;
+        document.getElementById('res_simple').innerText = `${simpleA} : ${simpleB}`;
+    }
+    
+    // Nach jeder Änderung speichern
+    saveToPageStorage();
+}
+
+// 3. Modifizierte Reset-Funktion
+function resetValues() {
+    // Speicher löschen
+    localStorage.removeItem(pageNamespace);
+    
+    // Felder leeren
+    ['base_a', 'base_b', 'target_c', 'target_d'].forEach(id => {
+        document.getElementById(id).value = '';
+    });
+    
+    // Standardanzeige wiederherstellen
+    document.getElementById('res_simple').innerText = '1 : 1';
+    document.getElementById('res_factor').innerText = '1.00';
+    document.getElementById('res_perc_a').innerHTML = '50<span class="unit">%</span>';
+    document.getElementById('res_perc_b').innerHTML = '50<span class="unit">%</span>';
+}
+
+// 4. Automatisches Laden beim Öffnen der Seite
+window.onload = loadFromPageStorage;
+</script>
+
+</body>
+</html>
