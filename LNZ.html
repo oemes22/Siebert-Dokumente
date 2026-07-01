@@ -54,7 +54,7 @@
                 <tr>
                     <td class="label-cell"><label for="bauvorhaben">Bauvorhaben:</label></td>
                     <td class="input-cell"><input class="schrift-schrumpfen" type="text" id="bauvorhaben"></td>
-                    <td class="label-cell inline-label-cell"><input class="wechsel-label" id="bnrlabel" value="B.Nr.:"></input></td>
+                    <td class="label-cell inline-label-cell"><input class="wechsel-label" id="bnrlabel" value="Best.Nr.:"></input></td>
                     <td class="input-cell" style="width: 25%;"><input class="schrift-schrumpfen" type="text" id="bestellnr"></td>
                 </tr>
                 <tr>
@@ -379,10 +379,10 @@ function clearAllFields() {
             freiField.value = standardFrei;
             saveToPageStorage('frei', standardFrei); // Speichert es ebenfalls im Storage, falls nötig
         }
-						        // Standard-Wert für das Feld "B.Nr.:" setzen
+						        // Standard-Wert für das Feld "Best.Nr.:" setzen
         const bnrField = document.getElementById('bnrlabel');
         if (bnrField) {
-            const standardBnr = "B.Nr.:";
+            const standardBnr = "Best.Nr.:";
             bnrField.value = standardBnr;
             saveToPageStorage('bnrlabel', standardBnr); 
         }

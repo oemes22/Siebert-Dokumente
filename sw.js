@@ -1,5 +1,5 @@
-const CACHE_NAME = 'lnr-app-v3.4';
-const VERSION = '3.4 Holzfällersteak';
+const CACHE_NAME = 'lnr-app-v3.5';
+const VERSION = '3.5 Schweinenasenburger';
 const bwChannel = new BroadcastChannel('sw_status');
 
 const ASSETS = [
